@@ -13,10 +13,9 @@
     "@repo/prettier-config": "*",
     "turbo": "latest"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "pnpm@8.9.0",
   "prettier": "@repo/prettier-config/base.js",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "engines": {
+    "node": ">=18"
+  }
 }
