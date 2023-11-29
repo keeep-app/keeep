@@ -9,7 +9,11 @@
     "lint": "eslint . --max-warnings 0"
   },
   "prettier": "@repo/prettier-config/tailwindcss.js",
+  "prisma": {
+    "seed": "ts-node --skipProject --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "5.6.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -33,6 +37,7 @@
     "postcss": "^8",
     "prisma": "^5.6.0",
     "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
 }
