@@ -1,8 +1,19 @@
+'use client';
+
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { useSupabase } from '@/lib/provider/supabase';
+import { UserAuthForm } from '@/components/user-auth-form';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const { supabase } = useSupabase();
+  const router = useRouter();
+
+  if (!supabase) {
+    return null;
+  }
   return (
     <>
       <Link
@@ -23,8 +34,8 @@ export default function LoginPage() {
             <p className="text-sm text-muted-foreground">
               Enter your email and password below to login
             </p>
+            <UserAuthForm type="login" />
           </div>
-          {/* <UserAuthForm /> */}
         </div>
       </div>
     </>
