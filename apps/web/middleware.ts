@@ -52,9 +52,6 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname
   );
 
-  console.log('session', session);
-  console.log('isOnAuthPage', isOnAuthPage);
-
   if (
     !session &&
     !isOnAuthPage &&
