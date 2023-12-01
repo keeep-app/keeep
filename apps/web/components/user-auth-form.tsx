@@ -15,12 +15,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
+import { cn } from '../lib/utils';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
+  className?: string;
 }
 
-export const UserAuthForm: React.FC<UserAuthFormProps> = ({ type }) => {
+export const UserAuthForm: React.FC<UserAuthFormProps> = ({
+  type,
+  className,
+}) => {
   const { supabase } = useSupabase();
   const router = useRouter();
   const formSchema = z.object({
@@ -50,7 +55,10 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({ type }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="text-left">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn(className, '')}
+      >
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -81,7 +89,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({ type }) => {
           />
         </div>
         <Button type="submit" className="mt-6 w-full">
-          Login
+          {type === 'login' ? 'Login' : 'Register'}
         </Button>
       </form>
     </Form>

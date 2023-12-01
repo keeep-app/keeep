@@ -34,8 +34,8 @@ export default function LoginPage() {
             <p className="text-sm text-muted-foreground">
               Enter your email and password below to login
             </p>
-            <UserAuthForm type="login" />
           </div>
+          <UserAuthForm type="login" className="mt-8" />
         </div>
       </div>
     </>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { UserAuthForm } from '../../../../components/user-auth-form';
 
 export default function RegisterPage() {
   return (
@@ -24,9 +25,9 @@ export default function RegisterPage() {
               Enter your email below to create your account
             </p>
           </div>
-          {/* <UserAuthForm /> */}
+          <UserAuthForm type="register" className="mt-8" />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            By clicking continue, you agree to our{' '}
+            By clicking register, you agree to our{' '}
             <Link
               href="/terms"
               className="underline underline-offset-4 hover:text-primary"
