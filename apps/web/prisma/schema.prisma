@@ -84,6 +84,8 @@ model Contact {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
   externalId     String       @unique // so we don't expose the internal db id
+  Company        Company?     @relation(fields: [companyId], references: [id])
+  companyId      Int?
 }
 
 model List {
@@ -98,4 +100,16 @@ model List {
   contacts       Contact[]
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
+}
+
+model Company {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  name        String
+  slug        String
+  description String?
+  icon        String?
+  employees   Contact[]
 }
