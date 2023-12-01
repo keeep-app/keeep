@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useToast } from './ui/use-toast';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
@@ -33,21 +34,51 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
     password: z.string().min(8),
   });
 
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     if (type === 'login') {
       const { data, error } = await supabase!.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
       console.log('user', data);
-      if (!error) {
+      if (error) {
+        toast({
+          title: 'Login failed',
+          description: error.message,
+        });
+      } else {
+        router.push('/dashboard');
+      }
+    } else {
+      const { error } = await supabase!.auth.signUp({
+        email: values.email,
+        password: values.password,
+        // TODO: Setup email verification
+        // options: {
+        //   emailRedirectTo: 'http://localhost:3000/register/verify',
+        // },
+      });
+
+      if (error) {
+        if (error.message === 'User already registered') {
+          toast({
+            title: 'Registration failed',
+            description:
+              'This email is already registered. Please go to the login page.',
+          });
+        } else {
+          toast({
+            title: 'Registration failed',
+            description: error.message,
+          });
+        }
+      } else {
         router.push('/dashboard');
       }
     }
