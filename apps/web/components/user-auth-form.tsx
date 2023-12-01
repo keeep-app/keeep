@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
