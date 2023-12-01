@@ -1,87 +1,140 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
-const invoices = [
+const labelConfig = {
+  status: 'Status',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  email: 'Email',
+};
+
+const statusConfig = {
+  new: 'New',
+  contacted: 'Contacted',
+  qualified: 'Qualified',
+  proposal: 'Proposal Sent',
+  negotiation: 'Negotiation',
+  won: 'Won',
+  lost: 'Lost',
+};
+
+const colorConfig = {
+  new: 'bg-gray-100 text-gray-900',
+  contacted: 'bg-blue-100 text-blue-900',
+  qualified: 'bg-green-100 text-green-900',
+  proposal: 'bg-yellow-100 text-yellow-900',
+  negotiation: 'bg-orange-100 text-orange-900',
+  won: 'bg-green-100 text-green-900',
+  lost: 'bg-red-100 text-red-900',
+};
+
+type Contact = {
+  status: keyof typeof statusConfig;
+  email: string;
+  firstName: string;
+  lastName: string;
+};
+
+const contacts: Contact[] = [
   {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
+    status: 'new',
+    email: 'john.doe@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
   },
   {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal',
+    status: 'contacted',
+    email: 'jane.doe@example.com',
+    firstName: 'Jane',
+    lastName: 'Doe',
   },
   {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
+    status: 'qualified',
+    email: 'bob.smith@example.com',
+    firstName: 'Bob',
+    lastName: 'Smith',
   },
   {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
+    status: 'proposal',
+    email: 'alice.jones@example.com',
+    firstName: 'Alice',
+    lastName: 'Jones',
   },
   {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
+    status: 'negotiation',
+    email: 'charlie.brown@example.com',
+    firstName: 'Charlie',
+    lastName: 'Brown',
   },
   {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
+    status: 'won',
+    email: 'david.johnson@example.com',
+    firstName: 'David',
+    lastName: 'Johnson',
   },
   {
-    invoice: 'INV007',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card',
+    status: 'lost',
+    email: 'emily.williams@example.com',
+    firstName: 'Emily',
+    lastName: 'Williams',
+  },
+  {
+    status: 'new',
+    email: 'frank.thomas@example.com',
+    firstName: 'Frank',
+    lastName: 'Thomas',
+  },
+  {
+    status: 'contacted',
+    email: 'grace.martin@example.com',
+    firstName: 'Grace',
+    lastName: 'Martin',
+  },
+  {
+    status: 'qualified',
+    email: 'harry.edwards@example.com',
+    firstName: 'Harry',
+    lastName: 'Edwards',
   },
 ];
 
 export function TableDemo() {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead>{labelConfig['status']}</TableHead>
+          <TableHead>{labelConfig['firstName']}</TableHead>
+          <TableHead>{labelConfig['lastName']}</TableHead>
+          <TableHead>{labelConfig['email']}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map(invoice => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {contacts.map(contact => (
+          <TableRow key={contact.email}>
+            <TableCell>
+              <div
+                className={cn(
+                  colorConfig[contact.status],
+                  'w-fit rounded-xl px-2 py-1 text-xs'
+                )}
+              >
+                {statusConfig[contact.status]}
+              </div>
+            </TableCell>
+            <TableCell>{contact.firstName}</TableCell>
+            <TableCell>{contact.lastName}</TableCell>
+            <TableCell>{contact.email}</TableCell>
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
   );
 }
