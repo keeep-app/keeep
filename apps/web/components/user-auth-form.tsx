@@ -41,6 +41,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!supabase) throw new Error('Supabase client not found');
     if (type === 'login') {
       const { data, error } = await supabase!.auth.signInWithPassword({
         email: values.email,
