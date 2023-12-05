@@ -1,13 +1,18 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+
+const locales = ['en', 'de'];
+
+const intlMiddleware = createMiddleware({
+  locales: locales,
+  localePrefix: 'as-needed',
+  defaultLocale: 'en',
+});
+
+const publicPages = ['/', '/login', '/register'];
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -48,30 +53,27 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const isOnAuthPage = ['/login', '/register'].includes(
-    request.nextUrl.pathname
+  const publicPathnameRegex = RegExp(
+    `^(/(${locales.join('|')}))?(${publicPages
+      .flatMap(p => (p === '/' ? ['', '/'] : p))
+      .join('|')})/?$`,
+    'i'
   );
 
-  if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-    response = NextResponse.redirect(new URL('/login', request.nextUrl).href);
-  } else if (session && isOnAuthPage) {
-    response = NextResponse.redirect(
-      new URL('/dashboard', request.nextUrl).href
-    );
+  const isPublicPage = publicPathnameRegex.test(request.nextUrl.pathname);
+  const isLoginPage = request.nextUrl.pathname === '/login';
+  const isRegisterPage = request.nextUrl.pathname === '/register';
+
+  if (session && (isLoginPage || isRegisterPage)) {
+    return NextResponse.redirect(new URL('/dashboard', request.nextUrl).href);
+  } else if (!session && !isPublicPage) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl).href);
   }
 
-  return response;
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  // Skip all paths that should not be internationalized
+  matcher: ['/((?!api|_next|.*\\..*).*)'],
 };

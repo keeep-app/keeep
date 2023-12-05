@@ -1,4 +1,8 @@
+const withNextIntl = require('next-intl/plugin')();
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   transpilePackages: ['@repo/ui'],
 };
+
+module.exports = withNextIntl(config);
