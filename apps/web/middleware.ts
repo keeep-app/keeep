@@ -1,8 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
-
-const locales = ['en', 'de'];
+import { locales } from './lib/constants';
 
 const intlMiddleware = createMiddleware({
   locales: locales,

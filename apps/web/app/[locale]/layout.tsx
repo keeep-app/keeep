@@ -1,10 +1,7 @@
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
-
-// Can be imported from a shared config
-const locales = ['en', 'de'];
+import { locales } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,6 +29,9 @@ export default function LocaleLayout({
   params: { locale },
 }: LocaleLayoutProps) {
   if (!locales.includes(locale)) notFound();
+
+  unstable_setRequestLocale(locale);
+
   return (
     <html lang={locale}>
       <body className={inter.className}>{children}</body>
