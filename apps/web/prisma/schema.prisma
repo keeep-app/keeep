@@ -61,6 +61,7 @@ model Attribute {
   required       Boolean       @default(false)
   type           AttributeType @default(TEXT)
   label          String
+  config         Json? // { "options": ["option1", "option2"] }
   icon           String?
   description    String?
   organization   Organization  @relation(fields: [organizationId], references: [id])
