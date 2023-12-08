@@ -21,8 +21,8 @@ enum AttributeType {
   URL
   EMAIL
   PHONE
-  TAGS // comma separated list of strings
-  FILE // could be an image, pdf, etc
+  TAGS
+  FILE
   SOCIAL
 }
 
@@ -31,6 +31,7 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   email         String         @unique
+  password      String?
   firstName     String?
   lastName      String?
   avatar        String?
@@ -38,40 +39,31 @@ model User {
 }
 
 model Organization {
-  id        Int                 @id @default(autoincrement())
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
-  deletedAt DateTime?
-  slug      String              @unique
-  name      String
-  logo      String?
-  users     User[]
-  contacts  Contact[]
-  lists     List[]
-  config    OrganizationConfig?
-  Company   Company[]
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  deletedAt  DateTime?
+  slug       String      @unique
+  name       String
+  logo       String?
+  users      User[]
+  contacts   Contact[]
+  lists      List[]
+  attributes Attribute[]
+  companies  Company[]
 }
 
-model OrganizationConfig {
-  id             Int               @id @default(autoincrement())
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  attributes     AttributeConfig[]
-  organization   Organization      @relation(fields: [organizationId], references: [id])
-  organizationId Int               @unique
-}
-
-model AttributeConfig {
-  id             Int                @id @default(autoincrement())
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
-  system         Boolean            @default(false) // system attributes are not editable by the user
-  required       Boolean            @default(false)
-  type           AttributeType      @default(TEXT)
+model Attribute {
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  system         Boolean       @default(false) // system attributes are not editable by the user
+  required       Boolean       @default(false)
+  type           AttributeType @default(TEXT)
   label          String
   icon           String?
   description    String?
-  organization   OrganizationConfig @relation(fields: [organizationId], references: [id])
+  organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId Int
 }
 
@@ -84,9 +76,8 @@ model Contact {
   lists          List[]
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
-  externalId     String       @unique // so we don't expose the internal db id
-  Company        Company?     @relation(fields: [companyId], references: [id])
-  companyId      Int?
+  externalId     String       @unique // e.g. for the url path, so we don't expose the internal db id
+  companies      Company[]
 }
 
 model List {

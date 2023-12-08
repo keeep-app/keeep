@@ -8,6 +8,10 @@ const systemAttributes: {
   icon?: string;
 }[] = [
   {
+    label: 'Profile Picture',
+    type: 'TEXT',
+  },
+  {
     label: 'First Name',
     type: 'TEXT',
   },
@@ -26,33 +30,32 @@ async function main() {
     data: {
       slug: 'keeep',
       name: 'keeep',
-    },
-  });
-
-  const orgConfig = await prisma.organizationConfig.create({
-    data: {
-      organizationId: org.id,
       attributes: {
         createMany: {
           data: systemAttributes.map(a => ({ ...a, system: true })),
         },
       },
+      users: {
+        create: [
+          {
+            email: 'user@example.com',
+            firstName: 'Test',
+            lastName: 'User',
+          },
+        ],
+      },
     },
   });
 
-  const attributeConfigs = await prisma.attributeConfig.findMany({
+  const attributes = await prisma.attribute.findMany({
     where: {
-      organizationId: orgConfig.organizationId,
+      organizationId: org.id,
     },
   });
 
-  const attributeFirstName = attributeConfigs.find(
-    a => a.label === 'First Name'
-  );
-  const attributeLastName = attributeConfigs.find(a => a.label === 'Last Name');
-  const attributeEmail = attributeConfigs.find(
-    a => a.label === 'Email Address'
-  );
+  const attributeFirstName = attributes.find(a => a.label === 'First Name');
+  const attributeLastName = attributes.find(a => a.label === 'Last Name');
+  const attributeEmail = attributes.find(a => a.label === 'Email Address');
 
   await prisma.list.create({
     data: {
@@ -70,6 +73,15 @@ async function main() {
               ...(attributeEmail && {
                 [attributeEmail.id]: 'john.doe@example.com',
               }),
+            },
+            companies: {
+              create: [
+                {
+                  slug: 'apple',
+                  name: 'Apple',
+                  organizationId: org.id,
+                },
+              ],
             },
           },
         ],
