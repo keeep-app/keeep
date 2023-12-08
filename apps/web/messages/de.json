@@ -9,5 +9,35 @@
   },
   "LocaleLayout": {
     "title": "Keeep - Das CRM Tool für Freelancer"
+  },
+  "LoginPage": {
+    "title": "Melden Sie sich bei Ihrem Konto an",
+    "description": "Geben Sie unten Ihre E-Mail und Ihr Passwort ein, um sich anzumelden",
+    "form": {
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Passwort",
+        "forgot": "Passwort vergessen?"
+      },
+      "submit": "Anmelden"
+    },
+    "registerButton": "Registrieren"
+  },
+  "RegisterPage": {
+    "title": "Erstellen Sie ein neues Konto",
+    "description": "Geben Sie Ihre E-Mail und Ihr Passwort ein, um sich zu registrieren",
+    "form": {
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Passwort"
+      },
+      "submit": "Registrieren",
+      "terms": "Indem Sie auf Registrieren klicken, stimmen Sie unseren <terms>Allgemeinen Geschäftsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu."
+    },
+    "loginButton": "Anmelden"
   }
 }
