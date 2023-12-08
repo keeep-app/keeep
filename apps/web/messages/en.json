@@ -13,31 +13,32 @@
   "LoginPage": {
     "title": "Login to your account",
     "description": "Enter your email and password below to login",
-    "form": {
-      "email": {
-        "label": "Email"
-      },
-      "password": {
-        "label": "Password",
-        "forgot": "Forgot your password?"
-      },
-      "submit": "Login"
-    },
+
     "registerButton": "Register"
+  },
+  "LoginForm": {
+    "email": {
+      "label": "Email"
+    },
+    "password": {
+      "label": "Password",
+      "forgot": "Forgot your password?"
+    },
+    "submit": "Login"
   },
   "RegisterPage": {
     "title": "Create a new account",
     "description": "Enter your email and password create your register",
-    "form": {
-      "email": {
-        "label": "Email"
-      },
-      "password": {
-        "label": "Password"
-      },
-      "submit": "Register",
-      "terms": "By clicking on Register, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
+    "loginButton": "Login",
+    "hint": "By clicking on Register, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
+  },
+  "RegisterForm": {
+    "email": {
+      "label": "Email"
     },
-    "loginButton": "Login"
+    "password": {
+      "label": "Password"
+    },
+    "submit": "Register"
   }
 }
