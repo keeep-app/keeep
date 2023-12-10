@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +18,8 @@ import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from './ui/use-toast';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
@@ -35,6 +38,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
   });
 
   const { toast } = useToast();
+  const t = useTranslations(type === 'login' ? 'LoginForm' : 'RegisterForm');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,7 +101,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email.label')}</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -111,11 +115,16 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('password.label')}</FormLabel>
                 <FormControl>
                   <Input {...field} type="password" />
                 </FormControl>
                 <FormMessage />
+                {type === 'login' && (
+                  <FormDescription>
+                    <Link href="/forgot-password">{t('password.forgot')}</Link>
+                  </FormDescription>
+                )}
               </FormItem>
             )}
           />

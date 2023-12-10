@@ -1,0 +1,44 @@
+{
+  "Error": {
+    "title": "Something went wrong!",
+    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "description": "Please double-check the browser address bar or use the navigation to go to a known page."
+  },
+  "LocaleLayout": {
+    "title": "Keeep - The CRM Tool for Freelancers"
+  },
+  "LoginPage": {
+    "title": "Login to your account",
+    "description": "Enter your email and password below to login",
+
+    "registerButton": "Register"
+  },
+  "LoginForm": {
+    "email": {
+      "label": "Email"
+    },
+    "password": {
+      "label": "Password",
+      "forgot": "Forgot your password?"
+    },
+    "submit": "Login"
+  },
+  "RegisterPage": {
+    "title": "Create a new account",
+    "description": "Enter your email and password create your register",
+    "loginButton": "Login",
+    "hint": "By clicking on Register, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
+  },
+  "RegisterForm": {
+    "email": {
+      "label": "Email"
+    },
+    "password": {
+      "label": "Password"
+    },
+    "submit": "Register"
+  }
+}
