@@ -1,0 +1,44 @@
+{
+  "Error": {
+    "title": "Etwas ist schief gelaufen!",
+    "description": "<p>Es ist leider ein Problem aufgetreten.</p><p>Du kannst versuchen <retry>diese Seite neu zu laden</retry>.</p>"
+  },
+  "NotFoundPage": {
+    "title": "Seite nicht gefunden",
+    "description": "Bitte überprüfe die Addressleiste deines Browsers oder verwende die Navigation um zu einer bekannten Seite zu wechseln."
+  },
+  "LocaleLayout": {
+    "title": "Keeep - Das CRM Tool für Freelancer"
+  },
+  "LoginPage": {
+    "title": "Melden Sie sich bei Ihrem Konto an",
+    "description": "Geben Sie unten Ihre E-Mail und Ihr Passwort ein, um sich anzumelden",
+
+    "registerButton": "Registrieren"
+  },
+  "LoginForm": {
+    "email": {
+      "label": "Email"
+    },
+    "password": {
+      "label": "Passwort",
+      "forgot": "Passwort vergessen?"
+    },
+    "submit": "Anmelden"
+  },
+  "RegisterPage": {
+    "title": "Erstellen Sie ein neues Konto",
+    "description": "Geben Sie Ihre E-Mail und Ihr Passwort ein, um sich zu registrieren",
+    "loginButton": "Anmelden",
+    "hint": "Indem Sie auf Registrieren klicken, stimmen Sie unseren <terms>Allgemeinen Geschäftsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu."
+  },
+  "RegisterForm": {
+    "email": {
+      "label": "Email"
+    },
+    "password": {
+      "label": "Passwort"
+    },
+    "submit": "Registrieren"
+  }
+}
