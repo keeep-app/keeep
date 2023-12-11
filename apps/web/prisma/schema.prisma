@@ -10,3 +10,101 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+enum AttributeType {
+  TEXT
+  NUMBER
+  DATE
+  CHECKBOX
+  SELECT
+  MULTISELECT
+  URL
+  EMAIL
+  PHONE
+  TAGS
+  FILE
+  SOCIAL
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  email         String         @unique
+  password      String?
+  firstName     String?
+  lastName      String?
+  avatar        String?
+  organizations Organization[]
+}
+
+model Organization {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  deletedAt  DateTime?
+  slug       String      @unique
+  name       String
+  logo       String?
+  users      User[]
+  contacts   Contact[]
+  lists      List[]
+  attributes Attribute[]
+  companies  Company[]
+}
+
+model Attribute {
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  system         Boolean       @default(false) // system attributes are not editable by the user
+  required       Boolean       @default(false)
+  type           AttributeType @default(TEXT)
+  label          String
+  config         Json? // { "options": ["option1", "option2"] }
+  icon           String?
+  description    String?
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId Int
+}
+
+model Contact {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  attributes     Json // { "[attributeId]": "[attributeValue]" }
+  lists          List[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  externalId     String       @unique // e.g. for the url path, so we don't expose the internal db id
+  companies      Company[]
+}
+
+model List {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  name           String
+  slug           String
+  description    String?
+  icon           String?
+  contacts       Contact[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+}
+
+model Company {
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  name           String
+  slug           String
+  description    String?
+  icon           String?
+  employees      Contact[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+}
