@@ -54,38 +54,38 @@
     "terms": "Allgemeine Geschäftsbedingungen",
     "privacy": "Datenschutzerklärung"
   },
-  "LandingPage": {
-    "title": "Keeep - Das CRM Tool für Freelancer",
-    "description": "Keeep ist ein CRM Tool für Freelancer, das dir hilft, deine Kunden zu verwalten und deine Projekte zu organisieren.",
+  "HeroSection": {
+    "title": "Kundenbeziehungen neu gedacht",
+    "description": "Jedes Business dreht sich um Menschen. Interessenten, Kunden, Kollegen. Keeep hilft dir dabei, all das zu verwalten - ein CRM, das sich auf deine Interaktionen konzentriert. Denn starke Beziehungen sind der Schlüssel zu neuen Möglichkeiten.",
     "waitlist": {
       "inputLabel": "Trage deine E-Mail ein",
       "submit": "Warteliste beitreten",
       "hint": "Tragen dich ein, um als einer der ersten Zugriff auf Keeep zu erhalten. Es treffen die <terms>Allgemeinen Geschäftsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy> zu."
-    },
-    "features": {
-      "title": "Funktionen",
-      "description": "Keeep bietet dir alle Funktionen, die du benötigst, um deine Kunden und Projekte zu verwalten.",
-      "featureList": {
-        "import": {
-          "title": "Einfacher Lead Import",
-          "description": "Importiere deine Leads aus Tools wie LinkedIn oder Xing mit nur einem Klick."
-        },
-        "contacts": {
-          "title": "Kontakte",
-          "description": "Füge existierende oder neue Kontakte schnell und einfach in dein CRM hinzu."
-        },
-        "views": {
-          "title": "Listen und Ansichten",
-          "description": "Erstelle nach belieben Listen für bestimmte Kontakte und verliere nie die Übersicht dank smarter und anpassbaren Darstellungen wie Kanban, Tabellen, etc."
-        },
-        "customization": {
-          "title": "Maximale Personalisierbarkeit",
-          "description": "Jedes Business ist individuell und so auch seine Anforderungen. Erweitere Entitäten wie Kontakte, Listen, Unternehmen durch eigene Felder und decke so alle Informationen ab die du für deine Customer Journey benötigst."
-        },
-        "automation": {
-          "title": "Automatisierte Workflows",
-          "description": "Ein Kunde konnte nicht abgeschlossen werden und du möchtest in ein paar Monaten nochmal nachfassen? Wozu selber dran denken wenn du es auch automatisieren kannst!"
-        }
+    }
+  },
+  "FeatureSection": {
+    "title": "Funktionen",
+    "description": "Keeep bietet dir alle Funktionen, die du benötigst, um deine Kunden und Projekte zu verwalten.",
+    "featureList": {
+      "import": {
+        "title": "Einfacher Lead Import",
+        "description": "Importiere deine Leads aus Tools wie LinkedIn oder Xing mit nur einem Klick."
+      },
+      "contacts": {
+        "title": "Kontakte",
+        "description": "Füge existierende oder neue Kontakte schnell und einfach in dein CRM hinzu."
+      },
+      "views": {
+        "title": "Listen und Ansichten",
+        "description": "Erstelle nach belieben Listen für bestimmte Kontakte und verliere nie die Übersicht dank smarter und anpassbaren Darstellungen wie Kanban, Tabellen, etc."
+      },
+      "customization": {
+        "title": "Maximale Personalisierbarkeit",
+        "description": "Jedes Business ist individuell und so auch seine Anforderungen. Erweitere Entitäten wie Kontakte, Listen, Unternehmen durch eigene Felder und decke so alle Informationen ab die du für deine Customer Journey benötigst."
+      },
+      "automation": {
+        "title": "Automatisierte Workflows",
+        "description": "Ein Kunde konnte nicht abgeschlossen werden und du möchtest in ein paar Monaten nochmal nachfassen? Wozu selber dran denken wenn du es auch automatisieren kannst!"
       }
     }
   }
