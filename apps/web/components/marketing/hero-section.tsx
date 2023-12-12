@@ -16,8 +16,8 @@ export const HeroSection: React.FC = () => {
             width="550"
           />
           <div className="flex flex-col justify-center space-y-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+            <div className="mb-8 space-y-8">
+              <h1 className="font-accent text-3xl font-bold tracking-tight sm:text-5xl xl:text-6xl/tight">
                 The Complete CRM for Your Business
               </h1>
               <p className="max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl">
@@ -26,7 +26,7 @@ export const HeroSection: React.FC = () => {
                 your business forward.
               </p>
             </div>
-            <div className="w-full max-w-sm space-y-2">
+            <div className="w-full max-w-sm space-y-4">
               <form className="flex space-x-2">
                 <Input
                   className="max-w-lg flex-1"

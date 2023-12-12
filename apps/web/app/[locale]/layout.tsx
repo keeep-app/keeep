@@ -1,9 +1,20 @@
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { Inter } from 'next/font/google';
+import { Inter, Encode_Sans } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/constants';
+import clsx from 'clsx';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const encodeSans = Encode_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-encode-sans',
+});
 
 type LocaleLayoutProps = {
   children: React.ReactNode;
@@ -34,7 +45,9 @@ export default function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={inter.className}>{children}</body>
+      <body className={clsx(encodeSans.variable, inter.variable, 'font-sans')}>
+        {children}
+      </body>
     </html>
   );
 }
