@@ -3,6 +3,7 @@ import { Inter, Encode_Sans } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/constants';
 import clsx from 'clsx';
+import Head from 'next/head';
 
 const inter = Inter({
   subsets: ['latin'],
