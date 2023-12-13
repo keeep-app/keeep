@@ -1,6 +1,11 @@
 import { PrismaClient, Attribute } from '@prisma/client';
+import { createClient } from '@supabase/supabase-js';
 
 const prisma = new PrismaClient();
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+);
 
 const attributeConfig: Omit<
   Attribute,
@@ -148,6 +153,15 @@ const contacts = [
 ];
 
 async function main() {
+  const { data, error } = await supabase.auth.signUp({
+    email: process.env.SUPABASE_TEST_USER_EMAIL as string,
+    password: process.env.SUPABASE_TEST_USER_PASSWORD as string,
+  });
+
+  if (error || !data.user) {
+    throw error;
+  }
+
   const org = await prisma.organization.create({
     data: {
       slug: 'keeep',
@@ -163,7 +177,7 @@ async function main() {
       users: {
         create: [
           {
-            email: 'dummy@keeep.app',
+            supabaseId: data.user.id,
             firstName: 'Bobby',
             lastName: 'Crown',
           },

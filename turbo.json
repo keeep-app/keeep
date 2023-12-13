@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SUPABASE_TEST_USER_EMAIL",
+    "SUPABASE_TEST_USER_PASSWORD"
+  ],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],

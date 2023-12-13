@@ -28,10 +28,9 @@ enum AttributeType {
 
 model User {
   id            Int            @id @default(autoincrement())
+  supabaseId    String         @unique
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  email         String         @unique
-  password      String?
   firstName     String?
   lastName      String?
   avatar        String?
