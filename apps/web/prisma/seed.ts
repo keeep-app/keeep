@@ -174,7 +174,7 @@ async function main() {
           })),
         },
       },
-      users: {
+      members: {
         create: [
           {
             supabaseId: data.user.id,
