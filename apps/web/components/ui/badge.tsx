@@ -18,14 +18,14 @@ const badgeVariants = cva(
           'border-transparent bg-accent text-accent-foreground hover:bg-accent/80',
         outline: 'text-foreground',
       },
-      numeric: {
-        true: 'tabular-nums',
-        false: '',
+      tabular: {
+        numeric: 'tabular-nums',
+        all: '',
       },
     },
     defaultVariants: {
       variant: 'default',
-      numeric: false,
+      tabular: 'all',
     },
   }
 );

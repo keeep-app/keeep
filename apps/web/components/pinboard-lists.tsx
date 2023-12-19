@@ -30,7 +30,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
             <div key={section.title}>
               <h2 className="font-accent mb-4 flex items-center justify-between text-lg font-semibold">
                 {section.title}
-                <Badge variant="accent" numeric>
+                <Badge variant="accent" tabular="numeric">
                   {section.count}
                 </Badge>
               </h2>
