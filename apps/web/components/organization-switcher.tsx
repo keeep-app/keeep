@@ -26,20 +26,20 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 >;
 
 interface TeamSwitcherProps extends PopoverTriggerProps {
-  orgs: Organization[];
-  selectedOrg: number;
+  organizations: Organization[];
+  current: Organization;
 }
 
 export default function OrganizationSwitcher({
   className,
-  orgs,
-  selectedOrg,
+  organizations,
+  current,
 }: TeamSwitcherProps) {
   const { user } = useSupabase();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Organization | undefined>(
-    orgs.find(org => org.id === selectedOrg)
+    organizations.find(org => org.id === current.id)
   );
 
   return (
@@ -72,7 +72,7 @@ export default function OrganizationSwitcher({
           )}
           <CommandList>
             <CommandGroup heading="Organizations">
-              {orgs.map(org => (
+              {organizations.map(org => (
                 <CommandItem
                   key={org.id}
                   onSelect={() => {
