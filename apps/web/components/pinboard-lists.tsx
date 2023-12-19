@@ -46,7 +46,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
                       )}
                     >
                       <Link href={item.href}>
-                        {item.icon}
+                        <span className="pr-1 text-base">{item.icon}</span>
                         {item.name}
                       </Link>
                     </Button>

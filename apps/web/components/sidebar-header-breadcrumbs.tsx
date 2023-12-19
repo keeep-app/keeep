@@ -35,7 +35,9 @@ export function Breadcrumbs({ base }: { base: string }) {
               href={`/${base}/${list.slug}`}
               active={slug === current}
             >
-              {list.name}
+              <span>
+                <span className="pr text-base">{list.icon}</span> {list.name}
+              </span>
             </BreadcrumbItem>
           </>
         ) : null;
