@@ -1,5 +1,4 @@
 export type LocalePageProps = {
-  children: React.ReactNode;
   params: {
     locale: string;
   };
