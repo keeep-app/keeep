@@ -66,9 +66,9 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
         password: values.password,
         options: {
           // eslint-disable-next-line turbo/no-undeclared-env-vars
-          emailRedirectTo: process.env.VERCEL_URL
+          emailRedirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
             ? // eslint-disable-next-line turbo/no-undeclared-env-vars
-              `https://${process.env.VERCEL_URL}/login`
+              `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/login`
             : 'http://localhost:3000/login',
         },
       });
