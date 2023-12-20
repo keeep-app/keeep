@@ -64,10 +64,13 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
       const { error } = await supabase!.auth.signUp({
         email: values.email,
         password: values.password,
-        // TODO: Setup email verification
-        // options: {
-        //   emailRedirectTo: 'http://localhost:3000/register/verify',
-        // },
+        options: {
+          // eslint-disable-next-line turbo/no-undeclared-env-vars
+          emailRedirectTo: process.env.VERCEL_URL
+            ? // eslint-disable-next-line turbo/no-undeclared-env-vars
+              `https://${process.env.VERCEL_URL}/login`
+            : 'http://localhost:3000/login',
+        },
       });
 
       if (error) {
@@ -84,7 +87,10 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           });
         }
       } else {
-        router.push('/dashboard');
+        toast({
+          title: 'Registration successful',
+          description: 'Please check your inbox for the confirmation link.',
+        });
       }
     }
   }
