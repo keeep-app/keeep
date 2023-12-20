@@ -11,7 +11,8 @@ const intlMiddleware = createMiddleware({
 
 const publicPages = ['/', '/login', '/register'];
 
-export async function middleware(request: NextRequest) {
+// eslint-disable-next-line no-unused-vars
+export async function middleware(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

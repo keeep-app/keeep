@@ -84,7 +84,7 @@ model Contact {
   lists          List[]
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
-  externalId     String       @unique // e.g. for the url path, so we don't expose the internal db id
+  externalId     String       @unique @default(uuid()) // e.g. for the url path, so we don't expose the internal db id
   companies      Company[]
 
   @@schema("public")
@@ -96,7 +96,7 @@ model List {
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
   name           String
-  slug           String
+  slug           String       @unique
   description    String?
   icon           String?
   contacts       Contact[]
@@ -112,7 +112,7 @@ model Company {
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
   name           String
-  slug           String
+  slug           String       @unique
   description    String?
   icon           String?
   employees      Contact[]
