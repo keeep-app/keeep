@@ -94,7 +94,10 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           });
         }
       } else {
-        form.reset();
+        form.reset({
+          email: '',
+          password: '',
+        });
         setLoading(false);
         toast({
           title: 'Registration successful',
