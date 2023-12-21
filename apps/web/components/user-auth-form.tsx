@@ -21,7 +21,8 @@ import { useToast } from './ui/use-toast';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
-import { createUser } from '../app/actions';
+import { createUser, loginUser } from '../app/actions';
+import Spinner from './spinner';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
@@ -52,10 +53,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
     if (!supabase) throw new Error('Supabase client not found');
     setLoading(true);
     if (type === 'login') {
-      const { data, error } = await supabase!.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      });
+      const { data, error } = await loginUser(values.email, values.password);
       console.log('user', data);
       if (error) {
         setLoading(false);
@@ -64,6 +62,11 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           description: error.message,
         });
       } else {
+        setLoading(false);
+        toast({
+          title: 'Login successful',
+          description: 'Redirecting to dashboard.',
+        });
         router.push('/dashboard');
       }
     } else {
@@ -114,7 +117,6 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -151,34 +153,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           >
             {type === 'login' ? 'Login' : 'Register'}
           </span>
-          <span
-            className={cn('absolute inset-0 flex items-center justify-center', {
-              'opacity-100': loading,
-              'opacity-0': !loading,
-            })}
-          >
-            <svg
-              className="h-5 w-5 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth={4}
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            <span className="sr-only">Loading...</span>
-          </span>
+          {loading && <Spinner className="absolute inset-0" />}
         </Button>
       </form>
     </Form>

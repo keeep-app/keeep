@@ -40,3 +40,29 @@ export async function createUser(email: string, password: string) {
 
   return { error, data };
 }
+
+export async function loginUser(email: string, password: string) {
+  const validatedFields = createUserSchema.safeParse({
+    email,
+    password,
+  });
+
+  // Return early if the form data is invalid
+  if (!validatedFields.success) {
+    return {
+      error: {
+        message: 'Invalid form data',
+      },
+      data: null,
+    };
+  }
+
+  const supabaseClient = getSupabaseServerClient();
+
+  const { error, data } = await supabaseClient.auth.signInWithPassword({
+    email: validatedFields.data.email,
+    password: validatedFields.data.password,
+  });
+
+  return { error, data };
+}
