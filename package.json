@@ -5,7 +5,8 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md,js,json,css}\""
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,md,js,json,css}\"",
+    "prettier:check": "prettier --check \"**/*.{ts,tsx,md,js,json,css}\""
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
