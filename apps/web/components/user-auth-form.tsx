@@ -21,6 +21,7 @@ import { useToast } from './ui/use-toast';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
+import { createUser } from '../app/actions';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
@@ -66,17 +67,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
         router.push('/dashboard');
       }
     } else {
-      const { error } = await supabase!.auth.signUp({
-        email: values.email,
-        password: values.password,
-        options: {
-          // eslint-disable-next-line turbo/no-undeclared-env-vars
-          emailRedirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
-            ? // eslint-disable-next-line turbo/no-undeclared-env-vars
-              `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/login`
-            : 'http://localhost:3000/login',
-        },
-      });
+      const { error } = await createUser(values.email, values.password);
 
       if (error) {
         if (error.message === 'User already registered') {
@@ -94,11 +85,11 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           });
         }
       } else {
+        setLoading(false);
         form.reset({
           email: '',
           password: '',
         });
-        setLoading(false);
         toast({
           title: 'Registration successful',
           description: 'Please check your inbox for the confirmation link.',
