@@ -3,9 +3,11 @@
 import { useStore } from '@/store/useStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Fragment } from 'react';
 
 export function MobileSidebarPane({ children }: { children: React.ReactNode }) {
+  const t = useTranslations('Sidebar.header');
   const sidebar = useStore(state => state.sidebar);
 
   return (
@@ -53,7 +55,7 @@ export function MobileSidebarPane({ children }: { children: React.ReactNode }) {
                     className="-m-2.5 p-2.5"
                     onClick={sidebar.close}
                   >
-                    <span className="sr-only">Close sidebar</span>
+                    <span className="sr-only">{t('close-sidebar')}</span>
                     <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </button>
                 </div>

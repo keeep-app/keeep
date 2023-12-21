@@ -1,11 +1,20 @@
-import { Metadata } from 'next';
 import { prisma } from '@/lib/server/prisma';
 import { TableDemo } from '@/components/demo-table';
+import { LocalePageProps } from '@/lib/types/global';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Example dashboard app built using the components.',
-};
+export async function generateMetadata({
+  params: { locale, list: slug },
+}: LocalePageProps & ListPageProps) {
+  const t = await getTranslations({ locale, namespace: 'LocaleLayout' });
+  const list = await prisma.list.findUnique({
+    where: { slug },
+  });
+
+  return {
+    title: list?.name ?? t('title'),
+  };
+}
 
 type ListPageProps = {
   params: { list: string; organization: string };

@@ -1,8 +1,12 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
+import { Organization } from '@prisma/client';
+import { useTranslations } from 'next-intl';
+import { Check, ChevronDown, Plus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useSupabase } from '@/lib/provider/supabase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,10 +20,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Check, ChevronDown, Plus } from 'lucide-react';
-import { useSupabase } from '@/lib/provider/supabase';
-import { useState } from 'react';
-import { Organization } from '@prisma/client';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -35,6 +35,7 @@ export default function OrganizationSwitcher({
   organizations,
   current,
 }: TeamSwitcherProps) {
+  const t = useTranslations('Sidebar.organization');
   const { user } = useSupabase();
 
   const [open, setOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function OrganizationSwitcher({
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          aria-label="Select a organization"
+          aria-label={t('select-organization')}
           className={cn(
             'flex h-full w-full items-center justify-start rounded-none border-b border-gray-100',
             className
@@ -67,7 +68,7 @@ export default function OrganizationSwitcher({
         <Command>
           {user && (
             <CommandItem disabled className="py-2 text-xs opacity-50">
-              Logged in as {user.email}
+              {t('logged-in-as')} {user.email}
             </CommandItem>
           )}
           <CommandList>
@@ -92,8 +93,8 @@ export default function OrganizationSwitcher({
             <CommandGroup>
               <CommandItem disabled className="text-xs opacity-50">
                 <Plus className="mr-2 h-5 w-5" />
-                Create Organization{' '}
-                <span className="pl-1 text-[0.6rem]">(soon)</span>
+                {t('create-organization')}{' '}
+                <span className="pl-1 text-[0.6rem]">(${t('soon')})</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

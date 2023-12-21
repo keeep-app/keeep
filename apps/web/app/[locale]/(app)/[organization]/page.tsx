@@ -1,12 +1,17 @@
-import { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { prisma } from '@/lib/server/prisma';
 import Link from 'next/link';
+import { LocalePageProps } from '@/lib/types/global';
+import { getTranslations } from 'next-intl/server';
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Example dashboard app built using the components.',
-};
+export async function generateMetadata({
+  params: { locale },
+}: LocalePageProps) {
+  const t = await getTranslations({ locale, namespace: 'Dashboard' });
+  return {
+    title: t('title'),
+  };
+}
 
 type OrganizationPageProps = {
   params: { organization: string };
@@ -19,6 +24,10 @@ export default async function OrganizationPage({
     where: { slug },
     include: { lists: true },
   });
+
+  /**
+   * WIP: THIS NEEDS TO BE DESIGNED
+   */
 
   return (
     <div className="flex-1 space-y-4">

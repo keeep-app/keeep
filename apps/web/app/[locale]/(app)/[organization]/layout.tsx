@@ -1,9 +1,10 @@
-import { PinboardLists } from '@/components/pinboard-lists';
-import OrganizationSwitcher from '@/components/organization-switcher';
+import { notFound, redirect } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+
 import { prisma } from '@/lib/server/prisma';
 import { getSupabaseServerComponentClient } from '@/lib/server/supabase';
-import { notFound, redirect } from 'next/navigation';
-
+import { PinboardLists } from '@/components/pinboard-lists';
+import OrganizationSwitcher from '@/components/organization-switcher';
 import { Breadcrumbs } from '@/components/sidebar-header-breadcrumbs';
 import { MobileSidebarToggle } from '@/components/sidebar-header-mobile-toggle';
 import { DesktopSidebarPane } from '@/components/sidebar-pane-desktop';
@@ -18,6 +19,8 @@ export default async function OrganizationLayout({
   children,
   params: { organization },
 }: OrganizationLayoutProps) {
+  const t = useTranslations('Sidebar.sections');
+
   const { user } = await getSupabaseServerComponentClient();
   if (!user) return redirect('/login');
 
@@ -37,7 +40,7 @@ export default async function OrganizationLayout({
         <PinboardLists
           sections={[
             {
-              title: 'People',
+              title: t('people'),
               count: current._count.contacts,
               items: current.lists.map(list => ({
                 ...list,

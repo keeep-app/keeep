@@ -7,8 +7,27 @@
     "title": "Seite nicht gefunden",
     "description": "Bitte überprüfe die Addressleiste deines Browsers oder verwende die Navigation um zu einer bekannten Seite zu wechseln."
   },
+  "Sidebar": {
+    "header": {
+      "dashboard": "Dashboard",
+      "open-sidebar": "Sidebar öffnen",
+      "close-sidebar": "Sidebar schließen"
+    },
+    "organization": {
+      "logged-in-as": "Angemeldet als",
+      "create-organization": "Organisation erstellen",
+      "select-organization": "Organisation auswählen",
+      "soon": "Bald"
+    },
+    "sections": {
+      "people": "Personen"
+    }
+  },
   "LocaleLayout": {
     "title": "Keeep - Das CRM Tool für Freelancer"
+  },
+  "Dashboard": {
+    "title": "Dashboard"
   },
   "LoginPage": {
     "title": "Melden Sie sich bei Ihrem Konto an",

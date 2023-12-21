@@ -6,8 +6,11 @@ import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import { Button } from './ui/button';
 import { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function Breadcrumbs({ base }: { base: string }) {
+  const t = useTranslations('Sidebar.header');
+
   const { data, isLoading, error } = useSWR<Organization & { lists: List[] }>(
     '/api/organization/lists?organization-slug=' + base
   );
@@ -21,7 +24,7 @@ export function Breadcrumbs({ base }: { base: string }) {
   return (
     <nav className="flex flex-1 items-center gap-x-2 self-stretch lg:gap-x-2">
       <BreadcrumbItem href={`/${base}`} active={segments.length === 0}>
-        Dashboard
+        {t('dashboard')}
       </BreadcrumbItem>
       {segments.map(slug => {
         const list = data.lists.find(list => list.slug === slug);
