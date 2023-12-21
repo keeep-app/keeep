@@ -1,6 +1,6 @@
 'use client';
 
-import { useStore } from '@/store/useStore';
+import { useSidebar } from '@/lib/provider/sidebar';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 
 export function MobileSidebarPane({ children }: { children: React.ReactNode }) {
   const t = useTranslations('Sidebar.header');
-  const sidebar = useStore(state => state.sidebar);
+  const sidebar = useSidebar();
 
   return (
     <Transition.Root show={sidebar.isOpen} as={Fragment}>

@@ -5,6 +5,7 @@ import { getMessages } from 'next-intl/server';
 
 import { IntlMessages } from '@/lib/types/global';
 import { prisma } from '@/lib/server/prisma';
+import { SidebarProvider } from '@/lib/provider/sidebar';
 import { getSupabaseServerComponentClient } from '@/lib/server/supabase';
 import { PinboardLists } from '@/components/pinboard-lists';
 import OrganizationSwitcher from '@/components/organization-switcher';
@@ -63,18 +64,20 @@ export default async function OrganizationLayout({
   if (!current) notFound();
 
   return (
-    <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
-      <DesktopSidebarPane>{sidebar}</DesktopSidebarPane>
-      <MobileSidebarPane>{sidebar}</MobileSidebarPane>
-      <div className="lg:pl-72">
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
-          <MobileSidebarToggle />
-          <Breadcrumbs base={current.slug} />
-        </header>
-        <main className="py-10">
-          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
-        </main>
-      </div>
-    </NextIntlClientProvider>
+    <SidebarProvider>
+      <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
+        <DesktopSidebarPane>{sidebar}</DesktopSidebarPane>
+        <MobileSidebarPane>{sidebar}</MobileSidebarPane>
+        <div className="lg:pl-72">
+          <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+            <MobileSidebarToggle />
+            <Breadcrumbs base={current.slug} />
+          </header>
+          <main className="py-10">
+            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+          </main>
+        </div>
+      </NextIntlClientProvider>
+    </SidebarProvider>
   );
 }
