@@ -1,0 +1,5 @@
+next-env.d.ts
+.next
+.vercel
+pnpm-lock.yaml
+.vscode
