@@ -72,7 +72,7 @@ export default function OrganizationSwitcher({
             </CommandItem>
           )}
           <CommandList>
-            <CommandGroup heading="Organizations">
+            <CommandGroup heading={t('organizations')}>
               {organizations.map(org => (
                 <CommandItem
                   key={org.id}
@@ -94,7 +94,7 @@ export default function OrganizationSwitcher({
               <CommandItem disabled className="text-xs opacity-50">
                 <Plus className="mr-2 h-5 w-5" />
                 {t('create-organization')}{' '}
-                <span className="pl-1 text-[0.6rem]">(${t('soon')})</span>
+                <span className="pl-1 text-[0.6rem]">({t('soon')})</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

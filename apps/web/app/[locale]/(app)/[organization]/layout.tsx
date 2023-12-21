@@ -1,6 +1,9 @@
+import { pick } from 'lodash';
+import { NextIntlClientProvider } from 'next-intl';
 import { notFound, redirect } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
+import { IntlMessages } from '@/lib/types/global';
 import { prisma } from '@/lib/server/prisma';
 import { getSupabaseServerComponentClient } from '@/lib/server/supabase';
 import { PinboardLists } from '@/components/pinboard-lists';
@@ -12,14 +15,14 @@ import { MobileSidebarPane } from '@/components/sidebar-pane-mobile';
 
 type OrganizationLayoutProps = {
   children: React.ReactNode;
-  params: { organization: string };
+  params: { organization: string; locale: string };
 };
 
 export default async function OrganizationLayout({
   children,
-  params: { organization },
+  params: { organization, locale },
 }: OrganizationLayoutProps) {
-  const t = useTranslations('Sidebar.sections');
+  const messages = (await getMessages({ locale })) as IntlMessages;
 
   const { user } = await getSupabaseServerComponentClient();
   if (!user) return redirect('/login');
@@ -40,7 +43,7 @@ export default async function OrganizationLayout({
         <PinboardLists
           sections={[
             {
-              title: t('people'),
+              title: messages.Sidebar.sections.people,
               count: current._count.contacts,
               items: current.lists.map(list => ({
                 ...list,
@@ -60,7 +63,7 @@ export default async function OrganizationLayout({
   if (!current) notFound();
 
   return (
-    <>
+    <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
       <DesktopSidebarPane>{sidebar}</DesktopSidebarPane>
       <MobileSidebarPane>{sidebar}</MobileSidebarPane>
       <div className="lg:pl-72">
@@ -72,6 +75,6 @@ export default async function OrganizationLayout({
           <div className="px-4 sm:px-6 lg:px-8">{children}</div>
         </main>
       </div>
-    </>
+    </NextIntlClientProvider>
   );
 }

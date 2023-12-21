@@ -15,6 +15,7 @@
     },
     "organization": {
       "logged-in-as": "Angemeldet als",
+      "organizations": "Organisationen",
       "create-organization": "Organisation erstellen",
       "select-organization": "Organisation auswählen",
       "soon": "Bald"
