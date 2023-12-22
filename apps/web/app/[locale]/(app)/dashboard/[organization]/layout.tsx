@@ -48,7 +48,7 @@ export default async function OrganizationLayout({
               count: current._count.contacts,
               items: current.lists.map(list => ({
                 ...list,
-                href: `/${current.slug}/${list.slug}`,
+                href: `/dashboard/${current.slug}/${list.slug}`,
               })),
             },
           ]}
@@ -58,7 +58,7 @@ export default async function OrganizationLayout({
   ) : null;
 
   if (!current && organizations[0]) {
-    return redirect(`/${organizations[0].slug}`);
+    return redirect(`/dashboard/${organizations[0].slug}`);
   }
 
   if (!current) notFound();

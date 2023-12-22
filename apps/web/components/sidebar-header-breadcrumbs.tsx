@@ -12,7 +12,7 @@ export function Breadcrumbs({ base }: { base: string }) {
   const t = useTranslations('Sidebar.header');
 
   const { data, isLoading, error } = useSWR<Organization & { lists: List[] }>(
-    '/api/organization/lists?organization-slug=' + base
+    '/api/organization/lists?org=' + base
   );
 
   const segments = useSelectedLayoutSegments();
@@ -23,7 +23,10 @@ export function Breadcrumbs({ base }: { base: string }) {
 
   return (
     <nav className="flex flex-1 items-center gap-x-2 self-stretch lg:gap-x-2">
-      <BreadcrumbItem href={`/${base}`} active={segments.length === 0}>
+      <BreadcrumbItem
+        href={`/dashboard/${base}`}
+        active={segments.length === 0}
+      >
         {t('dashboard')}
       </BreadcrumbItem>
       {segments.map(slug => {
@@ -35,7 +38,7 @@ export function Breadcrumbs({ base }: { base: string }) {
             </div>
             <BreadcrumbItem
               key={list.id}
-              href={`/${base}/${list.slug}`}
+              href={`/dashboard/${base}/${list.slug}`}
               active={slug === current}
             >
               <span>

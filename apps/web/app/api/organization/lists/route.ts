@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: 'Not authenticated' }, { status: 401 });
   }
 
-  const slug = req.nextUrl.searchParams.get('organization-slug');
+  const slug = req.nextUrl.searchParams.get('org');
   if (!slug) {
     return Response.json(
       { error: 'No organization slug specified' },

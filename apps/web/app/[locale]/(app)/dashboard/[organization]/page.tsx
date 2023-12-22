@@ -36,7 +36,7 @@ export default async function OrganizationPage({
           {result?.lists.length ? (
             result.lists.map(list => {
               return (
-                <Link key={list.id} href={`/${slug}/${list.slug}`}>
+                <Link key={list.id} href={`/dashboard/${slug}/${list.slug}`}>
                   <Card key={list.id}>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-xs font-medium opacity-50">
