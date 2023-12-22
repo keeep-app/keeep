@@ -1,3 +1,3 @@
 const config = require('@kmuenster/prettier-config');
 
-module.exports = config
+module.exports = config;
