@@ -28,7 +28,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
         {sections.map(section => {
           return (
             <div key={section.title}>
-              <h2 className="font-accent mb-4 flex items-center justify-between text-lg font-semibold">
+              <h2 className="mb-4 flex items-center justify-between font-accent text-lg font-semibold">
                 {section.title}
                 <Badge variant="accent" tabular="numeric">
                   {section.count}
