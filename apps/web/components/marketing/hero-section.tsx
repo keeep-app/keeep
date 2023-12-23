@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { WaitlistForm } from './waitlist-form';
+import DashboardSnapshot from '@/public/dashboard.png';
 
 export const HeroSection: React.FC = () => {
   const t = useTranslations('HeroSection');
@@ -12,9 +13,9 @@ export const HeroSection: React.FC = () => {
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <Image
             alt="Hero"
-            className="order-last mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+            className="order-last object-cover object-center shadow-lg sm:w-full"
             height="310"
-            src="/placeholder.svg"
+            src={DashboardSnapshot}
             width="550"
           />
           <div className="flex flex-col justify-center space-y-4">
