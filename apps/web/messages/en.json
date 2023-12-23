@@ -115,5 +115,29 @@
         "description": "With Keeep's mobile version, you can easily access all your contacts and the most important information while on the move."
       }
     }
+  },
+  "Waitlist": {
+    "title": "Great to have you on board!",
+    "description": "You are now officially part of the Keeep waitlist. We will notify you as soon as you have access to Keeep.",
+    "share": "Share",
+    "shareDescription": "Share Keeep with your friends and get one month of free access for each friend who registers via your link.",
+    "toasts": {
+      "title": {
+        "success": "Successfully registered",
+        "error": "Something went wrong",
+        "copied": "Link copied"
+      },
+      "description": {
+        "alreadyRegistered": "Your email is already on the waitlist. You will be notified as soon as you have access to Keeep.",
+        "success": "Please check your mailbox and confirm your email address to complete your registration.",
+        "error": "An error occurred. Please try again later.",
+        "confirmationFailed": "Your email address could not be confirmed. Please try again later.",
+        "copied": "Your personal invitation link has been copied to your clipboard."
+      }
+    },
+    "mail": {
+      "subject": "Please confirm your registration for the Keeep waitlist",
+      "body": "Hello,\n\nPlease confirm your registration for the Keeep waitlist by clicking <link>here</link>.\n\nBest regards,\nYour Keeep Team"
+    }
   }
 }

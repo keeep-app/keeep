@@ -116,5 +116,29 @@
         "description": "Durch die mobile Version von Keeep kannst du auch unterwegs ganz easy auf all deine Kontakte und die wichtigsten Informationen zugreifen."
       }
     }
+  },
+  "Waitlist": {
+    "title": "Cool, dass du dabei bist!",
+    "description": "Du bist jetzt offiziell Teil der Keeep Warteliste. Wir werden dich benachrichtigen, sobald du Zugriff auf Keeep hast.",
+    "share": "Teilen",
+    "shareDescription": "Teile Keeep mit deinen Freunden und erhalte einen Monat kostenlosen Zugriff für jeden Freund, der sich über deinen Link registriert.",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich eingetragen",
+        "error": "Etwas ist schief gelaufen",
+        "copied": "Link kopiert"
+      },
+      "description": {
+        "alreadyRegistered": "Deine E-Mail ist bereits auf der Warteliste. Du wirst benachrichtigt, sobald du Zugriff auf Keeep hast.",
+        "success": "Bitte überprüfe dein Postfach und bestätige deine E-Mail Adresse, um deine Registrierung abzuschließen.",
+        "error": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
+        "confirmationFailed": "Es konnte keine Bestätigung deiner E-Mail Adresse durchgeführt werden. Bitte versuche es später erneut.",
+        "copied": "Dein persönlicher Einladungslink wurde in deine Zwischenablage kopiert."
+      }
+    },
+    "mail": {
+      "subject": "Bitte bestätige deine Anmeldung für die Keeep Warteliste",
+      "body": "Hallo,\n\nbitte bestätige deine Anmeldung für die Keeep Warteliste, indem du <link>hier</link> klickst.\n\nViele Grüße,\nDein Keeep Team"
+    }
   }
 }
