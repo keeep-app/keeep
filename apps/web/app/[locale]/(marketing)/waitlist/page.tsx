@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import ThankYouGif from '@/public/thank-you.gif';
+import { useTranslations } from 'next-intl';
 
-export default function Component() {
+export default function Waitlist() {
+  const t = useTranslations('Waitlist');
+
   return (
     <>
       <div className="w-full py-8 md:py-16 lg:py-24 xl:py-32">
@@ -10,11 +13,10 @@ export default function Component() {
           <div className="flex flex-col items-center space-y-6 text-center">
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                Thank you for signing up!
+                {t('title')}
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl">
-                You've been added to our waitlist. We can't wait for you to try
-                Keeep!
+                {t('description')}
               </p>
             </div>
             <div className="w-full max-w-sm space-y-4">
@@ -29,9 +31,9 @@ export default function Component() {
                 }}
                 width="500"
               />
-              <Button>Share with Friends</Button>
+              <Button>{t('share')}</Button>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Spread the word and move up the waitlist.
+                {t('shareDescription')}
               </p>
             </div>
           </div>

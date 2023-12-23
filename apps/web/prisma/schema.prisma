@@ -116,4 +116,8 @@ model Waitlist {
   confirmationCode String    @unique
   confirmedAt      DateTime?
   createdAt        DateTime  @default(now())
+  referrer         Waitlist? @relation("Referrer", fields: [referrerId], references: [id])
+  referrerId       Int?      @unique
+  referralCode     String    @unique
+  waitlist         Waitlist? @relation("Referrer")
 }

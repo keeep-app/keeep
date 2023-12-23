@@ -2,9 +2,10 @@
 
 import { z } from 'zod';
 import { getSupabaseServerClient } from '@/lib/server/supabase';
-import { prisma } from '../lib/server/prisma';
+import { prisma } from '@/lib/server/prisma';
 import { nanoid } from 'nanoid';
 import { Resend } from 'resend';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -71,6 +72,8 @@ export async function loginUser(email: string, password: string) {
 }
 
 export async function submitWaitlistForm(email: string) {
+  const locale = await getLocale();
+  const t = await getTranslations({ locale, namespace: 'Waitlist' });
   const existingWaitlistEntry = await prisma.waitlist.findUnique({
     where: {
       email,
@@ -79,22 +82,24 @@ export async function submitWaitlistForm(email: string) {
   if (existingWaitlistEntry) {
     return {
       error: {
-        message: 'Email already exists in waitlist',
+        message: t('toasts.description.alreadyRegistered'),
       },
       data: null,
     };
   }
   const confirmationCode = nanoid();
+  const referralCode = nanoid();
   const newWaitlistEntry = await prisma.waitlist.create({
     data: {
       email,
       confirmationCode,
+      referralCode,
     },
   });
   if (!newWaitlistEntry) {
     return {
       error: {
-        message: 'Error creating waitlist entry',
+        message: t('toasts.description.error'),
       },
       data: null,
     };
@@ -105,18 +110,21 @@ export async function submitWaitlistForm(email: string) {
   const res = await resend.emails.send({
     from: 'Keeep Waitlist <waitlist@resend.dev>',
     to: email,
-    subject: 'Please confirm your Keeep Waitlist entry',
-    html: `<p>Click <a href="${
-      process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000'
-    }/api/waitlist/confirm?code=${confirmationCode}">here</a> to confirm your email address.</p>`,
+    subject: t('mail.subject'),
+    html: `<p>${t.rich('mail.body', {
+      link: text =>
+        `<a href="${
+          process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : 'http://localhost:3000'
+        }/api/waitlist/confirm?code=${confirmationCode}">${text}</a>`,
+    })}</p>`,
   });
 
   if (res.error) {
     return {
       error: {
-        message: 'Error sending confirmation email',
+        message: t('toasts.description.confirmationFailed'),
       },
       data: null,
     };

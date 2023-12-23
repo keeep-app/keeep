@@ -22,6 +22,9 @@ export async function GET(request: NextRequest) {
   if (!user) {
     return NextResponse.redirect(new URL('/not-found', request.nextUrl).href);
   } else {
-    return NextResponse.redirect(new URL('/waitlist', request.nextUrl).href);
+    return NextResponse.redirect(
+      new URL(`/waitlist?referralCode=${user.referralCode}`, request.nextUrl)
+        .href
+    );
   }
 }

@@ -17,6 +17,7 @@ import {
 import { useState } from 'react';
 import Spinner from '../spinner';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 type WaitlistFormProps = {
   translations: {
@@ -26,6 +27,7 @@ type WaitlistFormProps = {
 };
 
 export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
+  const t = useTranslations('Waitlist');
   const [loading, setLoading] = useState(false);
 
   const formSchema = z.object({
@@ -41,12 +43,12 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
   const submitWaitlist = async (values: FormValues) => {
     try {
       setLoading(true);
-      console.log('values', values);
+
       const waitlistResult = await submitWaitlistForm(values.email);
-      console.log('waitlistResult', waitlistResult);
+
       if (waitlistResult.error) {
         toast({
-          title: 'Waitlist submission failed',
+          title: t('toasts.title.error'),
           description: waitlistResult.error.message,
         });
         setLoading(false);
@@ -57,14 +59,14 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
         email: '',
       });
       toast({
-        title: 'Waitlist submission successful',
-        description: 'Please check your email for confirmation.',
+        title: t('toasts.title.success'),
+        description: t('toasts.description.success'),
       });
       setLoading(false);
     } catch (error) {
       toast({
-        title: 'Waitlist submission failed',
-        description: 'Something went wrong. Please try again.',
+        title: t('toasts.title.error'),
+        description: t('toasts.description.error'),
       });
       setLoading(false);
     }
