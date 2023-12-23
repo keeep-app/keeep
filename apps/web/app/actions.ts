@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { getSupabaseServerClient } from '@/lib/supabase/getServerClient';
+import { getSupabaseServerClient } from '@/lib/server/supabase';
 import { prisma } from '../lib/server/prisma';
 import { nanoid } from 'nanoid';
 import { Resend } from 'resend';
