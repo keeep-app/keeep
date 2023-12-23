@@ -91,7 +91,7 @@
         "description": "Import your leads from tools like LinkedIn or Xing with just one click."
       },
       "contacts": {
-        "title": "Contacts",
+        "title": "Contact Management",
         "description": "Add existing or new contacts to your CRM quickly and easily."
       },
       "views": {
@@ -103,8 +103,16 @@
         "description": "Every business is unique and so are its requirements. Extend entities like contacts, lists, companies with your own fields to cover all the information you need for your customer journey."
       },
       "automation": {
-        "title": "Automated Workflows",
+        "title": "Automated Workflows and Reminders",
         "description": "A client couldn't be closed and you want to follow up in a few months? Why remember it yourself when you can automate it!"
+      },
+      "notes": {
+        "title": "All information in one place",
+        "description": "Add notes to contacts and manage to-dos, meeting notes, etc., in one central location."
+      },
+      "mobile": {
+        "title": "Stay informed even on the go",
+        "description": "With Keeep's mobile version, you can easily access all your contacts and the most important information while on the move."
       }
     }
   }

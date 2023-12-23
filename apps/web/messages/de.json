@@ -92,7 +92,7 @@
         "description": "Importiere deine Leads aus Tools wie LinkedIn oder Xing mit nur einem Klick."
       },
       "contacts": {
-        "title": "Kontakte",
+        "title": "Kontakte verwalten",
         "description": "Füge existierende oder neue Kontakte schnell und einfach in dein CRM hinzu."
       },
       "views": {
@@ -104,8 +104,16 @@
         "description": "Jedes Business ist individuell und so auch seine Anforderungen. Erweitere Entitäten wie Kontakte, Listen, Unternehmen durch eigene Felder und decke so alle Informationen ab die du für deine Customer Journey benötigst."
       },
       "automation": {
-        "title": "Automatisierte Workflows",
+        "title": "Automatisierte Workflows und Erinnerungen",
         "description": "Ein Kunde konnte nicht abgeschlossen werden und du möchtest in ein paar Monaten nochmal nachfassen? Wozu selber dran denken wenn du es auch automatisieren kannst!"
+      },
+      "notes": {
+        "title": "Alle Informationen an einem Ort",
+        "description": "Füge Notizen zu Kontakten hinzu und verwalte so To-Dos, Gesprächsnotizen, etc. an einem zentralen Ort."
+      },
+      "mobile": {
+        "title": "Auch unterwegs immer auf dem Laufenden",
+        "description": "Durch die mobile Version von Keeep kannst du auch unterwegs ganz easy auf all deine Kontakte und die wichtigsten Informationen zugreifen."
       }
     }
   }
