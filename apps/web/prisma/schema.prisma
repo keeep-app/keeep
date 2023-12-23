@@ -108,3 +108,12 @@ model Company {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int
 }
+
+model Waitlist {
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  doubleOptIn      Boolean   @default(false)
+  confirmationCode String    @unique
+  confirmedAt      DateTime?
+  createdAt        DateTime  @default(now())
+}
