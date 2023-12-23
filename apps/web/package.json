@@ -18,8 +18,8 @@
     "seed": "ts-node --skipProject --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "5.6.0",
     "@hookform/resolvers": "^3.3.2",
+    "@prisma/client": "5.6.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -38,11 +38,13 @@
     "cmdk": "^0.2.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.292.0",
+    "nanoid": "^5.0.4",
     "next": "^14.0.3",
     "next-intl": "^3.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
+    "resend": "^2.0.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
