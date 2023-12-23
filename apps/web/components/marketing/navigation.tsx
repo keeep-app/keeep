@@ -10,10 +10,11 @@ export const Navigation: React.FC = () => {
       <div className="flex items-center space-x-10">
         <Link
           className="flex cursor-pointer items-center justify-center gap-1"
-          href="#"
+          href="/"
         >
           <KeeepIcon width={28} />
           <KeeepLogo width={72} />
+          <span className="sr-only">Keeep</span>
         </Link>
         <nav className="flex gap-4 sm:gap-6">
           <Link
