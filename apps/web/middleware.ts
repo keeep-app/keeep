@@ -9,7 +9,7 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en',
 });
 
-const publicPages = ['/', '/login', '/register'];
+const publicPages = ['/', '/login', '/register', '/waitlist'];
 
 export async function middleware(request: NextRequest) {
   const supabase = createServerClient(
