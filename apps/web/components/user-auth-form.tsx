@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from './ui/use-toast';
@@ -33,24 +32,24 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
   type,
   className,
 }) => {
-  const { supabase } = useSupabase();
   const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
   });
 
+  type FormValues = z.infer<typeof formSchema>;
+
   const { toast } = useToast();
   const t = useTranslations(type === 'login' ? 'LoginForm' : 'RegisterForm');
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!supabase) throw new Error('Supabase client not found');
+  async function onSubmit(values: FormValues) {
     setLoading(true);
     if (type === 'login') {
       const { data, error } = await loginUser(values.email, values.password);
