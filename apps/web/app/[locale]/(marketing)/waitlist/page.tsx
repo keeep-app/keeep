@@ -1,11 +1,12 @@
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import ThankYouGif from '@/public/thank-you.gif';
 import { useTranslations } from 'next-intl';
+import { ReferralButton } from '@/components/marketing/referral-button';
+import { getBaseUrl } from '@/lib/utils';
 
 export default function Waitlist() {
   const t = useTranslations('Waitlist');
-
+  const baseUrl = getBaseUrl();
   return (
     <>
       <div className="w-full py-8 md:py-16 lg:py-24 xl:py-32">
@@ -31,7 +32,14 @@ export default function Waitlist() {
                 }}
                 width="500"
               />
-              <Button>{t('share')}</Button>
+              <ReferralButton
+                label={t('share')}
+                baseUrl={baseUrl}
+                translation={{
+                  toastTitle: t('toasts.title.copied'),
+                  toastDescription: t('toasts.description.copied'),
+                }}
+              />
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 {t('shareDescription')}
               </p>

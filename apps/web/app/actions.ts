@@ -6,6 +6,7 @@ import { prisma } from '@/lib/server/prisma';
 import { nanoid } from 'nanoid';
 import { Resend } from 'resend';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { getBaseUrl } from '@/lib/utils';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -30,15 +31,13 @@ export async function createUser(email: string, password: string) {
 
   const supabaseClient = getSupabaseServerClient();
 
+  const baseUrl = getBaseUrl();
+
   const { error, data } = await supabaseClient.auth.signUp({
     email: validatedFields.data.email,
     password: validatedFields.data.password,
     options: {
-      // eslint-disable-next-line turbo/no-undeclared-env-vars
-      emailRedirectTo: process.env.VERCEL_URL
-        ? // eslint-disable-next-line turbo/no-undeclared-env-vars
-          `https://${process.env.VERCEL_URL}/login`
-        : 'http://localhost:3000/login',
+      emailRedirectTo: `${baseUrl}/login`,
     },
   });
 
@@ -106,6 +105,7 @@ export async function submitWaitlistForm(email: string) {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
+  const baseUrl = getBaseUrl();
 
   const res = await resend.emails.send({
     from: 'Keeep Waitlist <waitlist@resend.dev>',
@@ -113,11 +113,7 @@ export async function submitWaitlistForm(email: string) {
     subject: t('mail.subject'),
     html: `<p>${t.rich('mail.body', {
       link: text =>
-        `<a href="${
-          process.env.VERCEL_URL
-            ? `https://${process.env.VERCEL_URL}`
-            : 'http://localhost:3000'
-        }/api/waitlist/confirm?code=${confirmationCode}">${text}</a>`,
+        `<a href="${baseUrl}/api/waitlist/confirm?code=${confirmationCode}">${text}</a>`,
     })}</p>`,
   });
 
