@@ -57,14 +57,14 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
       if (error) {
         setLoading(false);
         toast({
-          title: 'Login failed',
+          title: t('toasts.title.error'),
           description: error.message,
         });
       } else {
         setLoading(false);
         toast({
-          title: 'Login successful',
-          description: 'Redirecting to dashboard.',
+          title: t('toasts.title.success'),
+          description: t('toasts.description.success'),
         });
         router.push('/dashboard');
       }
@@ -75,14 +75,19 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
         if (error.message === 'User already registered') {
           setLoading(false);
           toast({
-            title: 'Registration failed',
-            description:
-              'This email is already registered. Please go to the login page.',
+            title: t('toasts.title.error'),
+            description: t.rich('toasts.description.alreadyRegistered', {
+              login: text => (
+                <Link href="/login">
+                  <a className="underline">{text}</a>
+                </Link>
+              ),
+            }),
           });
         } else {
           setLoading(false);
           toast({
-            title: 'Registration failed',
+            title: t('toasts.title.error'),
             description: error.message,
           });
         }
@@ -93,8 +98,8 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
           password: '',
         });
         toast({
-          title: 'Registration successful',
-          description: 'Please check your inbox for the confirmation link.',
+          title: t('toasts.title.success'),
+          description: t('toasts.description.success'),
         });
       }
     }

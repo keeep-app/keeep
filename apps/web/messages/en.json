@@ -24,7 +24,17 @@
       "label": "Password",
       "forgot": "Forgot your password?"
     },
-    "submit": "Login"
+    "submit": "Login",
+    "toasts": {
+      "title": {
+        "success": "Successfully logged in",
+        "error": "Login failed"
+      },
+      "description": {
+        "success": "You will be redirected to your dashboard shortly.",
+        "error": "An error occurred during login. Please check your email and password."
+      }
+    }
   },
   "RegisterPage": {
     "title": "Create a new account",
@@ -39,7 +49,17 @@
     "password": {
       "label": "Password"
     },
-    "submit": "Register"
+    "submit": "Register",
+    "toasts": {
+      "title": {
+        "success": "Successfully registered",
+        "error": "Registration failed"
+      },
+      "description": {
+        "alreadyRegistered": "Your email is already registered. You can <login>log in here</login>.",
+        "success": "Please check your mailbox and confirm your email address to complete your registration."
+      }
+    }
   },
   "Navigation": {
     "dashboard": "Dashboard",

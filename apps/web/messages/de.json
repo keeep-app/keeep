@@ -24,7 +24,17 @@
       "label": "Passwort",
       "forgot": "Passwort vergessen?"
     },
-    "submit": "Anmelden"
+    "submit": "Anmelden",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich angemeldet",
+        "error": "Anmeldung fehlgeschlagen"
+      },
+      "description": {
+        "success": "Du wirst in Kürze zu deinem Dashboard weitergeleitet.",
+        "error": "Es ist ein Fehler beim Anmelden aufgetreten. Bitte überprüfe deine E-Mail und dein Passwort."
+      }
+    }
   },
   "RegisterPage": {
     "title": "Erstellen Sie ein neues Konto",
@@ -39,7 +49,17 @@
     "password": {
       "label": "Passwort"
     },
-    "submit": "Registrieren"
+    "submit": "Registrieren",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich registriert",
+        "error": "Registrierung fehlgeschlagen"
+      },
+      "description": {
+        "alreadyRegistered": "Deine E-Mail ist bereits registriert. Du kannst dich <login>hier anmelden</login>.",
+        "success": "Bitte überprüfe dein Postfach und bestätige deine E-Mail Adresse, um deine Registrierung abzuschließen."
+      }
+    }
   },
   "Navigation": {
     "dashboard": "Dashboard",
