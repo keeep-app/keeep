@@ -78,8 +78,8 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
             title: t('toasts.title.error'),
             description: t.rich('toasts.description.alreadyRegistered', {
               login: text => (
-                <Link href="/login">
-                  <a className="underline">{text}</a>
+                <Link href="/login" className="underline">
+                  {text}
                 </Link>
               ),
             }),
