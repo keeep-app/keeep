@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { WaitlistForm } from './waitlist-form';
 
 export const HeroSection: React.FC = () => {
   const t = useTranslations('HeroSection');
+
   return (
     <section className="w-full">
       <div className="container px-4 md:px-6">
@@ -26,15 +26,13 @@ export const HeroSection: React.FC = () => {
                 {t('description')}
               </p>
             </div>
-            <div className="w-full max-w-sm space-y-4">
-              <form className="flex space-x-2">
-                <Input
-                  className="max-w-lg flex-1"
-                  placeholder={t('waitlist.inputLabel')}
-                  type="email"
-                />
-                <Button type="submit">{t('waitlist.submit')}</Button>
-              </form>
+            <div className="w-full max-w-md space-y-4">
+              <WaitlistForm
+                translations={{
+                  inputLabel: t('waitlist.inputLabel'),
+                  submit: t('waitlist.submit'),
+                }}
+              />
               <p className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
                 {t.rich('waitlist.hint', {
                   terms: text => (

@@ -2,6 +2,9 @@
 
 import { z } from 'zod';
 import { getSupabaseServerClient } from '@/lib/supabase/getServerClient';
+import { prisma } from '../lib/server/prisma';
+import { nanoid } from 'nanoid';
+import { Resend } from 'resend';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -65,4 +68,62 @@ export async function loginUser(email: string, password: string) {
   });
 
   return { error, data };
+}
+
+export async function submitWaitlistForm(email: string) {
+  const existingWaitlistEntry = await prisma.waitlist.findUnique({
+    where: {
+      email,
+    },
+  });
+  if (existingWaitlistEntry) {
+    return {
+      error: {
+        message: 'Email already exists in waitlist',
+      },
+      data: null,
+    };
+  }
+  const confirmationCode = nanoid();
+  const newWaitlistEntry = await prisma.waitlist.create({
+    data: {
+      email,
+      confirmationCode,
+    },
+  });
+  if (!newWaitlistEntry) {
+    return {
+      error: {
+        message: 'Error creating waitlist entry',
+      },
+      data: null,
+    };
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const res = await resend.emails.send({
+    from: 'Keeep Waitlist <waitlist@resend.dev>',
+    to: email,
+    subject: 'Please confirm your Keeep Waitlist entry',
+    html: `<p>Click <a href="${
+      process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000'
+    }/api/waitlist/confirm?code=${confirmationCode}">here</a> to confirm your email address.</p>`,
+  });
+
+  if (res.error) {
+    return {
+      error: {
+        message: 'Error sending confirmation email',
+      },
+      data: null,
+    };
+  } else {
+    return {
+      error: null,
+      data: newWaitlistEntry,
+    };
+  }
 }
