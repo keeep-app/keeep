@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Waitlist" (
+CREATE TABLE "public"."Waitlist" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "doubleOptIn" BOOLEAN NOT NULL DEFAULT false,
@@ -13,16 +13,16 @@ CREATE TABLE "Waitlist" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Waitlist_email_key" ON "Waitlist"("email");
+CREATE UNIQUE INDEX "Waitlist_email_key" ON "public"."Waitlist"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Waitlist_confirmationCode_key" ON "Waitlist"("confirmationCode");
+CREATE UNIQUE INDEX "Waitlist_confirmationCode_key" ON "public"."Waitlist"("confirmationCode");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Waitlist_referrerId_key" ON "Waitlist"("referrerId");
+CREATE UNIQUE INDEX "Waitlist_referrerId_key" ON "public"."Waitlist"("referrerId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Waitlist_referralCode_key" ON "Waitlist"("referralCode");
+CREATE UNIQUE INDEX "Waitlist_referralCode_key" ON "public"."Waitlist"("referralCode");
 
 -- AddForeignKey
-ALTER TABLE "Waitlist" ADD CONSTRAINT "Waitlist_referrerId_fkey" FOREIGN KEY ("referrerId") REFERENCES "Waitlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "public"."Waitlist" ADD CONSTRAINT "Waitlist_referrerId_fkey" FOREIGN KEY ("referrerId") REFERENCES "public"."Waitlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;

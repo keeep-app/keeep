@@ -122,6 +122,21 @@ model Company {
   @@schema("public")
 }
 
+model Waitlist {
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  doubleOptIn      Boolean   @default(false)
+  confirmationCode String    @unique
+  confirmedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  referrer         Waitlist? @relation("Referrer", fields: [referrerId], references: [id])
+  referrerId       Int?      @unique
+  referralCode     String    @unique
+  waitlist         Waitlist? @relation("Referrer")
+
+  @@schema("public")
+}
+
 ///
 /// SUPABASE GENERATED
 ///
@@ -428,17 +443,4 @@ enum factor_type {
   webauthn
 
   @@schema("auth")
-}
-
-model Waitlist {
-  id               Int       @id @default(autoincrement())
-  email            String    @unique
-  doubleOptIn      Boolean   @default(false)
-  confirmationCode String    @unique
-  confirmedAt      DateTime?
-  createdAt        DateTime  @default(now())
-  referrer         Waitlist? @relation("Referrer", fields: [referrerId], references: [id])
-  referrerId       Int?      @unique
-  referralCode     String    @unique
-  waitlist         Waitlist? @relation("Referrer")
 }
