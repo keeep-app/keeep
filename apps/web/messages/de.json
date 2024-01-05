@@ -24,7 +24,17 @@
       "label": "Passwort",
       "forgot": "Passwort vergessen?"
     },
-    "submit": "Anmelden"
+    "submit": "Anmelden",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich angemeldet",
+        "error": "Anmeldung fehlgeschlagen"
+      },
+      "description": {
+        "success": "Du wirst in Kürze zu deinem Dashboard weitergeleitet.",
+        "error": "Es ist ein Fehler beim Anmelden aufgetreten. Bitte überprüfe deine E-Mail und dein Passwort."
+      }
+    }
   },
   "RegisterPage": {
     "title": "Erstellen Sie ein neues Konto",
@@ -39,6 +49,96 @@
     "password": {
       "label": "Passwort"
     },
-    "submit": "Registrieren"
+    "submit": "Registrieren",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich registriert",
+        "error": "Registrierung fehlgeschlagen"
+      },
+      "description": {
+        "alreadyRegistered": "Deine E-Mail ist bereits registriert. Du kannst dich <login>hier anmelden</login>.",
+        "success": "Bitte überprüfe dein Postfach und bestätige deine E-Mail Adresse, um deine Registrierung abzuschließen."
+      }
+    }
+  },
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+
+  "Footer": {
+    "copyright": "© Keeep. Alle Rechte vorbehalten.",
+    "terms": "Allgemeine Geschäftsbedingungen",
+    "privacy": "Datenschutzerklärung"
+  },
+  "HeroSection": {
+    "title": "Kundenbeziehungen neu gedacht",
+    "description": "Jedes Business dreht sich um Menschen. Interessenten, Kunden, Kollegen. Keeep hilft dir dabei, all das zu verwalten - ein CRM, das sich auf deine Interaktionen konzentriert. Denn starke Beziehungen sind der Schlüssel zu neuen Möglichkeiten.",
+    "waitlist": {
+      "inputLabel": "Trage deine E-Mail ein",
+      "submit": "Warteliste beitreten",
+      "hint": "Tragen dich ein, um als einer der ersten Zugriff auf Keeep zu erhalten. Es treffen die <terms>Allgemeinen Geschäftsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy> zu."
+    }
+  },
+  "FeatureSection": {
+    "title": "Funktionen",
+    "description": "Keeep bietet dir alle Funktionen, die du benötigst, um deine Kunden und Projekte zu verwalten.",
+    "featureList": {
+      "import": {
+        "title": "Einfacher Lead Import",
+        "description": "Importiere deine Leads aus Tools wie LinkedIn oder Xing mit nur einem Klick."
+      },
+      "contacts": {
+        "title": "Kontakte verwalten",
+        "description": "Füge existierende oder neue Kontakte schnell und einfach in dein CRM hinzu."
+      },
+      "views": {
+        "title": "Listen und Ansichten",
+        "description": "Erstelle nach belieben Listen für bestimmte Kontakte und verliere nie die Übersicht dank smarter und anpassbaren Darstellungen wie Kanban, Tabellen, etc."
+      },
+      "customization": {
+        "title": "Maximale Personalisierbarkeit",
+        "description": "Jedes Business ist individuell und so auch seine Anforderungen. Erweitere Entitäten wie Kontakte, Listen, Unternehmen durch eigene Felder und decke so alle Informationen ab die du für deine Customer Journey benötigst."
+      },
+      "automation": {
+        "title": "Automatisierte Workflows und Erinnerungen",
+        "description": "Ein Kunde konnte nicht abgeschlossen werden und du möchtest in ein paar Monaten nochmal nachfassen? Wozu selber dran denken wenn du es auch automatisieren kannst!"
+      },
+      "notes": {
+        "title": "Alle Informationen an einem Ort",
+        "description": "Füge Notizen zu Kontakten hinzu und verwalte so To-Dos, Gesprächsnotizen, etc. an einem zentralen Ort."
+      },
+      "mobile": {
+        "title": "Auch unterwegs immer auf dem Laufenden",
+        "description": "Durch die mobile Version von Keeep kannst du auch unterwegs ganz easy auf all deine Kontakte und die wichtigsten Informationen zugreifen."
+      }
+    }
+  },
+  "Waitlist": {
+    "title": "Cool, dass du dabei bist!",
+    "description": "Du bist jetzt offiziell Teil der Keeep Warteliste. Wir werden dich benachrichtigen, sobald du Zugriff auf Keeep hast.",
+    "share": "Teilen",
+    "shareDescription": "Teile Keeep mit deinen Freunden und erhalte einen Monat kostenlosen Zugriff für jeden Freund, der sich über deinen Link registriert.",
+    "toasts": {
+      "title": {
+        "success": "Erfolgreich eingetragen",
+        "error": "Etwas ist schief gelaufen",
+        "copied": "Link kopiert"
+      },
+      "description": {
+        "alreadyRegistered": "Deine E-Mail ist bereits auf der Warteliste. Du wirst benachrichtigt, sobald du Zugriff auf Keeep hast.",
+        "success": "Bitte überprüfe dein Postfach und bestätige deine E-Mail Adresse, um deine Registrierung abzuschließen.",
+        "error": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
+        "confirmationFailed": "Es konnte keine Bestätigung deiner E-Mail Adresse durchgeführt werden. Bitte versuche es später erneut.",
+        "copied": "Dein persönlicher Einladungslink wurde in deine Zwischenablage kopiert."
+      }
+    },
+    "mail": {
+      "subject": "Bitte bestätige deine Anmeldung für die Keeep Warteliste",
+      "body": "Hallo,\n\nbitte bestätige deine Anmeldung für die Keeep Warteliste, indem du <link>hier</link> klickst.\n\nViele Grüße,\nDein Keeep Team"
+    }
   }
 }

@@ -14,12 +14,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from './ui/use-toast';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useState } from 'react';
+import { createUser, loginUser } from '../app/actions';
+import Spinner from './spinner';
 
 interface UserAuthFormProps {
   type: 'login' | 'register';
@@ -30,61 +32,75 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
   type,
   className,
 }) => {
-  const { supabase } = useSupabase();
   const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8),
   });
 
+  type FormValues = z.infer<typeof formSchema>;
+
   const { toast } = useToast();
   const t = useTranslations(type === 'login' ? 'LoginForm' : 'RegisterForm');
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!supabase) throw new Error('Supabase client not found');
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(values: FormValues) {
+    setLoading(true);
     if (type === 'login') {
-      const { data, error } = await supabase!.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      });
+      const { data, error } = await loginUser(values.email, values.password);
       console.log('user', data);
       if (error) {
+        setLoading(false);
         toast({
-          title: 'Login failed',
+          title: t('toasts.title.error'),
           description: error.message,
         });
       } else {
+        setLoading(false);
+        toast({
+          title: t('toasts.title.success'),
+          description: t('toasts.description.success'),
+        });
         router.push('/dashboard');
       }
     } else {
-      const { error } = await supabase!.auth.signUp({
-        email: values.email,
-        password: values.password,
-        // TODO: Setup email verification
-        // options: {
-        //   emailRedirectTo: 'http://localhost:3000/register/verify',
-        // },
-      });
+      const { error } = await createUser(values.email, values.password);
 
       if (error) {
         if (error.message === 'User already registered') {
+          setLoading(false);
           toast({
-            title: 'Registration failed',
-            description:
-              'This email is already registered. Please go to the login page.',
+            title: t('toasts.title.error'),
+            description: t.rich('toasts.description.alreadyRegistered', {
+              login: text => (
+                <Link href="/login" className="underline">
+                  {text}
+                </Link>
+              ),
+            }),
           });
         } else {
+          setLoading(false);
           toast({
-            title: 'Registration failed',
+            title: t('toasts.title.error'),
             description: error.message,
           });
         }
       } else {
-        router.push('/dashboard');
+        setLoading(false);
+        form.reset({
+          email: '',
+          password: '',
+        });
+        toast({
+          title: t('toasts.title.success'),
+          description: t('toasts.description.success'),
+        });
       }
     }
   }
@@ -105,7 +121,6 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -129,8 +144,20 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
             )}
           />
         </div>
-        <Button type="submit" className="mt-6 w-full">
-          {type === 'login' ? 'Login' : 'Register'}
+        <Button
+          disabled={loading}
+          type="submit"
+          className="relative mt-6 w-full"
+        >
+          <span
+            className={cn({
+              'opacity-0': loading,
+              'opacity-100': !loading,
+            })}
+          >
+            {type === 'login' ? 'Login' : 'Register'}
+          </span>
+          {loading && <Spinner className="absolute inset-0" />}
         </Button>
       </form>
     </Form>
