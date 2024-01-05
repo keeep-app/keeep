@@ -8,6 +8,7 @@ import {
 import { WaitlistForm } from './waitlist-form';
 import DashboardSnapshot from '@/public/dashboard.png';
 import { pick } from 'lodash';
+import { IntlMessages } from '@/lib/types/global';
 
 export const HeroSection: React.FC = () => {
   const t = useTranslations('HeroSection');

@@ -70,7 +70,10 @@ export async function loginUser(email: string, password: string) {
   return { error, data };
 }
 
-export async function submitWaitlistForm(email: string) {
+export async function submitWaitlistForm(
+  email: string,
+  referrerCode: string | null
+) {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: 'Waitlist' });
   const existingWaitlistEntry = await prisma.waitlist.findUnique({
@@ -88,21 +91,6 @@ export async function submitWaitlistForm(email: string) {
   }
   const confirmationCode = nanoid();
   const referralCode = nanoid();
-  const newWaitlistEntry = await prisma.waitlist.create({
-    data: {
-      email,
-      confirmationCode,
-      referralCode,
-    },
-  });
-  if (!newWaitlistEntry) {
-    return {
-      error: {
-        message: t('toasts.description.error'),
-      },
-      data: null,
-    };
-  }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const baseUrl = getBaseUrl();
@@ -124,10 +112,34 @@ export async function submitWaitlistForm(email: string) {
       },
       data: null,
     };
-  } else {
+  }
+
+  const referrer = referrerCode
+    ? await prisma.waitlist.findUnique({
+        where: {
+          referralCode: referrerCode,
+        },
+      })
+    : null;
+  const newWaitlistEntry = await prisma.waitlist.create({
+    data: {
+      email,
+      confirmationCode,
+      referralCode,
+      referrerId: referrer?.id,
+    },
+  });
+  if (!newWaitlistEntry) {
     return {
-      error: null,
-      data: newWaitlistEntry,
+      error: {
+        message: t('toasts.description.error'),
+      },
+      data: null,
     };
   }
+
+  return {
+    error: null,
+    data: newWaitlistEntry,
+  };
 }

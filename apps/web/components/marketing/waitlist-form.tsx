@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Spinner from '../spinner';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 
 type WaitlistFormProps = {
   translations: {
@@ -29,6 +30,9 @@ type WaitlistFormProps = {
 export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
   const t = useTranslations('Waitlist');
   const [loading, setLoading] = useState(false);
+
+  const searchparams = useSearchParams();
+  const referralCode = searchparams.get('referralCode');
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -44,7 +48,10 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
     try {
       setLoading(true);
 
-      const waitlistResult = await submitWaitlistForm(values.email);
+      const waitlistResult = await submitWaitlistForm(
+        values.email,
+        referralCode
+      );
 
       if (waitlistResult.error) {
         toast({
