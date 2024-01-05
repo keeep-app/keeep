@@ -16,7 +16,7 @@ export const Navigation: React.FC = () => {
           <KeeepLogo width={72} />
           <span className="sr-only">Keeep</span>
         </Link>
-        <nav className="flex gap-4 sm:gap-6">
+        {/* <nav className="flex gap-4 sm:gap-6">
           <Link
             className="text-sm font-medium underline-offset-4 hover:underline"
             href="#"
@@ -41,7 +41,7 @@ export const Navigation: React.FC = () => {
           >
             {t('contact')}
           </Link>
-        </nav>
+        </nav> */}
       </div>
       <Button asChild className="ml-auto" size="sm">
         <Link href="/dashboard">{t('dashboard')}</Link>
