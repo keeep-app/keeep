@@ -44,7 +44,17 @@
       "label": "Password",
       "forgot": "Forgot your password?"
     },
-    "submit": "Login"
+    "submit": "Login",
+    "toasts": {
+      "title": {
+        "success": "Successfully logged in",
+        "error": "Login failed"
+      },
+      "description": {
+        "success": "You will be redirected to your dashboard shortly.",
+        "error": "An error occurred during login. Please check your email and password."
+      }
+    }
   },
   "RegisterPage": {
     "title": "Create a new account",
@@ -59,6 +69,95 @@
     "password": {
       "label": "Password"
     },
-    "submit": "Register"
+    "submit": "Register",
+    "toasts": {
+      "title": {
+        "success": "Successfully registered",
+        "error": "Registration failed"
+      },
+      "description": {
+        "alreadyRegistered": "Your email is already registered. You can <login>log in here</login>.",
+        "success": "Please check your mailbox and confirm your email address to complete your registration."
+      }
+    }
+  },
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "copyright": "© Keeep. All rights reserved.",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy"
+  },
+  "HeroSection": {
+    "title": "Relationships Made Simple",
+    "description": "Your business is built around people. Prospects, clients, peers. Keeep helps you manage that – a CRM centered around people. Because strong relationships are the key to opportunities.",
+    "waitlist": {
+      "inputLabel": "Enter your email",
+      "submit": "Join the waitlist",
+      "hint": "Sign up to be one of the first to get access to Keeep. The <terms>Terms and Conditions</terms> and <privacy>Privacy Policy</privacy> apply."
+    }
+  },
+  "FeatureSection": {
+    "title": "Features",
+    "description": "Keeep offers all the features you need to manage your clients and projects.",
+    "featureList": {
+      "import": {
+        "title": "Easy Lead Import",
+        "description": "Import your leads from tools like LinkedIn or Xing with just one click."
+      },
+      "contacts": {
+        "title": "Contact Management",
+        "description": "Add existing or new contacts to your CRM quickly and easily."
+      },
+      "views": {
+        "title": "Lists and Views",
+        "description": "Create lists for specific contacts as needed and never lose track thanks to smart and customizable displays like Kanban, tables, etc."
+      },
+      "customization": {
+        "title": "Maximum Customizability",
+        "description": "Every business is unique and so are its requirements. Extend entities like contacts, lists, companies with your own fields to cover all the information you need for your customer journey."
+      },
+      "automation": {
+        "title": "Automated Workflows and Reminders",
+        "description": "A client couldn't be closed and you want to follow up in a few months? Why remember it yourself when you can automate it!"
+      },
+      "notes": {
+        "title": "All information in one place",
+        "description": "Add notes to contacts and manage to-dos, meeting notes, etc., in one central location."
+      },
+      "mobile": {
+        "title": "Stay informed even on the go",
+        "description": "With Keeep's mobile version, you can easily access all your contacts and the most important information while on the move."
+      }
+    }
+  },
+  "Waitlist": {
+    "title": "Great to have you on board!",
+    "description": "You are now officially part of the Keeep waitlist. We will notify you as soon as you have access to Keeep.",
+    "share": "Share",
+    "shareDescription": "Share Keeep with your friends and get one month of free access for each friend who registers via your link.",
+    "toasts": {
+      "title": {
+        "success": "Successfully registered",
+        "error": "Something went wrong",
+        "copied": "Link copied"
+      },
+      "description": {
+        "alreadyRegistered": "Your email is already on the waitlist. You will be notified as soon as you have access to Keeep.",
+        "success": "Please check your mailbox and confirm your email address to complete your registration.",
+        "error": "An error occurred. Please try again later.",
+        "confirmationFailed": "Your email address could not be confirmed. Please try again later.",
+        "copied": "Your personal invitation link has been copied to your clipboard."
+      }
+    },
+    "mail": {
+      "subject": "Please confirm your registration for the Keeep waitlist",
+      "body": "Hello,\n\nPlease confirm your registration for the Keeep waitlist by clicking <link>here</link>.\n\nBest regards,\nYour Keeep Team"
+    }
   }
 }

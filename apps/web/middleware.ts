@@ -9,7 +9,7 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en',
 });
 
-const publicPages = ['/', '/login', '/register'];
+const publicPages = ['/', '/login', '/register', '/waitlist'];
 
 // eslint-disable-next-line no-unused-vars
 export async function middleware(request: NextRequest, response: NextResponse) {
