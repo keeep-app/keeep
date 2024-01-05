@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Button } from '../ui/button';
 import { KeeepIcon, KeeepLogo } from './brand';
 import { useTranslations } from 'next-intl';
 
@@ -43,9 +42,9 @@ export const Navigation: React.FC = () => {
           </Link>
         </nav> */}
       </div>
-      <Button asChild className="ml-auto" size="sm">
+      {/* <Button asChild className="ml-auto" size="sm">
         <Link href="/dashboard">{t('dashboard')}</Link>
-      </Button>
+      </Button> */}
     </header>
   );
 };
