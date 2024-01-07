@@ -165,13 +165,7 @@ async function main() {
         },
       },
       members: {
-        create: [
-          {
-            supabaseId: data.user.id,
-            firstName: 'Bobby',
-            lastName: 'Crown',
-          },
-        ],
+        connect: [{ id: data.user.id }],
       },
     },
   });

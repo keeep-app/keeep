@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   }
 
   const organization = await prisma.organization.findUnique({
-    where: { slug, members: { some: { supabaseId: user.id } } },
+    where: { slug, members: { some: { id: user.id } } },
     include: { lists: true },
   });
 

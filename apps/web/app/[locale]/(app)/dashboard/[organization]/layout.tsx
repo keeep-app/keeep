@@ -29,7 +29,7 @@ export default async function OrganizationLayout({
   if (!user) return redirect('/login');
 
   const organizations = await prisma.organization.findMany({
-    where: { members: { some: { supabaseId: user.id } } },
+    where: { members: { some: { id: user.id } } },
     include: { lists: true, _count: { select: { contacts: true } } },
   });
 

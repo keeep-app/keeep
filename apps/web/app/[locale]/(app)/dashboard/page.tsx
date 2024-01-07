@@ -7,7 +7,7 @@ export default async function DashboardRootRedirect() {
   if (!user) return redirect('/login');
 
   const result = await prisma.organization.findFirst({
-    where: { members: { some: { supabaseId: user.id } } },
+    where: { members: { some: { id: user.id } } },
   });
 
   if (result) return redirect(`/dashboard/${result.slug}`);
