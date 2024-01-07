@@ -7,8 +7,28 @@
     "title": "Page not found",
     "description": "Please double-check the browser address bar or use the navigation to go to a known page."
   },
+  "Sidebar": {
+    "header": {
+      "dashboard": "Dashboard",
+      "open-sidebar": "Open sidebar",
+      "close-sidebar": "Close sidebar"
+    },
+    "organization": {
+      "logged-in-as": "Logged in as",
+      "organizations": "Organizations",
+      "create-organization": "Create organization",
+      "select-organization": "Select organization",
+      "soon": "Soon"
+    },
+    "sections": {
+      "people": "People"
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard"
+  },
   "LocaleLayout": {
-    "title": "Keeep - The CRM Tool for Freelancers"
+    "title": "Keeep - Das CRM Tool für Freelancer"
   },
   "LoginPage": {
     "title": "Login to your account",

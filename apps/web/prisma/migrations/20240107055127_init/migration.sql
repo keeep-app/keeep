@@ -2,17 +2,15 @@
 CREATE TYPE "AttributeType" AS ENUM ('TEXT', 'NUMBER', 'DATE', 'CHECKBOX', 'SELECT', 'MULTISELECT', 'URL', 'EMAIL', 'PHONE', 'TAGS', 'FILE', 'SOCIAL');
 
 -- CreateTable
-CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+CREATE TABLE "Profile" (
+    "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT,
+    "updatedAt" TIMESTAMP(3),
     "firstName" TEXT,
     "lastName" TEXT,
     "avatar" TEXT,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -89,9 +87,23 @@ CREATE TABLE "Company" (
 );
 
 -- CreateTable
-CREATE TABLE "_OrganizationToUser" (
+CREATE TABLE "Waitlist" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "doubleOptIn" BOOLEAN NOT NULL DEFAULT false,
+    "confirmationCode" TEXT NOT NULL,
+    "confirmedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "referrerId" INTEGER,
+    "referralCode" TEXT NOT NULL,
+
+    CONSTRAINT "Waitlist_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_OrganizationToProfile" (
     "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "B" UUID NOT NULL
 );
 
 -- CreateTable
@@ -107,19 +119,34 @@ CREATE TABLE "_CompanyToContact" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Organization_slug_key" ON "Organization"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Contact_externalId_key" ON "Contact"("externalId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_OrganizationToUser_AB_unique" ON "_OrganizationToUser"("A", "B");
+CREATE UNIQUE INDEX "List_slug_key" ON "List"("slug");
 
 -- CreateIndex
-CREATE INDEX "_OrganizationToUser_B_index" ON "_OrganizationToUser"("B");
+CREATE UNIQUE INDEX "Company_slug_key" ON "Company"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Waitlist_email_key" ON "Waitlist"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Waitlist_confirmationCode_key" ON "Waitlist"("confirmationCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Waitlist_referrerId_key" ON "Waitlist"("referrerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Waitlist_referralCode_key" ON "Waitlist"("referralCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_OrganizationToProfile_AB_unique" ON "_OrganizationToProfile"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_OrganizationToProfile_B_index" ON "_OrganizationToProfile"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ContactToList_AB_unique" ON "_ContactToList"("A", "B");
@@ -146,10 +173,13 @@ ALTER TABLE "List" ADD CONSTRAINT "List_organizationId_fkey" FOREIGN KEY ("organ
 ALTER TABLE "Company" ADD CONSTRAINT "Company_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_OrganizationToUser" ADD CONSTRAINT "_OrganizationToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Waitlist" ADD CONSTRAINT "Waitlist_referrerId_fkey" FOREIGN KEY ("referrerId") REFERENCES "Waitlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_OrganizationToUser" ADD CONSTRAINT "_OrganizationToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_OrganizationToProfile" ADD CONSTRAINT "_OrganizationToProfile_A_fkey" FOREIGN KEY ("A") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_OrganizationToProfile" ADD CONSTRAINT "_OrganizationToProfile_B_fkey" FOREIGN KEY ("B") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ContactToList" ADD CONSTRAINT "_ContactToList_A_fkey" FOREIGN KEY ("A") REFERENCES "Contact"("id") ON DELETE CASCADE ON UPDATE CASCADE;

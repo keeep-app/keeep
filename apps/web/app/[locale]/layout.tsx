@@ -3,7 +3,6 @@ import { Inter, Encode_Sans } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/constants';
 import clsx from 'clsx';
-import Head from 'next/head';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,8 +44,15 @@ export default function LocaleLayout({
   unstable_setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
-      <body className={clsx(encodeSans.variable, inter.variable, 'font-sans')}>
+    <html lang={locale} className="h-full">
+      <body
+        className={clsx(
+          encodeSans.variable,
+          inter.variable,
+          'font-sans',
+          'h-full'
+        )}
+      >
         {children}
       </body>
     </html>

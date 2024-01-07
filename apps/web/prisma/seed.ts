@@ -1,6 +1,11 @@
 import { PrismaClient, Attribute } from '@prisma/client';
+import { createClient } from '@supabase/supabase-js';
 
 const prisma = new PrismaClient();
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+);
 
 const attributeConfig: Omit<
   Attribute,
@@ -76,70 +81,60 @@ const attributeConfig: Omit<
 
 const contacts = [
   {
-    externalId: '1',
     status: 'new',
     email: 'john.doe@example.com',
     firstName: 'John',
     lastName: 'Doe',
   },
   {
-    externalId: '2',
     status: 'contacted',
     email: 'jane.doe@example.com',
     firstName: 'Jane',
     lastName: 'Doe',
   },
   {
-    externalId: '3',
     status: 'qualified',
     email: 'bob.smith@example.com',
     firstName: 'Bob',
     lastName: 'Smith',
   },
   {
-    externalId: '4',
     status: 'proposal',
     email: 'alice.jones@example.com',
     firstName: 'Alice',
     lastName: 'Jones',
   },
   {
-    externalId: '5',
     status: 'negotiation',
     email: 'charlie.brown@example.com',
     firstName: 'Charlie',
     lastName: 'Brown',
   },
   {
-    externalId: '6',
     status: 'won',
     email: 'david.johnson@example.com',
     firstName: 'David',
     lastName: 'Johnson',
   },
   {
-    externalId: '7',
     status: 'lost',
     email: 'emily.williams@example.com',
     firstName: 'Emily',
     lastName: 'Williams',
   },
   {
-    externalId: '8',
     status: 'new',
     email: 'frank.thomas@example.com',
     firstName: 'Frank',
     lastName: 'Thomas',
   },
   {
-    externalId: '9',
     status: 'contacted',
     email: 'grace.martin@example.com',
     firstName: 'Grace',
     lastName: 'Martin',
   },
   {
-    externalId: '10',
     status: 'qualified',
     email: 'harry.edwards@example.com',
     firstName: 'Harry',
@@ -148,10 +143,19 @@ const contacts = [
 ];
 
 async function main() {
+  const { data, error } = await supabase.auth.signUp({
+    email: process.env.SUPABASE_TEST_USER_EMAIL as string,
+    password: process.env.SUPABASE_TEST_USER_PASSWORD as string,
+  });
+
+  if (error || !data.user) {
+    throw error;
+  }
+
   const org = await prisma.organization.create({
     data: {
-      slug: 'keeep',
-      name: 'keeep',
+      slug: 'acme-inc',
+      name: 'Acme Inc.',
       attributes: {
         createMany: {
           data: attributeConfig.map(a => ({
@@ -160,14 +164,8 @@ async function main() {
           })),
         },
       },
-      users: {
-        create: [
-          {
-            email: 'dummy@keeep.app',
-            firstName: 'Bobby',
-            lastName: 'Crown',
-          },
-        ],
+      members: {
+        connect: [{ id: data.user.id }],
       },
     },
   });
@@ -186,11 +184,11 @@ async function main() {
   await prisma.list.create({
     data: {
       organizationId: org.id,
-      slug: 'my-list',
-      name: 'My List',
+      slug: 'fundraising',
+      name: 'Fundraising',
+      icon: '💰',
       contacts: {
         create: contacts.map(contact => ({
-          externalId: contact.externalId,
           organizationId: org.id,
           attributes: {
             ...(attributeFirstName && {

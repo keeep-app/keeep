@@ -12,4 +12,14 @@ module.exports = {
       files: ['./**/*.js', './**/*.jsx', './**/*.cjs'],
     },
   ],
+  rules: {
+    'no-unused-vars': [
+      2,
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
+  },
 };

@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { getSupabaseServerClient } from '@/lib/server/supabase';
+import { getSupabaseServerActionClient } from '@/lib/server/supabase';
 import { prisma } from '@/lib/server/prisma';
 import { nanoid } from 'nanoid';
 import { Resend } from 'resend';
@@ -29,11 +29,11 @@ export async function createUser(email: string, password: string) {
     };
   }
 
-  const supabaseClient = getSupabaseServerClient();
+  const supabase = getSupabaseServerActionClient();
 
   const baseUrl = getBaseUrl();
 
-  const { error, data } = await supabaseClient.auth.signUp({
+  const { error, data } = await supabase.auth.signUp({
     email: validatedFields.data.email,
     password: validatedFields.data.password,
     options: {
@@ -60,9 +60,9 @@ export async function loginUser(email: string, password: string) {
     };
   }
 
-  const supabaseClient = getSupabaseServerClient();
+  const supabase = getSupabaseServerActionClient();
 
-  const { error, data } = await supabaseClient.auth.signInWithPassword({
+  const { error, data } = await supabase.auth.signInWithPassword({
     email: validatedFields.data.email,
     password: validatedFields.data.password,
   });
