@@ -26,14 +26,14 @@ export const HeroSection: React.FC = () => {
           />
           <div className="flex flex-col justify-center space-y-4">
             <div className="mb-8 space-y-8">
-              <h1 className="font-accent text-3xl font-bold tracking-tight sm:text-5xl xl:text-6xl/tight">
+              <h1 className="text-center font-accent text-3xl font-bold tracking-tight sm:text-5xl lg:text-left xl:text-6xl/tight">
                 {t('title')}
               </h1>
-              <p className="max-w-[600px] text-gray-500 dark:text-gray-400 md:text-xl">
+              <p className="mx-auto max-w-[600px] text-center text-gray-500 dark:text-gray-400 md:text-xl lg:mx-0 lg:text-left">
                 {t('description')}
               </p>
             </div>
-            <div className="w-full max-w-md space-y-4">
+            <div className="mx-auto w-full max-w-md space-y-4 lg:mx-0">
               <NextIntlClientProvider messages={pick(messages, 'Waitlist')}>
                 <WaitlistForm
                   translations={{
