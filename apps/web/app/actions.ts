@@ -96,7 +96,7 @@ export async function submitWaitlistForm(
   const baseUrl = getBaseUrl();
 
   const res = await resend.emails.send({
-    from: 'Keeep Waitlist <waitlist@resend.dev>',
+    from: 'Keeep Waitlist <waitlist@keeep.app>',
     to: email,
     subject: t('mail.subject'),
     html: `<p>${t.rich('mail.body', {
