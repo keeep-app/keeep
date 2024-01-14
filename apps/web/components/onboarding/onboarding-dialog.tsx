@@ -68,7 +68,20 @@ export const OnboardingDialog: React.FC = () => {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    shouldFocusError: true,
+    mode: 'onBlur',
   });
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    trigger,
+    getValues,
+    watch,
+    setValue,
+    resetField,
+    control,
+  } = form;
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
@@ -79,35 +92,35 @@ export const OnboardingDialog: React.FC = () => {
   const formTranslations = useTranslations('OnboardingDialog.form');
 
   useEffect(() => {
-    console.log('orgAvatar', form.getValues('orgAvatar'));
-  }, [form.watch('orgAvatar')]);
+    console.log('orgAvatar', getValues('orgAvatar'));
+  }, [watch('orgAvatar')]);
 
   useEffect(() => {
-    if (!form.getValues('orgName')) {
-      form.setValue('orgSlug', '');
+    if (!getValues('orgName')) {
+      resetField('orgSlug');
       return;
     }
-    form.setValue(
+    setValue(
       'orgSlug',
-      form.getValues('orgName').toLowerCase().trim().replace(/\s/g, '-')
+      getValues('orgName').toLowerCase().trim().replace(/\s/g, '-')
     );
-  }, [form.watch('orgName')]);
+  }, [watch('orgName')]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       <Card className="mx-auto w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center">{t('title')}</CardTitle>
-          <CardDescription className="text-center">
-            {t('description')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CardHeader>
+              <CardTitle className="text-center">{t('title')}</CardTitle>
+              <CardDescription className="text-center">
+                {t('description')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
               <div className="space-y-4">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
@@ -127,7 +140,7 @@ export const OnboardingDialog: React.FC = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
@@ -145,7 +158,7 @@ export const OnboardingDialog: React.FC = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="orgName"
                   render={({ field }) => (
                     <FormItem>
@@ -165,7 +178,7 @@ export const OnboardingDialog: React.FC = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="orgSlug"
                   render={({ field }) => (
                     <FormItem>
@@ -189,7 +202,7 @@ export const OnboardingDialog: React.FC = () => {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="orgAvatar"
                   render={({ field }) => (
                     <FormItem>
@@ -201,7 +214,7 @@ export const OnboardingDialog: React.FC = () => {
                         <Avatar className="h-9 w-9">
                           <AvatarImage
                             alt="Organization Avatar"
-                            src={`https://avatar.vercel.sh/${form.getValues(
+                            src={`https://avatar.vercel.sh/${getValues(
                               'orgSlug'
                             )}.svg`}
                           />
@@ -235,6 +248,7 @@ export const OnboardingDialog: React.FC = () => {
                                     value={field.value?.name}
                                     onChange={e => {
                                       field.onChange(e.target.files);
+                                      trigger('orgAvatar');
                                     }}
                                     id="orgAvatar"
                                     type="file"
@@ -249,7 +263,12 @@ export const OnboardingDialog: React.FC = () => {
                               </p>
                             </div>
                             <DialogFooter>
-                              <Button type="submit">
+                              <Button
+                                type="button"
+                                disabled={
+                                  !!errors.orgAvatar || !getValues('orgAvatar')
+                                }
+                              >
                                 {formTranslations(
                                   'organizationAvatar.dialog.submit'
                                 )}
@@ -263,12 +282,12 @@ export const OnboardingDialog: React.FC = () => {
                   )}
                 />
               </div>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter>
-          <Button className="w-full">{t('continue')}</Button>
-        </CardFooter>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full">{t('continue')}</Button>
+            </CardFooter>
+          </form>
+        </Form>
       </Card>
     </div>
   );
