@@ -21,75 +21,253 @@ import {
   Dialog,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormControl,
+} from '../ui/form';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+
+const MAX_FILE_SIZE = 1024 * 1024 * 1;
+const ACCEPTED_IMAGE_MIME_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/svg+xml',
+];
 
 export const OnboardingDialog: React.FC = () => {
+  const formSchema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    orgName: z.string(),
+    orgSlug: z.string(),
+    orgAvatar: z
+      .custom<FileList>()
+      .refine(fileList => fileList.length === 1, 'Expected file')
+      .transform(file => file[0] as File)
+      .refine(file => {
+        return file.size <= MAX_FILE_SIZE;
+      }, `File size should be less than 1MB.`)
+      .refine(
+        file => ACCEPTED_IMAGE_MIME_TYPES.includes(file.type),
+        'Only these types are allowed .jpg, .jpeg, .png, .webp and .svg'
+      )
+      .optional(),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (values: FormValues) => {
+    console.log(values);
+  };
+
+  const t = useTranslations('OnboardingDialog');
+
+  const formTranslations = useTranslations('OnboardingDialog.form');
+
+  useEffect(() => {
+    console.log('orgAvatar', form.getValues('orgAvatar'));
+  }, [form.watch('orgAvatar')]);
+
+  useEffect(() => {
+    if (!form.getValues('orgName')) {
+      form.setValue('orgSlug', '');
+      return;
+    }
+    form.setValue(
+      'orgSlug',
+      form.getValues('orgName').toLowerCase().trim().replace(/\s/g, '-')
+    );
+  }, [form.watch('orgName')]);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center">
-            Welcome to our platform!
-          </CardTitle>
+          <CardTitle className="text-center">{t('title')}</CardTitle>
           <CardDescription className="text-center">
-            Let's get started by setting up your profile and organization.
+            {t('description')}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="first-name">First name</Label>
-            <Input id="first-name" placeholder="John" required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="last-name">Last name</Label>
-            <Input id="last-name" placeholder="Doe" required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="org-name">Organization Name</Label>
-            <Input id="org-name" placeholder="Acme Inc." required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="org-slug">Organization Slug</Label>
-            <Input id="org-slug" placeholder="acme-inc" required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="org-avatar">Organization Avatar</Label>
-            <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9">
-                <AvatarImage
-                  alt="Organization Avatar"
-                  src="/placeholder.svg?height=36&width=36"
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {formTranslations('firstName.label')}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder={formTranslations(
+                            'firstName.placeholder'
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <AvatarFallback>AI</AvatarFallback>
-              </Avatar>
-              <Button variant="outline">
-                <Dialog>
-                  <DialogTrigger asChild>Upload Avatar</DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Upload Avatar</DialogTitle>
-                      <DialogDescription>
-                        Select an image file for your organization's avatar.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label className="text-right" htmlFor="avatar">
-                          Avatar
-                        </Label>
-                        <Input className="col-span-3" id="avatar" type="file" />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {formTranslations('lastName.label')}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder={formTranslations('lastName.placeholder')}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="orgName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {formTranslations('organization.label')}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder={formTranslations(
+                            'organization.placeholder'
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="orgSlug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {formTranslations('organizationSlug.label')}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          onChange={e => {
+                            const value = e.target.value;
+                            field.onChange(value.toLowerCase());
+                          }}
+                          placeholder={formTranslations(
+                            'organizationSlug.placeholder'
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="orgAvatar"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {formTranslations('organizationAvatar.label')}
+                      </FormLabel>
+
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9">
+                          <AvatarImage
+                            alt="Organization Avatar"
+                            src={`https://avatar.vercel.sh/${form.getValues(
+                              'orgSlug'
+                            )}.svg`}
+                          />
+                          <AvatarFallback>MK</AvatarFallback>
+                        </Avatar>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline">
+                              {formTranslations('organizationAvatar.upload')}
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>
+                                {formTranslations(
+                                  'organizationAvatar.dialog.title'
+                                )}
+                              </DialogTitle>
+                              <DialogDescription>
+                                {formTranslations(
+                                  'organizationAvatar.dialog.description'
+                                )}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="mt-4 flex flex-col gap-4">
+                              <div className="flex flex-col gap-2">
+                                <Label htmlFor="orgAvatar">Avatar</Label>
+                                <FormControl>
+                                  <Input
+                                    ref={field.ref}
+                                    value={field.value?.name}
+                                    onChange={e => {
+                                      field.onChange(e.target.files);
+                                    }}
+                                    id="orgAvatar"
+                                    type="file"
+                                  />
+                                </FormControl>
+                              </div>
+                              <FormMessage />
+                              <p className="text-sm">
+                                {formTranslations(
+                                  'organizationAvatar.dialog.hint'
+                                )}
+                              </p>
+                            </div>
+                            <DialogFooter>
+                              <Button type="submit">
+                                {formTranslations(
+                                  'organizationAvatar.dialog.submit'
+                                )}
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
                       </div>
-                    </div>
-                    <DialogFooter>
-                      <Button type="submit">Upload</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </Button>
-            </div>
-          </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">Continue</Button>
+          <Button className="w-full">{t('continue')}</Button>
         </CardFooter>
       </Card>
     </div>

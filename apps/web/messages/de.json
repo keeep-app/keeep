@@ -33,7 +33,6 @@
   "LoginPage": {
     "title": "Melden Sie sich bei Ihrem Konto an",
     "description": "Geben Sie unten Ihre E-Mail und Ihr Passwort ein, um sich anzumelden",
-
     "registerButton": "Registrieren"
   },
   "LoginForm": {
@@ -160,5 +159,38 @@
       "subject": "Bitte bestätige deine Anmeldung für die Keeep Warteliste",
       "body": "Hallo,\n\nbitte bestätige deine Anmeldung für die Keeep Warteliste, indem du <link>hier</link> klickst.\n\nViele Grüße,\nDein Keeep Team"
     }
+  },
+  "OnboardingDialog": {
+    "title": "Willkommen bei Keeep!",
+    "description": "Bevor es losgehen kann, benötigen wir noch ein paar Informationen von dir.",
+    "form": {
+      "firstName": {
+        "label": "Vorname",
+        "placeholder": "Max"
+      },
+      "lastName": {
+        "label": "Nachname",
+        "placeholder": "Mustermann"
+      },
+      "organization": {
+        "label": "Name deiner Organisation",
+        "placeholder": "Muster Firma"
+      },
+      "organizationSlug": {
+        "label": "Slug deiner Organisation",
+        "placeholder": "muster-firma"
+      },
+      "organizationAvatar": {
+        "label": "Avatar deiner Organisation",
+        "upload": "Avatar hochladen",
+        "dialog": {
+          "title": "Avatar hochladen",
+          "description": "Wähle ein Bild für den Avatar deiner Organisation aus.",
+          "hint": "Hinweis: Das Bild darf maximal 1MB groß sein und muss im .jpg oder .png Format vorliegen.",
+          "submit": "Hochladen"
+        }
+      }
+    },
+    "continue": "Weiter"
   }
 }

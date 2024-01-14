@@ -159,5 +159,38 @@
       "subject": "Please confirm your registration for the Keeep waitlist",
       "body": "Hello,\n\nPlease confirm your registration for the Keeep waitlist by clicking <link>here</link>.\n\nBest regards,\nYour Keeep Team"
     }
+  },
+  "OnboardingDialog": {
+    "title": "Welcome to Keeep!",
+    "description": "Before we can get started, we need a few more details from you.",
+    "form": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "John"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Doe"
+      },
+      "organization": {
+        "label": "Organization Name",
+        "placeholder": "Acme Inc."
+      },
+      "organizationSlug": {
+        "label": "Organization Slug",
+        "placeholder": "acme-inc"
+      },
+      "organizationAvatar": {
+        "label": "Organization Avatar",
+        "upload": "Upload Avatar",
+        "dialog": {
+          "title": "Upload Avatar",
+          "description": "Select an image for your organization's avatar.",
+          "hint": "Hint: The image must be a maximum of 1MB in size and must be in .jpg or .png format.",
+          "submit": "Upload"
+        }
+      }
+    },
+    "continue": "Continue"
   }
 }
