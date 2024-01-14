@@ -152,6 +152,17 @@ async function main() {
     throw error;
   }
 
+  const { data: bucketData, error: bucketError } =
+    await supabase.storage.createBucket('org-avatars', {
+      public: true,
+      allowedMimeTypes: ['image/*'],
+      fileSizeLimit: '1MB',
+    });
+
+  if (bucketError || !bucketData.name) {
+    throw bucketError;
+  }
+
   const org = await prisma.organization.create({
     data: {
       slug: 'acme-inc',
