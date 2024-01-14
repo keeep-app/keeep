@@ -103,6 +103,8 @@
     }
   },
   "FeatureSection": {
+    "soon": "Coming Soon",
+    "more": "And More...",
     "featureList": {
       "import": {
         "title": "One-Click Imports",

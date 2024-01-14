@@ -104,6 +104,8 @@
     }
   },
   "FeatureSection": {
+    "soon": "Bald verfügbar",
+    "more": "Und mehr...",
     "featureList": {
       "import": {
         "title": "One-Click Imports",
