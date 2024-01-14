@@ -33,7 +33,8 @@ import {
   FormControl,
 } from '../ui/form';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useSupabase } from '@/lib/provider/supabase';
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -53,12 +54,12 @@ export const OnboardingDialog: React.FC = () => {
     orgAvatar: z
       .custom<FileList>()
       .refine(fileList => fileList.length === 1, 'Expected file')
-      .transform(file => file[0] as File)
+      //.transform(file => file[0] as File)
       .refine(file => {
-        return file.size <= MAX_FILE_SIZE;
+        return file[0] && file[0].size <= MAX_FILE_SIZE;
       }, `File size should be less than 1MB.`)
       .refine(
-        file => ACCEPTED_IMAGE_MIME_TYPES.includes(file.type),
+        file => file[0] && ACCEPTED_IMAGE_MIME_TYPES.includes(file[0].type),
         'Only these types are allowed .jpg, .jpeg, .png, .webp and .svg'
       )
       .optional(),
@@ -85,6 +86,39 @@ export const OnboardingDialog: React.FC = () => {
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
+  };
+
+  const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
+
+  const { supabase, user } = useSupabase();
+
+  const onFileUpload = async () => {
+    const avatarFile = getValues('orgAvatar')?.[0];
+
+    const avatarFileExtension = avatarFile?.name.split('.').pop();
+
+    if (!avatarFile || !supabase || !user || !avatarFileExtension) return;
+
+    const { data, error } = await supabase.storage
+      .from('org-avatars')
+      .upload(`/${user.id}/org-avatar.${avatarFileExtension}`, avatarFile, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+
+    if (error || !data.path) {
+      console.log(error);
+      return;
+    }
+    const {
+      data: { publicUrl },
+    } = supabase.storage
+      .from('org-avatars')
+      .getPublicUrl(`/${user.id}/org-avatar.${avatarFileExtension}`);
+
+    setAvatarPath(publicUrl);
+    setAvatarDialogOpen(false);
   };
 
   const t = useTranslations('OnboardingDialog');
@@ -214,15 +248,21 @@ export const OnboardingDialog: React.FC = () => {
                         <Avatar className="h-9 w-9">
                           <AvatarImage
                             alt="Organization Avatar"
-                            src={`https://avatar.vercel.sh/${getValues(
-                              'orgSlug'
-                            )}.svg`}
+                            src={
+                              avatarPath ||
+                              `https://avatar.vercel.sh/${getValues(
+                                'orgSlug'
+                              )}.svg`
+                            }
                           />
                           <AvatarFallback>MK</AvatarFallback>
                         </Avatar>
-                        <Dialog>
+                        <Dialog open={avatarDialogOpen}>
                           <DialogTrigger asChild>
-                            <Button variant="outline">
+                            <Button
+                              variant="outline"
+                              onClick={() => setAvatarDialogOpen(true)}
+                            >
                               {formTranslations('organizationAvatar.upload')}
                             </Button>
                           </DialogTrigger>
@@ -245,7 +285,6 @@ export const OnboardingDialog: React.FC = () => {
                                 <FormControl>
                                   <Input
                                     ref={field.ref}
-                                    value={field.value?.name}
                                     onChange={e => {
                                       field.onChange(e.target.files);
                                       trigger('orgAvatar');
@@ -268,6 +307,7 @@ export const OnboardingDialog: React.FC = () => {
                                 disabled={
                                   !!errors.orgAvatar || !getValues('orgAvatar')
                                 }
+                                onClick={onFileUpload}
                               >
                                 {formTranslations(
                                   'organizationAvatar.dialog.submit'
