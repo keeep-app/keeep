@@ -82,7 +82,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ translations }) => {
   return (
     <Form {...form}>
       <form
-        className="flex w-full flex-row gap-2"
+        className="flex w-full flex-col gap-2 sm:flex-row"
         onSubmit={form.handleSubmit(submitWaitlist)}
       >
         <div className="flex-1">
