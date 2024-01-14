@@ -12,6 +12,5 @@ export default async function DashboardRootRedirect() {
 
   if (result) return redirect(`/dashboard/${result.slug}`);
 
-  // TODO: Redirect to onboarding
-  return undefined;
+  return redirect('/dashboard/onboarding');
 }
