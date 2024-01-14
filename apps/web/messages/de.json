@@ -25,7 +25,7 @@
     }
   },
   "LocaleLayout": {
-    "title": "Keeep - Das CRM Tool für Freelancer"
+    "title": "keeep - Das CRM für Freelancer"
   },
   "Dashboard": {
     "title": "Dashboard"
@@ -95,45 +95,41 @@
     "privacy": "Datenschutzerklärung"
   },
   "HeroSection": {
-    "title": "Kundenbeziehungen neu gedacht",
-    "description": "Jedes Business dreht sich um Menschen. Interessenten, Kunden, Kollegen. Keeep hilft dir dabei, all das zu verwalten - ein CRM, das sich auf deine Interaktionen konzentriert. Denn starke Beziehungen sind der Schlüssel zu neuen Möglichkeiten.",
+    "title": "Ein besseres Zuhause für deine Kontakte",
+    "description": "Dein Freelancing baut auf starke Beziehungen. Mit Kunden in Kontakt bleiben, vielversprechende Leads finden, mit Peers sprechen. Keeep hilft dir dabei, den Überblick zu behalten. Ein CRM für Freelancer, mit Fokus aufs Netzwerken.",
     "waitlist": {
       "inputLabel": "Trage deine E-Mail ein",
       "submit": "Warteliste beitreten",
-      "hint": "Tragen dich ein, um als einer der ersten Zugriff auf Keeep zu erhalten. Es treffen die <terms>Allgemeinen Geschäftsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy> zu."
+      "hint": "Tragen dich ein, um als einer der ersten Zugriff auf Keeep zu erhalten."
     }
   },
   "FeatureSection": {
-    "title": "Funktionen",
-    "description": "Keeep bietet dir alle Funktionen, die du benötigst, um deine Kunden und Projekte zu verwalten.",
+    "soon": "Bald verfügbar",
+    "more": "Und mehr...",
     "featureList": {
       "import": {
-        "title": "Einfacher Lead Import",
-        "description": "Importiere deine Leads aus Tools wie LinkedIn oder Xing mit nur einem Klick."
+        "title": "One-Click Imports",
+        "description": "Importiere Kontakte samt Avatar und Details von LinkedIn mit nur einem Klick. Kein Copy-Pasting."
       },
       "contacts": {
-        "title": "Kontakte verwalten",
-        "description": "Füge existierende oder neue Kontakte schnell und einfach in dein CRM hinzu."
+        "title": "Organisiere Dein Netzwerk",
+        "description": "Erstelle eigene Felder, um Kontakte nach Expertise, Status oder anderen Attributen zu gruppieren."
       },
-      "views": {
-        "title": "Listen und Ansichten",
-        "description": "Erstelle nach belieben Listen für bestimmte Kontakte und verliere nie die Übersicht dank smarter und anpassbaren Darstellungen wie Kanban, Tabellen, etc."
-      },
-      "customization": {
-        "title": "Maximale Personalisierbarkeit",
-        "description": "Jedes Business ist individuell und so auch seine Anforderungen. Erweitere Entitäten wie Kontakte, Listen, Unternehmen durch eigene Felder und decke so alle Informationen ab die du für deine Customer Journey benötigst."
+      "linkedin": {
+        "title": "LinkedIn Insights",
+        "description": "Knüpfe neue interessante Kontakte, indem du Personen findest, die sich für deine Posts interessieren."
       },
       "automation": {
-        "title": "Automatisierte Workflows und Erinnerungen",
-        "description": "Ein Kunde konnte nicht abgeschlossen werden und du möchtest in ein paar Monaten nochmal nachfassen? Wozu selber dran denken wenn du es auch automatisieren kannst!"
+        "title": "Smarte Reminder",
+        "description": "\"Lass uns nächsten Monat sprechen.\" ist einfacher gesagt als getan. Lass Keeep dich daran erinnern."
       },
       "notes": {
-        "title": "Alle Informationen an einem Ort",
-        "description": "Füge Notizen zu Kontakten hinzu und verwalte so To-Dos, Gesprächsnotizen, etc. an einem zentralen Ort."
+        "title": "Notizen & Vorlagen",
+        "description": "Füge Notizen und Meeting Minutes zu Kontakten hinzu. Verwende Vorlagen, um Zeit zu sparen."
       },
-      "mobile": {
-        "title": "Auch unterwegs immer auf dem Laufenden",
-        "description": "Durch die mobile Version von Keeep kannst du auch unterwegs ganz easy auf all deine Kontakte und die wichtigsten Informationen zugreifen."
+      "dashboard": {
+        "title": "Individuell für Dich",
+        "description": "Dein personalisiertes Dashboard hilft dir, den Überblick zu behalten. Alles Wichtige auf einen Blick."
       }
     }
   },

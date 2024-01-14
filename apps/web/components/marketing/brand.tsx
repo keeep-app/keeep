@@ -6,8 +6,6 @@ export function KeeepLogo(props: ComponentProps<'svg'>) {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 59 25"
-      width={59}
-      height={25}
       {...props}
     >
       <path
@@ -29,8 +27,6 @@ export function KeeepIcon(props: ComponentProps<'svg'>) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 25 23"
       fill="none"
-      width={25}
-      height={23}
       {...props}
     >
       <mask id="a" fill="#fff">

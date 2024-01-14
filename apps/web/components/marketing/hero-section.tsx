@@ -6,7 +6,7 @@ import {
   useTranslations,
 } from 'next-intl';
 import { WaitlistForm } from './waitlist-form';
-import DashboardSnapshot from '@/public/dashboard.png';
+import KeeepSnapshot from '@/public/keeep-mockup.png';
 import { pick } from 'lodash';
 import { IntlMessages } from '@/lib/types/global';
 
@@ -16,20 +16,18 @@ export const HeroSection: React.FC = () => {
   return (
     <section className="w-full">
       <div className="container px-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+        <div className="grid gap-6 lg:grid-cols-[600px_1fr] lg:gap-24">
           <Image
             alt="Hero"
-            className="order-last object-cover object-center shadow-lg sm:w-full"
-            height="310"
-            src={DashboardSnapshot}
-            width="550"
+            className="order-last mt-8 rounded-md rounded-tl-xl object-cover object-center ring-2 ring-neutral-200 ring-offset-2 sm:w-full lg:mt-0"
+            src={KeeepSnapshot}
           />
           <div className="flex flex-col justify-center space-y-4">
             <div className="mb-8 space-y-8">
-              <h1 className="text-center font-accent text-3xl font-bold tracking-tight sm:text-5xl lg:text-left xl:text-6xl/tight">
+              <h1 className="mx-auto max-w-[80vw] text-center font-accent text-3xl font-bold tracking-[-0.0125em] sm:text-5xl lg:text-left xl:text-6xl/tight">
                 {t('title')}
               </h1>
-              <p className="mx-auto max-w-[600px] text-center text-gray-500 dark:text-gray-400 md:text-xl lg:mx-0 lg:text-left">
+              <p className="mx-auto max-w-[600px] text-center text-gray-500 dark:text-gray-400 md:text-lg lg:mx-0 lg:text-left">
                 {t('description')}
               </p>
             </div>

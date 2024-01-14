@@ -28,7 +28,7 @@
     "title": "Dashboard"
   },
   "LocaleLayout": {
-    "title": "Keeep - Das CRM Tool für Freelancer"
+    "title": "keeep - the CRM for freelancers"
   },
   "LoginPage": {
     "title": "Login to your account",
@@ -94,45 +94,41 @@
     "privacy": "Privacy Policy"
   },
   "HeroSection": {
-    "title": "Relationships Made Simple",
-    "description": "Your business is built around people. Prospects, clients, peers. Keeep helps you manage that – a CRM centered around people. Because strong relationships are the key to opportunities.",
+    "title": "A Better Home for Your Contacts",
+    "description": "Your freelance business is built around people. Keeping in touch with clients, finding promising leads, chatting with peers. Keeep helps you manage that. A CRM for freelancers, centered around relationships.",
     "waitlist": {
       "inputLabel": "Enter your email",
       "submit": "Join the waitlist",
-      "hint": "Sign up to be one of the first to get access to Keeep. The <terms>Terms and Conditions</terms> and <privacy>Privacy Policy</privacy> apply."
+      "hint": "Sign up to be one of the first to get access to Keeep."
     }
   },
   "FeatureSection": {
-    "title": "Features",
-    "description": "Keeep offers all the features you need to manage your clients and projects.",
+    "soon": "Coming Soon",
+    "more": "And More...",
     "featureList": {
       "import": {
-        "title": "Easy Lead Import",
-        "description": "Import your leads from tools like LinkedIn or Xing with just one click."
+        "title": "One-Click Imports",
+        "description": "Import contacts with avatar and details from LinkedIn with just one click. No copy-pasting."
       },
       "contacts": {
-        "title": "Contact Management",
-        "description": "Add existing or new contacts to your CRM quickly and easily."
+        "title": "Organize Your Network",
+        "description": "Add custom fields to group contacts by expertise, relationship, or whatever else."
       },
-      "views": {
-        "title": "Lists and Views",
-        "description": "Create lists for specific contacts as needed and never lose track thanks to smart and customizable displays like Kanban, tables, etc."
-      },
-      "customization": {
-        "title": "Maximum Customizability",
-        "description": "Every business is unique and so are its requirements. Extend entities like contacts, lists, companies with your own fields to cover all the information you need for your customer journey."
+      "linkedin": {
+        "title": "LinkedIn Insights",
+        "description": "Make new interesting connections by finding people who show interest in your posts."
       },
       "automation": {
-        "title": "Automated Workflows and Reminders",
-        "description": "A client couldn't be closed and you want to follow up in a few months? Why remember it yourself when you can automate it!"
+        "title": "Smart Reminders",
+        "description": "\"Let's catch up next month.\" is easier said than done. Never drop the ball again with reminders."
       },
       "notes": {
-        "title": "All information in one place",
-        "description": "Add notes to contacts and manage to-dos, meeting notes, etc., in one central location."
+        "title": "Rich Notes & Templates",
+        "description": "Attach notes and meeting minutes to contacts. Use templates to save time."
       },
-      "mobile": {
-        "title": "Stay informed even on the go",
-        "description": "With Keeep's mobile version, you can easily access all your contacts and the most important information while on the move."
+      "dashboard": {
+        "title": "Make It Yours",
+        "description": "Your customizable dashboard helps you stay on top of things. See what's important to you."
       }
     }
   },

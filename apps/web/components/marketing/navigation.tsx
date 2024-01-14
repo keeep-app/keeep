@@ -1,18 +1,18 @@
 import Link from 'next/link';
 import { KeeepIcon, KeeepLogo } from './brand';
-import { useTranslations } from 'next-intl';
+// import { useTranslations } from 'next-intl';
 
 export const Navigation: React.FC = () => {
-  const t = useTranslations('Navigation');
+  // const t = useTranslations('Navigation');
   return (
-    <header className="flex h-14 items-center px-4 lg:px-6">
+    <header className="flex items-center justify-center px-4 py-4 lg:px-6">
       <div className="flex items-center space-x-10">
         <Link
-          className="flex cursor-pointer items-center justify-center gap-1"
+          className="flex cursor-pointer items-center justify-center gap-2"
           href="/"
         >
-          <KeeepIcon width={28} />
-          <KeeepLogo width={72} />
+          <KeeepIcon className="h-9 w-9" />
+          <KeeepLogo className="h-8" />
           <span className="sr-only">Keeep</span>
         </Link>
         {/* <nav className="flex gap-4 sm:gap-6">
