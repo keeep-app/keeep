@@ -111,10 +111,17 @@ function OrganizationDetails({
   org: Organization;
   selected?: boolean;
 }) {
+  const { supabase } = useSupabase();
+  const publicLogoPathData = supabase?.storage
+    .from('org-avatars')
+    .getPublicUrl(org.logo ?? '');
   return (
     <>
       <Avatar className="mr-3 h-7 w-7">
-        <AvatarImage src={org.logo ?? undefined} alt={org.name} />
+        <AvatarImage
+          src={publicLogoPathData?.data.publicUrl ?? undefined}
+          alt={org.name}
+        />
         <AvatarFallback>
           {org.name.substring(0, 1).toUpperCase()}
         </AvatarFallback>

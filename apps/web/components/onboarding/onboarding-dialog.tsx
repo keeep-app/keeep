@@ -91,9 +91,11 @@ export const OnboardingDialog: React.FC = () => {
 
   const router = useRouter();
 
-  const { supabase, user } = useSupabase();
+  const { supabase } = useSupabase();
 
   const onFileUpload = async () => {
+    const userData = await supabase?.auth.getUser();
+    const user = userData?.data.user;
     const avatarFile = getValues('orgAvatar')?.[0];
 
     const avatarFileExtension = avatarFile?.name.split('.').pop();
@@ -167,7 +169,7 @@ export const OnboardingDialog: React.FC = () => {
       return;
     }
 
-    router.push('/dashboard');
+    return router.push(`/dashboard/${values.orgSlug}`);
   };
 
   const t = useTranslations('OnboardingDialog');
@@ -306,7 +308,10 @@ export const OnboardingDialog: React.FC = () => {
                           />
                           <AvatarFallback>MK</AvatarFallback>
                         </Avatar>
-                        <Dialog open={avatarDialogOpen}>
+                        <Dialog
+                          open={avatarDialogOpen}
+                          onOpenChange={setAvatarDialogOpen}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
