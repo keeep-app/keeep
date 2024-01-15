@@ -35,6 +35,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSupabase } from '@/lib/provider/supabase';
+import { useRouter } from 'next/navigation';
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -84,12 +85,11 @@ export const OnboardingDialog: React.FC = () => {
     control,
   } = form;
 
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
-  };
-
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
+  const [avatarPublicUrl, setAvatarPublicUrl] = useState<string | null>(null);
   const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
+
+  const router = useRouter();
 
   const { supabase, user } = useSupabase();
 
@@ -117,8 +117,57 @@ export const OnboardingDialog: React.FC = () => {
       .from('org-avatars')
       .getPublicUrl(`/${user.id}/org-avatar.${avatarFileExtension}`);
 
-    setAvatarPath(publicUrl);
+    setAvatarPath(data.path);
+    setAvatarPublicUrl(publicUrl);
     setAvatarDialogOpen(false);
+  };
+
+  const onSubmit = async (values: FormValues) => {
+    const findOrgRes = await fetch(
+      '/api/organization/find?org=' + values.orgSlug
+    );
+    if (findOrgRes.status === 200) {
+      form.setError('orgSlug', {
+        type: 'manual',
+        message: 'This organization slug is already taken.',
+      });
+      return;
+    }
+
+    const createOrgRes = await fetch('/api/organization/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: values.orgName,
+        slug: values.orgSlug,
+        avatar: avatarPath,
+      }),
+    });
+
+    if (createOrgRes.status !== 201) {
+      console.log('createOrgRes', createOrgRes);
+      return;
+    }
+
+    const updateProfileRes = await fetch('/api/profile/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName: values.firstName,
+        lastName: values.lastName,
+      }),
+    });
+
+    if (updateProfileRes.status !== 200) {
+      console.log('updateProfileRes', updateProfileRes);
+      return;
+    }
+
+    router.push('/dashboard');
   };
 
   const t = useTranslations('OnboardingDialog');
@@ -249,7 +298,7 @@ export const OnboardingDialog: React.FC = () => {
                           <AvatarImage
                             alt="Organization Avatar"
                             src={
-                              avatarPath ||
+                              avatarPublicUrl ||
                               `https://avatar.vercel.sh/${getValues(
                                 'orgSlug'
                               )}.svg`
