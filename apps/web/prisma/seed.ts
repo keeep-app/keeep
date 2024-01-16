@@ -1,11 +1,8 @@
 import { PrismaClient, Attribute } from '@prisma/client';
 import { createClient } from '@supabase/supabase-js';
+import postgres from 'postgres';
 
 const prisma = new PrismaClient();
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-);
 
 const attributeConfig: Omit<
   Attribute,
@@ -143,17 +140,42 @@ const contacts = [
 ];
 
 async function main() {
-  const { data, error } = await supabase.auth.signUp({
-    email: process.env.SUPABASE_TEST_USER_EMAIL as string,
-    password: process.env.SUPABASE_TEST_USER_PASSWORD as string,
-  });
+  if (
+    !process.env.DIRECT_URL ||
+    !process.env.SUPABASE_TEST_USER_EMAIL ||
+    !process.env.SUPABASE_TEST_USER_PASSWORD ||
+    !process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+    throw new Error('Missing environment variables');
 
-  if (error || !data.user) {
-    throw error;
-  }
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        storageKey: 'supabase.service',
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      auth: {
+        storageKey: 'supabase.anon',
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
 
   const { data: bucketData, error: bucketError } =
-    await supabase.storage.createBucket('org-avatars', {
+    await supabaseAdmin.storage.createBucket('org-avatars', {
       public: true,
       allowedMimeTypes: ['image/*'],
       fileSizeLimit: '1MB',
@@ -161,6 +183,27 @@ async function main() {
 
   if (bucketError || !bucketData.name) {
     throw bucketError;
+  }
+
+  const sql = postgres(process.env.DIRECT_URL);
+
+  await sql`
+  create policy "Give read users access to own folder 7syrm9_0" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'org-avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+  `;
+  await sql`
+  create policy "Give users access to own folder 7syrm9_1" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'org-avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+  `;
+  await sql`
+  create policy "Give users access to own folder 7syrm9_2" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'org-avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+  `;
+
+  const { data, error } = await supabase.auth.signUp({
+    email: process.env.SUPABASE_TEST_USER_EMAIL,
+    password: process.env.SUPABASE_TEST_USER_PASSWORD,
+  });
+
+  if (error || !data.user) {
+    throw error;
   }
 
   const org = await prisma.organization.create({
