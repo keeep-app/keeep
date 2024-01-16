@@ -36,6 +36,9 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSupabase } from '@/lib/provider/supabase';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import Spinner from '../spinner';
+import { useToast } from '../ui/use-toast';
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -89,6 +92,7 @@ export const OnboardingDialog: React.FC = () => {
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
   const [avatarPublicUrl, setAvatarPublicUrl] = useState<string | null>(null);
   const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -126,6 +130,7 @@ export const OnboardingDialog: React.FC = () => {
   };
 
   const onSubmit = async (values: FormValues) => {
+    setLoading(true);
     const findOrgRes = await fetch(
       '/api/organization/find?org=' + values.orgSlug
     );
@@ -134,6 +139,7 @@ export const OnboardingDialog: React.FC = () => {
         type: 'manual',
         message: 'This organization slug is already taken.',
       });
+      setLoading(false);
       return;
     }
 
@@ -151,6 +157,7 @@ export const OnboardingDialog: React.FC = () => {
 
     if (createOrgRes.status !== 201) {
       console.log('createOrgRes', createOrgRes);
+      setLoading(false);
       return;
     }
 
@@ -167,9 +174,11 @@ export const OnboardingDialog: React.FC = () => {
 
     if (updateProfileRes.status !== 200) {
       console.log('updateProfileRes', updateProfileRes);
+      setLoading(false);
       return;
     }
 
+    setLoading(false);
     return router.push(`/dashboard/${values.orgSlug}`);
   };
 
@@ -290,7 +299,6 @@ export const OnboardingDialog: React.FC = () => {
                       <FormLabel>
                         {formTranslations('organizationAvatar.label')}
                       </FormLabel>
-
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
                           <AvatarImage
@@ -374,7 +382,17 @@ export const OnboardingDialog: React.FC = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">{t('continue')}</Button>
+              <Button disabled={loading} className="relative w-full">
+                <span
+                  className={cn({
+                    'opacity-0': loading,
+                    'opacity-100': !loading,
+                  })}
+                >
+                  {t('continue')}
+                </span>
+                {loading && <Spinner className="absolute inset-0" />}
+              </Button>
             </CardFooter>
           </form>
         </Form>
