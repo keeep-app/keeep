@@ -18,7 +18,8 @@
       "organizations": "Organisationen",
       "create-organization": "Organisation erstellen",
       "select-organization": "Organisation auswählen",
-      "soon": "Bald"
+      "soon": "Bald",
+      "logout": "Abmelden"
     },
     "sections": {
       "people": "Personen"

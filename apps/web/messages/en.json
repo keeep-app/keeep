@@ -18,7 +18,8 @@
       "organizations": "Organizations",
       "create-organization": "Create organization",
       "select-organization": "Select organization",
-      "soon": "Soon"
+      "soon": "Soon",
+      "logout": "Logout"
     },
     "sections": {
       "people": "People"
