@@ -200,7 +200,10 @@
         "updateProfile": {
           "title": "Profile could not be updated",
           "description": "Please try again later. If the problem persists, please contact us at support@keeep.app"
-        }
+        },
+        "fileTooLarge": "The file is too large. Please select a file that is a maximum of 1MB in size.",
+        "fileTypeNotSupported": "Only files in .jpg, .jpeg, .png, .webp or .svg format are supported.",
+        "fileNotSelected": "Please select a file."
       },
       "success": {
         "title": "Your profile has been successfully created",

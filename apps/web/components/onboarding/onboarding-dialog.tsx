@@ -50,6 +50,10 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 ];
 
 export const OnboardingDialog: React.FC = () => {
+  const t = useTranslations('OnboardingDialog');
+
+  const formTranslations = useTranslations('OnboardingDialog.form');
+
   const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -57,14 +61,17 @@ export const OnboardingDialog: React.FC = () => {
     orgSlug: z.string(),
     orgAvatar: z
       .custom<FileList>()
-      .refine(fileList => fileList.length === 1, 'Expected file')
+      .refine(
+        fileList => fileList.length === 1,
+        t('form.error.fileNotSelected')
+      )
       //.transform(file => file[0] as File)
       .refine(file => {
         return file[0] && file[0].size <= MAX_FILE_SIZE;
-      }, `File size should be less than 1MB.`)
+      }, t('form.error.fileTooLarge'))
       .refine(
         file => file[0] && ACCEPTED_IMAGE_MIME_TYPES.includes(file[0].type),
-        'Only these types are allowed .jpg, .jpeg, .png, .webp and .svg'
+        t('form.error.fileTypeNotSupported')
       )
       .optional(),
   });
@@ -194,10 +201,6 @@ export const OnboardingDialog: React.FC = () => {
     setLoading(false);
     return router.push(`/dashboard/${values.orgSlug}`);
   };
-
-  const t = useTranslations('OnboardingDialog');
-
-  const formTranslations = useTranslations('OnboardingDialog.form');
 
   const orgName = watch('orgName');
 
@@ -355,6 +358,9 @@ export const OnboardingDialog: React.FC = () => {
                                 <Label htmlFor="orgAvatar">Avatar</Label>
                                 <FormControl>
                                   <Input
+                                    accept={ACCEPTED_IMAGE_MIME_TYPES.join(
+                                      ', '
+                                    )}
                                     ref={field.ref}
                                     onChange={e => {
                                       field.onChange(e.target.files);
