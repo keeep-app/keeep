@@ -72,6 +72,7 @@ export const OnboardingDialog: React.FC = () => {
     resolver: zodResolver(formSchema),
     shouldFocusError: true,
     mode: 'onBlur',
+    reValidateMode: 'onChange',
   });
 
   const {
@@ -176,20 +177,15 @@ export const OnboardingDialog: React.FC = () => {
 
   const formTranslations = useTranslations('OnboardingDialog.form');
 
-  useEffect(() => {
-    console.log('orgAvatar', getValues('orgAvatar'));
-  }, [watch('orgAvatar')]);
+  const orgName = watch('orgName');
 
   useEffect(() => {
-    if (!getValues('orgName')) {
+    if (!orgName) {
       resetField('orgSlug');
       return;
     }
-    setValue(
-      'orgSlug',
-      getValues('orgName').toLowerCase().trim().replace(/\s/g, '-')
-    );
-  }, [watch('orgName')]);
+    setValue('orgSlug', orgName.toLowerCase().trim().replace(/\s/g, '-'));
+  }, [orgName]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
