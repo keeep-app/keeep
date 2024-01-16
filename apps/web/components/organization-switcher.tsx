@@ -112,18 +112,22 @@ function OrganizationDetails({
   selected?: boolean;
 }) {
   const { supabase } = useSupabase();
-  const publicLogoPathData = supabase?.storage
-    .from('org-avatars')
-    .getPublicUrl(org.logo ?? '');
+  const publicLogoPathData = org.logo
+    ? supabase?.storage.from('org-avatars').getPublicUrl(org.logo)
+    : null;
+
   return (
     <>
       <Avatar className="mr-3 h-7 w-7">
         <AvatarImage
-          src={publicLogoPathData?.data.publicUrl ?? undefined}
+          src={
+            publicLogoPathData?.data.publicUrl ||
+            `https://avatar.vercel.sh/${org.slug}.svg`
+          }
           alt={org.name}
         />
         <AvatarFallback>
-          {org.name.substring(0, 1).toUpperCase()}
+          {org.name.substring(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
       <span className="mr-2 inline-flex w-full items-center justify-between text-base">
