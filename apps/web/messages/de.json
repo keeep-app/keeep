@@ -190,6 +190,21 @@
           "hint": "Hinweis: Das Bild darf maximal 1MB groß sein und muss im .jpg oder .png Format vorliegen.",
           "submit": "Hochladen"
         }
+      },
+      "error": {
+        "organizationSlug": "Dieser Slug ist bereits vergeben.",
+        "createOrganization": {
+          "title": "Organisation konnte nicht erstellt werden",
+          "description": "Bitte versuche es später erneut. Sollte das Problem weiterhin bestehen, kontaktiere uns bitte unter support@keeep.app"
+        },
+        "updateProfile": {
+          "title": "Profil konnte nicht aktualisiert werden",
+          "description": "Bitte versuche es später erneut. Sollte das Problem weiterhin bestehen, kontaktiere uns bitte unter support@keeep.app"
+        }
+      },
+      "success": {
+        "title": "Dein Profil wurde erfolgreich erstellt",
+        "description": "Du wirst in Kürze zu deinem Dashboard weitergeleitet."
       }
     },
     "continue": "Weiter"

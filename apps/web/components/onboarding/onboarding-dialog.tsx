@@ -94,6 +94,8 @@ export const OnboardingDialog: React.FC = () => {
   const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { toast } = useToast();
+
   const router = useRouter();
 
   const { supabase } = useSupabase();
@@ -137,7 +139,7 @@ export const OnboardingDialog: React.FC = () => {
     if (findOrgRes.status === 200) {
       form.setError('orgSlug', {
         type: 'manual',
-        message: 'This organization slug is already taken.',
+        message: t('form.error.organizationSlug'),
       });
       setLoading(false);
       return;
@@ -156,7 +158,10 @@ export const OnboardingDialog: React.FC = () => {
     });
 
     if (createOrgRes.status !== 201) {
-      console.log('createOrgRes', createOrgRes);
+      toast({
+        title: t('form.error.createOrganization.title'),
+        description: t('form.error.createOrganization.description'),
+      });
       setLoading(false);
       return;
     }
@@ -173,10 +178,18 @@ export const OnboardingDialog: React.FC = () => {
     });
 
     if (updateProfileRes.status !== 200) {
-      console.log('updateProfileRes', updateProfileRes);
+      toast({
+        title: t('form.error.updateProfile.title'),
+        description: t('form.error.updateProfile.description'),
+      });
       setLoading(false);
       return;
     }
+
+    toast({
+      title: t('form.success.title'),
+      description: t('form.success.description'),
+    });
 
     setLoading(false);
     return router.push(`/dashboard/${values.orgSlug}`);
