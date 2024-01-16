@@ -213,8 +213,8 @@ export const OnboardingDialog: React.FC = () => {
   }, [orgName]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <Card className="mx-auto w-full max-w-md">
+    <div className="flex min-h-full flex-col items-center justify-center bg-white sm:bg-gray-100">
+      <Card className="mx-auto w-full border-none shadow-none sm:max-w-md sm:border sm:shadow-sm">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardHeader>
