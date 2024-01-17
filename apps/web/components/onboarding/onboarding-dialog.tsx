@@ -39,6 +39,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Spinner from '../spinner';
 import { useToast } from '../ui/use-toast';
+import slugify from 'slugify';
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_IMAGE_MIME_TYPES = [
@@ -209,7 +210,13 @@ export const OnboardingDialog: React.FC = () => {
       resetField('orgSlug');
       return;
     }
-    setValue('orgSlug', orgName.toLowerCase().trim().replace(/\s/g, '-'));
+    setValue(
+      'orgSlug',
+      slugify(orgName, {
+        lower: true,
+        strict: true,
+      })
+    );
   }, [orgName]);
 
   return (
