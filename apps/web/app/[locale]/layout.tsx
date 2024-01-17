@@ -3,6 +3,8 @@ import { Inter, Encode_Sans } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/constants';
 import clsx from 'clsx';
+import Head from 'next/head';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,6 +47,12 @@ export default function LocaleLayout({
 
   return (
     <html lang={locale} className="h-full">
+      <Script
+        defer
+        data-domain="keeep.app"
+        src="https://plausible.io/js/script.js"
+      />
+
       <body
         className={clsx(
           encodeSans.variable,
