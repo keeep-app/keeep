@@ -18,7 +18,8 @@
       "organizations": "Organisationen",
       "create-organization": "Organisation erstellen",
       "select-organization": "Organisation auswählen",
-      "soon": "Bald"
+      "soon": "Bald",
+      "logout": "Abmelden"
     },
     "sections": {
       "people": "Personen"
@@ -33,7 +34,6 @@
   "LoginPage": {
     "title": "Melden Sie sich bei Ihrem Konto an",
     "description": "Geben Sie unten Ihre E-Mail und Ihr Passwort ein, um sich anzumelden",
-
     "registerButton": "Registrieren"
   },
   "LoginForm": {
@@ -156,5 +156,56 @@
       "subject": "Bitte bestätige deine Anmeldung für die Keeep Warteliste",
       "body": "Hallo,\n\nbitte bestätige deine Anmeldung für die Keeep Warteliste, indem du <link>hier</link> klickst.\n\nViele Grüße,\nDein Keeep Team"
     }
+  },
+  "OnboardingDialog": {
+    "title": "Willkommen bei Keeep!",
+    "description": "Bevor es losgehen kann, benötigen wir noch ein paar Informationen von dir.",
+    "form": {
+      "firstName": {
+        "label": "Vorname",
+        "placeholder": "Max"
+      },
+      "lastName": {
+        "label": "Nachname",
+        "placeholder": "Mustermann"
+      },
+      "organization": {
+        "label": "Name deiner Organisation",
+        "placeholder": "Muster Firma"
+      },
+      "organizationSlug": {
+        "label": "Slug deiner Organisation",
+        "placeholder": "muster-firma"
+      },
+      "organizationAvatar": {
+        "label": "Avatar deiner Organisation",
+        "upload": "Avatar hochladen",
+        "dialog": {
+          "title": "Avatar hochladen",
+          "description": "Wähle ein Bild für den Avatar deiner Organisation aus.",
+          "hint": "Hinweis: Das Bild darf maximal 1MB groß sein und muss im .jpg oder .png Format vorliegen.",
+          "submit": "Hochladen"
+        }
+      },
+      "error": {
+        "organizationSlug": "Dieser Slug ist bereits vergeben.",
+        "createOrganization": {
+          "title": "Organisation konnte nicht erstellt werden",
+          "description": "Bitte versuche es später erneut. Sollte das Problem weiterhin bestehen, kontaktiere uns bitte unter support@keeep.app"
+        },
+        "updateProfile": {
+          "title": "Profil konnte nicht aktualisiert werden",
+          "description": "Bitte versuche es später erneut. Sollte das Problem weiterhin bestehen, kontaktiere uns bitte unter support@keeep.app"
+        },
+        "fileTooLarge": "Das Bild ist zu groß. Bitte wähle ein Bild mit maximal 1MB aus.",
+        "fileTypeNotSupported": "Nur Bilder im  .jpg, .jpeg, .png, .webp oder .svg Format werden unterstützt.",
+        "fileNotSelected": "Bitte wähle ein Bild aus."
+      },
+      "success": {
+        "title": "Dein Profil wurde erfolgreich erstellt",
+        "description": "Du wirst in Kürze zu deinem Dashboard weitergeleitet."
+      }
+    },
+    "continue": "Weiter"
   }
 }

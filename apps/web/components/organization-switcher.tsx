@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Organization } from '@prisma/client';
 import { useTranslations } from 'next-intl';
-import { Check, ChevronDown, Plus } from 'lucide-react';
+import { Check, ChevronDown, LogOut, Plus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useSupabase } from '@/lib/provider/supabase';
@@ -14,12 +14,14 @@ import {
   CommandGroup,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useRouter } from 'next/navigation';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -36,7 +38,8 @@ export default function OrganizationSwitcher({
   current,
 }: TeamSwitcherProps) {
   const t = useTranslations('Sidebar.organization');
-  const { user } = useSupabase();
+  const { user, supabase } = useSupabase();
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Organization | undefined>(
@@ -66,12 +69,13 @@ export default function OrganizationSwitcher({
       </PopoverTrigger>
       <PopoverContent className="w-64 p-0">
         <Command>
-          {user && (
-            <CommandItem disabled className="py-2 text-xs opacity-50">
-              {t('logged-in-as')} {user.email}
-            </CommandItem>
-          )}
           <CommandList>
+            {user && (
+              <CommandItem disabled className="py-2 text-xs opacity-50">
+                {t('logged-in-as')} {user.email}
+              </CommandItem>
+            )}
+
             <CommandGroup heading={t('organizations')}>
               {organizations.map(org => (
                 <CommandItem
@@ -88,13 +92,26 @@ export default function OrganizationSwitcher({
                 </CommandItem>
               ))}
             </CommandGroup>
-          </CommandList>
-          <CommandList>
+
             <CommandGroup>
               <CommandItem disabled className="text-xs opacity-50">
                 <Plus className="mr-2 h-5 w-5" />
                 {t('create-organization')}{' '}
                 <span className="pl-1 text-[0.6rem]">({t('soon')})</span>
+              </CommandItem>
+            </CommandGroup>
+
+            <CommandSeparator />
+            <CommandGroup>
+              <CommandItem
+                className="text-xs"
+                onSelect={() => {
+                  supabase?.auth.signOut();
+                  router.push('/login');
+                }}
+              >
+                <LogOut className="mr-2 h-5 w-5" />
+                {t('logout')}
               </CommandItem>
             </CommandGroup>
           </CommandList>
@@ -111,12 +128,23 @@ function OrganizationDetails({
   org: Organization;
   selected?: boolean;
 }) {
+  const { supabase } = useSupabase();
+  const publicLogoPathData = org.logo
+    ? supabase?.storage.from('org-avatars').getPublicUrl(org.logo)
+    : null;
+
   return (
     <>
       <Avatar className="mr-3 h-7 w-7">
-        <AvatarImage src={org.logo ?? undefined} alt={org.name} />
+        <AvatarImage
+          src={
+            publicLogoPathData?.data.publicUrl ||
+            `https://avatar.vercel.sh/${org.slug}.svg`
+          }
+          alt={org.name}
+        />
         <AvatarFallback>
-          {org.name.substring(0, 1).toUpperCase()}
+          {org.name.substring(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
       <span className="mr-2 inline-flex w-full items-center justify-between text-base">

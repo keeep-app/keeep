@@ -18,7 +18,8 @@
       "organizations": "Organizations",
       "create-organization": "Create organization",
       "select-organization": "Select organization",
-      "soon": "Soon"
+      "soon": "Soon",
+      "logout": "Logout"
     },
     "sections": {
       "people": "People"
@@ -155,5 +156,56 @@
       "subject": "Please confirm your registration for the Keeep waitlist",
       "body": "Hello,\n\nPlease confirm your registration for the Keeep waitlist by clicking <link>here</link>.\n\nBest regards,\nYour Keeep Team"
     }
+  },
+  "OnboardingDialog": {
+    "title": "Welcome to Keeep!",
+    "description": "Before we can get started, we need a few more details from you.",
+    "form": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "John"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Doe"
+      },
+      "organization": {
+        "label": "Organization Name",
+        "placeholder": "Acme Inc."
+      },
+      "organizationSlug": {
+        "label": "Organization Slug",
+        "placeholder": "acme-inc"
+      },
+      "organizationAvatar": {
+        "label": "Organization Avatar",
+        "upload": "Upload Avatar",
+        "dialog": {
+          "title": "Upload Avatar",
+          "description": "Select an image for your organization's avatar.",
+          "hint": "Hint: The image must be a maximum of 1MB in size and must be in .jpg or .png format.",
+          "submit": "Upload"
+        }
+      },
+      "error": {
+        "organizationSlug": "This slug is already taken.",
+        "createOrganization": {
+          "title": "Organization could not be created",
+          "description": "Please try again later. If the problem persists, please contact us at support@keeep.app"
+        },
+        "updateProfile": {
+          "title": "Profile could not be updated",
+          "description": "Please try again later. If the problem persists, please contact us at support@keeep.app"
+        },
+        "fileTooLarge": "The file is too large. Please select a file that is a maximum of 1MB in size.",
+        "fileTypeNotSupported": "Only files in .jpg, .jpeg, .png, .webp or .svg format are supported.",
+        "fileNotSelected": "Please select a file."
+      },
+      "success": {
+        "title": "Your profile has been successfully created",
+        "description": "You will be redirected to your dashboard shortly."
+      }
+    },
+    "continue": "Continue"
   }
 }

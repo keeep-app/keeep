@@ -155,7 +155,7 @@ export const UserAuthForm: React.FC<UserAuthFormProps> = ({
               'opacity-100': !loading,
             })}
           >
-            {type === 'login' ? 'Login' : 'Register'}
+            {t('submit')}
           </span>
           {loading && <Spinner className="absolute inset-0" />}
         </Button>
