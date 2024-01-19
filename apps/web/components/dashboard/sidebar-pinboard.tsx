@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from './ui/button';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Badge } from './ui/badge';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 
 type PinboardListsProps = {
   sections: {
@@ -41,7 +41,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
                       asChild
                       variant="ghost"
                       className={cn(
-                        'w-full justify-start',
+                        'inline-block w-full justify-start overflow-hidden overflow-ellipsis whitespace-nowrap',
                         item.slug === segment ? 'bg-accent' : ''
                       )}
                     >

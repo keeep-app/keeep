@@ -1,9 +1,9 @@
 'use client';
 
 import { Fragment, ReactNode } from 'react';
-import { Button } from './ui/button';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Button } from '../ui/button';
 
 type BreadcrumbOption = {
   name: string;

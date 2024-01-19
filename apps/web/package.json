@@ -18,7 +18,6 @@
     "seed": "ts-node --skipProject --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.17",
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "5.6.0",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -28,6 +27,7 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
@@ -48,6 +48,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
+    "react-resizable-panels": "^1.0.9",
     "resend": "^2.0.0",
     "slugify": "^1.6.6",
     "swr": "^2.2.4",
