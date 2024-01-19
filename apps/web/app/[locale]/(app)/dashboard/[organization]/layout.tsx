@@ -71,7 +71,27 @@ export default async function OrganizationLayout({
         <div className="lg:pl-72">
           <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
             <MobileSidebarToggle />
-            <Breadcrumbs base={current.slug} />
+            <Breadcrumbs
+              slots={[
+                {
+                  type: 'organization',
+                  options: organizations.map(org => ({
+                    name: org.name,
+                    slug: org.slug,
+                    href: `/dashboard/${org.slug}`,
+                  })),
+                },
+                {
+                  type: 'list',
+                  options: current.lists.map(list => ({
+                    name: list.name,
+                    slug: list.slug,
+                    href: `/dashboard/${current.slug}/${list.slug}`,
+                    icon: list.icon,
+                  })),
+                },
+              ]}
+            />
           </header>
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">{children}</div>

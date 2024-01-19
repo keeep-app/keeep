@@ -1,51 +1,57 @@
 'use client';
 
-import { useSWR } from '@/lib/swr';
-import { List, Organization } from '@prisma/client';
-import Link from 'next/link';
-import { useSelectedLayoutSegments } from 'next/navigation';
+import { Fragment, ReactNode } from 'react';
 import { Button } from './ui/button';
-import { ReactNode } from 'react';
-import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
-export function Breadcrumbs({ base }: { base: string }) {
-  const t = useTranslations('Sidebar.header');
+type BreadcrumbOption = {
+  name: string;
+  href: string;
+  slug: string;
+  icon?: string | null;
+};
 
-  const { data, isLoading, error } = useSWR<Organization & { lists: List[] }>(
-    '/api/organization/lists?org=' + base
-  );
+type Breadcrumb = {
+  type: 'organization' | 'list';
+  options?: BreadcrumbOption[];
+};
 
-  const segments = useSelectedLayoutSegments();
-  const current = segments[segments.length - 1];
+export function Breadcrumbs({ slots }: { slots: Breadcrumb[] }) {
+  const params = useParams();
 
-  if (isLoading || !data || error)
-    return <div className="h-4 w-24 animate-pulse rounded bg-gray-100" />;
+  const items = slots.filter(({ type }) => params[type]);
 
   return (
     <nav className="flex flex-1 items-center gap-x-2 self-stretch lg:gap-x-2">
-      <BreadcrumbItem
-        href={`/dashboard/${base}`}
-        active={segments.length === 0}
-      >
-        {t('dashboard')}
-      </BreadcrumbItem>
-      {segments.map(slug => {
-        const list = data.lists.find(list => list.slug === slug);
-        return list ? (
-          <>
-            <div role="separator" className="text-xs opacity-50">
-              /
-            </div>
-            <BreadcrumbItem
-              key={list.id}
-              href={`/dashboard/${base}/${list.slug}`}
-              active={slug === current}
-            >
+      {items.map(({ type, options }, i, arr) => {
+        const isLastItem = i == arr.length - 1;
+        let current: BreadcrumbOption | undefined = undefined;
+
+        if (type === 'organization') {
+          current = options?.find(org => org.slug === params.organization);
+        }
+
+        if (type === 'list') {
+          current = options?.find(list => list.slug === params.list);
+        }
+
+        return current ? (
+          <Fragment key={current.href}>
+            <BreadcrumbItem href={current.href} active={isLastItem}>
               <span>
-                <span className="pr text-base">{list.icon}</span> {list.name}
+                {current.icon && (
+                  <span className="pr-1 text-base">{current.icon}</span>
+                )}
+                {current.name}
               </span>
             </BreadcrumbItem>
-          </>
+            {!isLastItem && arr.length > 1 && (
+              <div role="separator" className="text-xs opacity-50">
+                /
+              </div>
+            )}
+          </Fragment>
         ) : null;
       })}
     </nav>
