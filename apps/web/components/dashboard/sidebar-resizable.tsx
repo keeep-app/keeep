@@ -1,8 +1,9 @@
 'use client';
 
-import { ComponentProps, useState } from 'react';
+import { ComponentProps, createContext, useContext, useState } from 'react';
 import { ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
 import { cn } from '@/lib/utils';
+import { TooltipProvider } from '../ui/tooltip';
 
 export function ResizableSidebarGroup({
   children,
@@ -26,15 +27,16 @@ export function ResizableSidebarGroup({
 
 export function ResizableSidebar({
   children,
+  defaultCollapsed = false,
   ...props
-}: ComponentProps<typeof ResizablePanel>) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+}: ComponentProps<typeof ResizablePanel> & { defaultCollapsed?: boolean }) {
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
   return (
     <ResizablePanel
-      collapsedSize={4}
+      collapsedSize={5}
       collapsible={true}
-      minSize={15}
+      minSize={10}
       maxSize={20}
       {...props}
       onExpand={() => {
@@ -53,7 +55,22 @@ export function ResizableSidebar({
         isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out'
       )}
     >
-      {children}
+      <TooltipProvider delayDuration={0}>
+        <SidebarContext.Provider value={{ collapsed: isCollapsed }}>
+          {children}
+        </SidebarContext.Provider>
+      </TooltipProvider>
     </ResizablePanel>
   );
 }
+
+const SidebarContext = createContext<{ collapsed: boolean }>({
+  collapsed: false,
+});
+
+export const useSidebar = () => {
+  const context = useContext(SidebarContext);
+  if (!context)
+    throw new Error(`useSidebar must be used within a SidebarProvider`);
+  return context;
+};

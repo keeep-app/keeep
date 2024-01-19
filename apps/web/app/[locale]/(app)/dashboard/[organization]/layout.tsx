@@ -49,14 +49,17 @@ export default async function OrganizationLayout({
   return (
     <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
       <ResizableSidebarGroup direction="horizontal">
-        <ResizableSidebar defaultSize={resizable.defaultLayout?.[0] ?? 20}>
+        <ResizableSidebar
+          defaultCollapsed={resizable.defaultCollapsed}
+          defaultSize={resizable.defaultLayout?.[0] ?? 20}
+        >
           <div className="flex h-16 items-center">
             <OrganizationSwitcher
               organizations={organizations}
               current={current}
             />
           </div>
-          <nav className="flex flex-1 flex-col px-6">
+          <nav className="flex flex-1 flex-col">
             <PinboardLists
               sections={[
                 {
