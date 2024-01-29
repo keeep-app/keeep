@@ -9,7 +9,11 @@
     "SUPABASE_TEST_USER_EMAIL",
     "SUPABASE_TEST_USER_PASSWORD",
     "DIRECT_URL",
-    "RESEND_API_KEY"
+    "RESEND_API_KEY",
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "SENTRY_AUTH_TOKEN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT"
   ],
   "pipeline": {
     "build": {
