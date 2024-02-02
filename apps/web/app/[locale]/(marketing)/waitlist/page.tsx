@@ -3,8 +3,12 @@ import ThankYouGif from '@/public/thank-you.gif';
 import { useTranslations } from 'next-intl';
 import { ReferralButton } from '@/components/marketing/referral-button';
 import { getBaseUrl } from '@/lib/utils';
+import { LocalePageProps } from '@/lib/types/global';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
-export default function Waitlist() {
+export default function Waitlist({ params: { locale } }: LocalePageProps) {
+  unstable_setRequestLocale(locale);
+
   const t = useTranslations('Waitlist');
   const baseUrl = getBaseUrl();
   return (

@@ -3,8 +3,8 @@ import { Inter, Encode_Sans } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/constants';
 import clsx from 'clsx';
-import Head from 'next/head';
 import Script from 'next/script';
+import { LocaleLayoutProps } from '@/lib/types/global';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,11 +17,6 @@ const encodeSans = Encode_Sans({
   display: 'swap',
   variable: '--font-encode-sans',
 });
-
-type LocaleLayoutProps = {
-  children: React.ReactNode;
-  params: { locale: string };
-};
 
 export function generateStaticParams() {
   return locales.map(locale => ({ locale }));
