@@ -5,6 +5,7 @@ import { ReferralButton } from '@/components/marketing/referral-button';
 import { getBaseUrl } from '@/lib/utils';
 import { LocalePageProps } from '@/lib/types/global';
 import { unstable_setRequestLocale } from 'next-intl/server';
+import { Suspense } from 'react';
 
 export default function Waitlist({ params: { locale } }: LocalePageProps) {
   unstable_setRequestLocale(locale);
@@ -36,14 +37,16 @@ export default function Waitlist({ params: { locale } }: LocalePageProps) {
                 }}
                 width="500"
               />
-              <ReferralButton
-                label={t('share')}
-                baseUrl={baseUrl}
-                translation={{
-                  toastTitle: t('toasts.title.copied'),
-                  toastDescription: t('toasts.description.copied'),
-                }}
-              />
+              <Suspense>
+                <ReferralButton
+                  label={t('share')}
+                  baseUrl={baseUrl}
+                  translation={{
+                    toastTitle: t('toasts.title.copied'),
+                    toastDescription: t('toasts.description.copied'),
+                  }}
+                />
+              </Suspense>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 {t('shareDescription')}
               </p>
