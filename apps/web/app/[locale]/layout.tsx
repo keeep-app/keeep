@@ -36,8 +36,6 @@ export default function LocaleLayout({
   children,
   params: { locale },
 }: LocaleLayoutProps) {
-  if (!locales.includes(locale)) notFound();
-
   unstable_setRequestLocale(locale);
 
   return (
