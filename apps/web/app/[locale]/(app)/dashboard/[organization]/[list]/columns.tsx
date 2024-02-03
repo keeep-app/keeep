@@ -29,8 +29,6 @@ export const getContactColumns = (
 ): ColumnDef<CustomerAttributes>[] => {
   let columns: ColumnDef<CustomerAttributes>[] = [];
 
-  console.log('attributeConfig', attributeConfig);
-
   const firstNameAttribute = attributeConfig.find(
     attribute => attribute.internalSlug === 'first-name'
   );
