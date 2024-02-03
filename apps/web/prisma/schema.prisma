@@ -52,7 +52,8 @@ model Attribute {
   id             Int           @id @default(autoincrement())
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
-  system         Boolean       @default(false) // system attributes are not editable by the user
+  system         Boolean       @default(false) // system attributes are not removable by the user
+  internalSlug   String?
   required       Boolean       @default(false)
   type           AttributeType @default(TEXT)
   label          String
