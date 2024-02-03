@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
 const colorConfig = {
   gray: 'bg-gray-100 text-gray-900',
@@ -39,7 +39,17 @@ export const getContactColumns = (
   if (firstNameAttribute && lastNameAttribute) {
     columns.push({
       id: 'full_name',
-      header: 'Name',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
       accessorFn: row => {
         return `${row[firstNameAttribute.id]} ${row[lastNameAttribute.id]}`;
       },
@@ -85,7 +95,19 @@ export const getContactColumns = (
       case 'EMAIL': {
         columns.push({
           id: attribute.id.toString(),
-          header: attribute.label,
+          header: ({ column }) => {
+            return (
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === 'asc')
+                }
+              >
+                {attribute.label}
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            );
+          },
           cell: ({ row }) => {
             return row.original[attribute.id];
           },
