@@ -1,7 +1,11 @@
 import { prisma } from '@/lib/server/prisma';
-import { TableDemo } from '@/components/demo-table';
 import { LocalePageProps } from '@/lib/types/global';
 import { getTranslations } from 'next-intl/server';
+import { DataTable } from '@/components/data-table';
+import { z } from 'zod';
+import { getContactColumns } from './columns';
+import { CustomerAttributes } from '@/lib/types/data-columns';
+import { ContactTable } from './table';
 
 export async function generateMetadata({
   params: { locale, list: slug },
@@ -38,9 +42,9 @@ export default async function ListPage({
   return (
     <div className="flex-1 space-y-4">
       <div className="space-y-2">
-        <TableDemo
+        <ContactTable
+          contacts={contactsResult.contacts}
           attributes={attributesResult.attributes}
-          data={contactsResult.contacts}
         />
       </div>
     </div>
