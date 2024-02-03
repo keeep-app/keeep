@@ -1,10 +1,6 @@
 import { prisma } from '@/lib/server/prisma';
 import { LocalePageProps } from '@/lib/types/global';
 import { getTranslations } from 'next-intl/server';
-import { DataTable } from '@/components/data-table';
-import { z } from 'zod';
-import { getContactColumns } from './columns';
-import { CustomerAttributes } from '@/lib/types/data-columns';
 import { ContactTable } from './table';
 
 export async function generateMetadata({
