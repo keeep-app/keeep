@@ -29,11 +29,13 @@ export const getContactColumns = (
 ): ColumnDef<CustomerAttributes>[] => {
   let columns: ColumnDef<CustomerAttributes>[] = [];
 
+  console.log('attributeConfig', attributeConfig);
+
   const firstNameAttribute = attributeConfig.find(
-    attribute => attribute.label === 'First Name'
+    attribute => attribute.internalSlug === 'first-name'
   );
   const lastNameAttribute = attributeConfig.find(
-    attribute => attribute.label === 'Last Name'
+    attribute => attribute.internalSlug === 'last-name'
   );
 
   if (firstNameAttribute && lastNameAttribute) {
@@ -47,7 +49,10 @@ export const getContactColumns = (
   }
 
   attributeConfig.forEach(attribute => {
-    if (attribute.label === 'First Name' || attribute.label === 'Last Name')
+    if (
+      attribute.internalSlug === 'first-name' ||
+      attribute.internalSlug === 'last-name'
+    )
       return;
 
     switch (attribute.type) {
@@ -105,7 +110,7 @@ export const getContactColumns = (
     id: 'actions',
     cell: ({ row }) => {
       const emailId = attributeConfig.find(
-        attribute => attribute.label === 'Email Address'
+        attribute => attribute.internalSlug === 'email'
       )?.id;
 
       const email = emailId && row.original[emailId];
