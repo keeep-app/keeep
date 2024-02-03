@@ -6,7 +6,13 @@ const prisma = new PrismaClient();
 
 const attributeConfig: Omit<
   Attribute,
-  'updatedAt' | 'createdAt' | 'id' | 'organizationId' | 'icon' | 'description'
+  | 'updatedAt'
+  | 'createdAt'
+  | 'id'
+  | 'organizationId'
+  | 'icon'
+  | 'description'
+  | 'internalSlug'
 >[] = [
   {
     system: true,
