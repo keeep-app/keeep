@@ -7,6 +7,7 @@ import { useSelectedLayoutSegments } from 'next/navigation';
 import { Button } from './ui/button';
 import { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
+import { MinusIcon } from 'lucide-react';
 
 export function Breadcrumbs({ base }: { base: string }) {
   const t = useTranslations('Sidebar.header');
@@ -22,7 +23,7 @@ export function Breadcrumbs({ base }: { base: string }) {
     return <div className="h-4 w-24 animate-pulse rounded bg-gray-100" />;
 
   return (
-    <nav className="flex flex-1 items-center gap-x-2 self-stretch lg:gap-x-2">
+    <nav className="flex flex-1 items-center gap-1 self-stretch">
       <BreadcrumbItem
         href={`/dashboard/${base}`}
         active={segments.length === 0}
@@ -32,12 +33,11 @@ export function Breadcrumbs({ base }: { base: string }) {
       {segments.map(slug => {
         const list = data.lists.find(list => list.slug === slug);
         return list ? (
-          <>
+          <div key={list.id} className="flex flex-row items-center gap-1">
             <div role="separator" className="text-xs opacity-50">
-              /
+              <MinusIcon strokeWidth={1} className="h-5 w-5 -rotate-[60deg] " />
             </div>
             <BreadcrumbItem
-              key={list.id}
               href={`/dashboard/${base}/${list.slug}`}
               active={slug === current}
             >
@@ -45,7 +45,7 @@ export function Breadcrumbs({ base }: { base: string }) {
                 <span className="pr text-base">{list.icon}</span> {list.name}
               </span>
             </BreadcrumbItem>
-          </>
+          </div>
         ) : null;
       })}
     </nav>
