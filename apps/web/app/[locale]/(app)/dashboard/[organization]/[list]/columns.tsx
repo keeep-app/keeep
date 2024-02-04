@@ -166,20 +166,12 @@ export const getContactColumns = (
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => {
-                  console.log('Export to CSV');
-                }}
-              >
+              <DropdownMenuItem disabled>
                 <Download className="mr-2 h-4 w-4" />
                 Export to CSV
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  console.log('Delete');
-                }}
-              >
+              <DropdownMenuItem disabled>
                 <Trash className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>
