@@ -40,6 +40,7 @@ export const getContactColumns = (
   if (firstNameAttribute && lastNameAttribute) {
     columns.push({
       id: 'full_name',
+      meta: { columnHeaderLabel: 'Name' },
       header: ({ column }) => {
         return <DataTableColumnHeader column={column} title="Name" />;
       },
@@ -65,6 +66,7 @@ export const getContactColumns = (
               <DataTableColumnHeader column={column} title={attribute.label} />
             );
           },
+          meta: { columnHeaderLabel: attribute.label },
           cell: ({ row }) => {
             const parseResult = selectConfigSchema.safeParse(attribute.config);
             if (!parseResult.success) return;
@@ -92,13 +94,14 @@ export const getContactColumns = (
       case 'EMAIL': {
         columns.push({
           id: attribute.id.toString(),
+          meta: { columnHeaderLabel: attribute.label },
           header: ({ column }) => {
             return (
               <DataTableColumnHeader column={column} title={attribute.label} />
             );
           },
-          cell: ({ row }) => {
-            return row.original[attribute.id];
+          accessorFn: row => {
+            return row[attribute.id];
           },
         });
         break;
@@ -106,13 +109,14 @@ export const getContactColumns = (
       default: {
         columns.push({
           id: attribute.id.toString(),
+          meta: { columnHeaderLabel: attribute.label },
           header: ({ column }) => {
             return (
               <DataTableColumnHeader column={column} title={attribute.label} />
             );
           },
-          cell: ({ row }) => {
-            return row.original[attribute.id];
+          accessorFn: row => {
+            return row[attribute.id];
           },
         });
       }
@@ -150,6 +154,7 @@ export const getContactColumns = (
       );
     },
     enableHiding: false,
+    enableSorting: false,
   });
   return columns;
 };
