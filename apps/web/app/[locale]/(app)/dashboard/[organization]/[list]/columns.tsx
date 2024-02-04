@@ -13,7 +13,8 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
+import { DataTableColumnHeader } from '@/components/data-table/column-header';
 
 const colorConfig = {
   gray: 'bg-gray-100 text-gray-900',
@@ -40,15 +41,7 @@ export const getContactColumns = (
     columns.push({
       id: 'full_name',
       header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
+        return <DataTableColumnHeader column={column} title="Name" />;
       },
       accessorFn: row => {
         return `${row[firstNameAttribute.id]} ${row[lastNameAttribute.id]}`;
@@ -67,7 +60,11 @@ export const getContactColumns = (
       case 'SELECT': {
         columns.push({
           id: attribute.id.toString(),
-          header: attribute.label,
+          header: ({ column }) => {
+            return (
+              <DataTableColumnHeader column={column} title={attribute.label} />
+            );
+          },
           cell: ({ row }) => {
             const parseResult = selectConfigSchema.safeParse(attribute.config);
             if (!parseResult.success) return;
@@ -97,15 +94,7 @@ export const getContactColumns = (
           id: attribute.id.toString(),
           header: ({ column }) => {
             return (
-              <Button
-                variant="ghost"
-                onClick={() =>
-                  column.toggleSorting(column.getIsSorted() === 'asc')
-                }
-              >
-                {attribute.label}
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
+              <DataTableColumnHeader column={column} title={attribute.label} />
             );
           },
           cell: ({ row }) => {
@@ -117,7 +106,11 @@ export const getContactColumns = (
       default: {
         columns.push({
           id: attribute.id.toString(),
-          header: attribute.label,
+          header: ({ column }) => {
+            return (
+              <DataTableColumnHeader column={column} title={attribute.label} />
+            );
+          },
           cell: ({ row }) => {
             return row.original[attribute.id];
           },
@@ -156,6 +149,7 @@ export const getContactColumns = (
         </DropdownMenu>
       );
     },
+    enableHiding: false,
   });
   return columns;
 };

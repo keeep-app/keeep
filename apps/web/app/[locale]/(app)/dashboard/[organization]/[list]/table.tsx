@@ -1,6 +1,6 @@
 'use client';
 
-import { DataTable } from '@/components/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { Attribute, Contact } from '@prisma/client';
 import { getContactColumns } from './columns';
 import { CustomerAttributes } from '@/lib/types/data-columns';
@@ -19,6 +19,8 @@ export const ContactTable = ({ contacts, attributes }: ContactTableProps) => {
       data={contacts.map(contact => {
         return contact.attributes as CustomerAttributes;
       })}
+      withPagination
+      withColumnToggle
     />
   );
 };
