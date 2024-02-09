@@ -1,11 +1,13 @@
 import { prisma } from '@/lib/server/prisma';
 import { TableDemo } from '@/components/demo-table';
 import { LocalePageProps } from '@/lib/types/global';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 export async function generateMetadata({
   params: { locale, list: slug },
 }: LocalePageProps & ListPageProps) {
+  unstable_setRequestLocale(locale);
+
   const t = await getTranslations({ locale, namespace: 'LocaleLayout' });
   const list = await prisma.list.findUnique({
     where: { slug },
