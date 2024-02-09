@@ -30,6 +30,7 @@ export async function createUser(email: string, password: string) {
 
       // Return early if the form data is invalid
       if (!validatedFields.success) {
+        Sentry.captureException(new Error('Invalid form data'));
         return {
           error: {
             message: 'Invalid form data',
@@ -133,6 +134,7 @@ export async function submitWaitlistForm(
       });
 
       if (res.error) {
+        Sentry.captureException(res.error);
         return {
           error: {
             message: t('toasts.description.confirmationFailed'),
@@ -157,6 +159,7 @@ export async function submitWaitlistForm(
         },
       });
       if (!newWaitlistEntry) {
+        Sentry.captureException(new Error('Failed to create waitlist entry'));
         return {
           error: {
             message: t('toasts.description.error'),
