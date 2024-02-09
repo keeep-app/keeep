@@ -1,7 +1,7 @@
 import { pick } from 'lodash';
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound, redirect } from 'next/navigation';
-import { getMessages } from 'next-intl/server';
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 
 import { IntlMessages } from '@/lib/types/global';
 import { prisma } from '@/lib/server/prisma';
@@ -23,6 +23,8 @@ export default async function OrganizationLayout({
   children,
   params: { organization, locale },
 }: OrganizationLayoutProps) {
+  unstable_setRequestLocale(locale);
+
   const messages = (await getMessages({ locale })) as IntlMessages;
 
   const { user } = await getSupabaseServerComponentClient();

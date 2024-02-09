@@ -8,9 +8,12 @@ import {
   useTranslations,
 } from 'next-intl';
 import { pick } from 'lodash';
-import { IntlMessages } from '@/lib/types/global';
+import { IntlMessages, LocalePageProps } from '@/lib/types/global';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
-export default function RegisterPage() {
+export default function RegisterPage({ params: { locale } }: LocalePageProps) {
+  unstable_setRequestLocale(locale);
+
   const t = useTranslations('RegisterPage');
   const messages = useMessages() as IntlMessages;
 

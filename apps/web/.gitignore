@@ -4,3 +4,5 @@ node_modules
 .env.*
 !.env.production
 !.env.template
+# Sentry Config File
+.sentryclirc
