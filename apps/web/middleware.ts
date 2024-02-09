@@ -39,8 +39,8 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   );
 
-  // We need to use `getUser` here because `getSession` does not gurantee to revalidate the auth token
-  // and session could be spoofed by anyone
+  // We need to use `getUser` here because `getSession` does not guarantee to revalidate the auth token,
+  // and anyone could spoof the session.
   const {
     data: { user },
   } = await supabase.auth.getUser();
