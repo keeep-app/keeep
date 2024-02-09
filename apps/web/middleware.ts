@@ -39,9 +39,11 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   );
 
+  // We need to use `getUser` here because `getSession` does not gurantee to revalidate the auth token
+  // and session could be spoofed by anyone
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const publicPathnameRegex = RegExp(
     `^(/(${locales.join('|')}))?(${publicPages
@@ -54,9 +56,9 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   const isLoginPage = request.nextUrl.pathname === '/login';
   const isRegisterPage = request.nextUrl.pathname === '/register';
 
-  if (session && (isLoginPage || isRegisterPage)) {
+  if (user && (isLoginPage || isRegisterPage)) {
     return NextResponse.redirect(new URL('/dashboard', request.nextUrl).href);
-  } else if (!session && !isPublicPage) {
+  } else if (!user && !isPublicPage) {
     return NextResponse.redirect(new URL('/login', request.nextUrl).href);
   }
 
