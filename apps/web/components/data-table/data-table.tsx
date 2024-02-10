@@ -28,6 +28,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   withPagination?: boolean;
   withColumnToggle?: boolean;
+  additionalHeaderActions?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   data,
   withPagination,
   withColumnToggle,
+  additionalHeaderActions,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -59,11 +61,10 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {withColumnToggle && (
-        <div className="mb-4">
-          <DataTableViewOptions table={table} />
-        </div>
-      )}
+      <div className="mb-4 flex items-center justify-between">
+        <div>{additionalHeaderActions}</div>
+        {withColumnToggle && <DataTableViewOptions table={table} />}
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

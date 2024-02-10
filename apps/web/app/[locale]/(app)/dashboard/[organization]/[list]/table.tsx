@@ -4,6 +4,7 @@ import { DataTable } from '@/components/data-table/data-table';
 import { Attribute, Contact } from '@prisma/client';
 import { getContactColumns } from './columns';
 import { CustomerAttributes } from '@/lib/types/data-columns';
+import { HeaderActions } from './header-actions';
 
 type ContactTableProps = {
   contacts: Contact[];
@@ -21,6 +22,7 @@ export const ContactTable = ({ contacts, attributes }: ContactTableProps) => {
       })}
       withPagination
       withColumnToggle
+      additionalHeaderActions={HeaderActions()}
     />
   );
 };
