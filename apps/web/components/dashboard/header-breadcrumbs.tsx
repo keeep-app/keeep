@@ -4,6 +4,7 @@ import { Fragment, ReactNode } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import { MinusIcon } from 'lucide-react';
 
 type BreadcrumbOption = {
   name: string;
@@ -48,7 +49,10 @@ export function Breadcrumbs({ slots }: { slots: Breadcrumb[] }) {
             </BreadcrumbItem>
             {!isLastItem && arr.length > 1 && (
               <div role="separator" className="text-xs opacity-50">
-                /
+                <MinusIcon
+                  strokeWidth={1}
+                  className="h-5 w-5 -rotate-[60deg] "
+                />
               </div>
             )}
           </Fragment>
