@@ -33,7 +33,7 @@ export default async function OrganizationPage({
     <div className="flex-1 space-y-4">
       <div className="space-y-2">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {result?.lists.length ? (
+          {result?.lists?.length ? (
             result.lists.map(list => {
               return (
                 <Link key={list.id} href={`/dashboard/${slug}/${list.slug}`}>

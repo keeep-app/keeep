@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { KeeepIcon, KeeepLogo } from '@/components/marketing/brand';
+import { LocaleLayoutProps } from '@/lib/types/global';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -9,9 +11,10 @@ export const metadata: Metadata = {
 
 export default function AuthenticationPage({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  params: { locale },
+}: LocaleLayoutProps) {
+  unstable_setRequestLocale(locale);
+
   return (
     <div className="container relative grid min-h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">

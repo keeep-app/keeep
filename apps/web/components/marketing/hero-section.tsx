@@ -9,6 +9,7 @@ import { WaitlistForm } from './waitlist-form';
 import KeeepSnapshot from '@/public/keeep-mockup.png';
 import { pick } from 'lodash';
 import { IntlMessages } from '@/lib/types/global';
+import { Suspense } from 'react';
 
 export const HeroSection: React.FC = () => {
   const t = useTranslations('HeroSection');
@@ -33,12 +34,14 @@ export const HeroSection: React.FC = () => {
             </div>
             <div className="mx-auto w-full max-w-md space-y-4 lg:mx-0">
               <NextIntlClientProvider messages={pick(messages, 'Waitlist')}>
-                <WaitlistForm
-                  translations={{
-                    inputLabel: t('waitlist.inputLabel'),
-                    submit: t('waitlist.submit'),
-                  }}
-                />
+                <Suspense>
+                  <WaitlistForm
+                    translations={{
+                      inputLabel: t('waitlist.inputLabel'),
+                      submit: t('waitlist.submit'),
+                    }}
+                  />
+                </Suspense>
               </NextIntlClientProvider>
               <p className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
                 {t.rich('waitlist.hint', {
