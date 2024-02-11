@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
-import { useSidebar } from './sidebar-resizable';
+import { useResizable } from './sidebar-resizable';
 import { forwardRef } from 'react';
 
 type PinboardListItemButton = {
@@ -25,15 +25,15 @@ type PinboardListsProps = {
 };
 
 export function PinboardLists({ sections }: PinboardListsProps) {
-  const sidebar = useSidebar();
+  const { isCollapsed } = useResizable();
 
   return (
     <div className="pb-12">
-      <div className={cn('space-y-4 p-4', sidebar.collapsed ? 'px-1' : '')}>
+      <div className={cn('space-y-4 p-4', isCollapsed() ? 'px-1' : '')}>
         {sections.map(section => {
           return (
             <div key={section.title}>
-              {!sidebar.collapsed && (
+              {!isCollapsed() && (
                 <h2 className="mb-4 flex items-center justify-between font-accent text-lg font-semibold">
                   {section.title}
                   <Badge variant="accent" tabular="numeric">
@@ -42,7 +42,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
                 </h2>
               )}
               {section.items.map(item => {
-                return sidebar.collapsed ? (
+                return isCollapsed() ? (
                   <Tooltip key={item.slug}>
                     <TooltipTrigger asChild>
                       <PinboardListButton item={item} />
@@ -72,7 +72,7 @@ const PinboardListButton = forwardRef<
   HTMLDivElement,
   { item: PinboardListItemButton }
 >(({ item, ...rest }, ref) => {
-  const sidebar = useSidebar();
+  const { isCollapsed } = useResizable();
   const segment = useSelectedLayoutSegment();
 
   return (
@@ -83,18 +83,16 @@ const PinboardListButton = forwardRef<
         className={cn(
           'w-full',
           item.slug === segment ? 'bg-accent' : '',
-          sidebar.collapsed
+          isCollapsed()
             ? 'inline-flex w-auto items-center justify-center px-[10px]'
             : 'inline-block justify-start overflow-hidden overflow-ellipsis whitespace-nowrap px-4 py-2'
         )}
       >
         <Link href={item.href}>
-          <span
-            className={cn('text-base', sidebar.collapsed ? 'pr-0' : 'pr-1')}
-          >
+          <span className={cn('text-base', isCollapsed() ? 'pr-0' : 'pr-1')}>
             {item.icon}
           </span>
-          {!sidebar.collapsed && <span>{item.name}</span>}
+          {!isCollapsed() && <span>{item.name}</span>}
         </Link>
       </Button>
     </div>

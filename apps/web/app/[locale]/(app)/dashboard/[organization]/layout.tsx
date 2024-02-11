@@ -10,6 +10,7 @@ import { ResizableHandle, ResizablePanel } from '@/components/ui/resizable';
 import {
   ResizableSidebar,
   ResizableSidebarGroup,
+  ResizableSidebarToggle,
 } from '@/components/dashboard/sidebar-resizable';
 import { cookies } from 'next/headers';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -48,11 +49,11 @@ export default async function OrganizationLayout({
 
   return (
     <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
-      <ResizableSidebarGroup direction="horizontal">
-        <ResizableSidebar
-          defaultCollapsed={resizable.defaultCollapsed}
-          defaultSize={resizable.defaultLayout?.[0] ?? 20}
-        >
+      <ResizableSidebarGroup
+        direction="horizontal"
+        defaultCollapsed={resizable.defaultCollapsed}
+      >
+        <ResizableSidebar defaultSize={resizable.defaultLayout?.[0]}>
           <div className="flex h-16 items-center">
             <OrganizationSwitcher
               organizations={organizations}
@@ -76,8 +77,9 @@ export default async function OrganizationLayout({
           </nav>
         </ResizableSidebar>
         <ResizableHandle className="w-[1px] bg-gray-100 transition-colors duration-200 hover:bg-gray-300" />
-        <ResizablePanel defaultSize={resizable.defaultLayout?.[1] ?? 80}>
+        <ResizablePanel defaultSize={resizable.defaultLayout?.[1]}>
           <header className="flex h-16 items-center gap-x-4 border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+            <ResizableSidebarToggle className="md:hidden" />
             <Breadcrumbs
               slots={[
                 {

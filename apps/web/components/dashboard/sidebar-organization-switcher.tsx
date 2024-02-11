@@ -22,7 +22,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useRouter } from 'next/navigation';
-import { useSidebar } from './sidebar-resizable';
+import { useResizable } from './sidebar-resizable';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -41,7 +41,7 @@ export default function OrganizationSwitcher({
   const t = useTranslations('Sidebar.organization');
   const { user, supabase } = useSupabase();
   const router = useRouter();
-  const sidebar = useSidebar();
+  const { isCollapsed } = useResizable();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Organization | undefined>(
@@ -58,16 +58,16 @@ export default function OrganizationSwitcher({
           aria-label={t('select-organization')}
           className={cn(
             'flex h-full w-full items-center rounded-none border-b border-gray-100',
-            sidebar.collapsed ? 'justify-center' : 'justify-start',
+            isCollapsed() ? 'justify-center' : 'justify-start',
             className
           )}
         >
           {selected ? (
-            <OrganizationDetails org={selected} collapsed={sidebar.collapsed} />
+            <OrganizationDetails org={selected} collapsed={isCollapsed()} />
           ) : (
             <div className="h-4 w-24 animate-pulse rounded bg-gray-100" />
           )}
-          {selected && !sidebar.collapsed && (
+          {selected && !isCollapsed() && (
             <ChevronDown className="ml-2 h-5 w-5" />
           )}
         </Button>

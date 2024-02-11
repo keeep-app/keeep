@@ -1,22 +1,26 @@
 'use client';
 
+import { forwardRef } from 'react';
 import { GripVertical } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { cn } from '@/lib/utils';
 
-const ResizablePanelGroup = ({
-  className,
-  ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
-  <ResizablePrimitive.PanelGroup
-    className={cn(
-      'flex h-full w-full data-[panel-group-direction=vertical]:flex-col',
-      className
-    )}
-    {...props}
-  />
-);
+const ResizablePanelGroup: typeof ResizablePrimitive.PanelGroup = forwardRef<
+  ResizablePrimitive.ImperativePanelGroupHandle,
+  React.ComponentProps<typeof ResizablePrimitive.PanelGroup>
+>(function ResizablePanelGroup({ className, ...props }, ref) {
+  return (
+    <ResizablePrimitive.PanelGroup
+      ref={ref}
+      className={cn(
+        'flex h-full w-full data-[panel-group-direction=vertical]:flex-col',
+        className
+      )}
+      {...props}
+    />
+  );
+});
 
 const ResizablePanel = ResizablePrimitive.Panel;
 
