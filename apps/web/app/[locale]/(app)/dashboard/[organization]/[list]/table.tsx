@@ -9,9 +9,16 @@ import { HeaderActions } from './header-actions';
 type ContactTableProps = {
   contacts: Contact[];
   attributes: Attribute[];
+  organization: string;
+  list: string;
 };
 
-export const ContactTable = ({ contacts, attributes }: ContactTableProps) => {
+export const ContactTable = ({
+  contacts,
+  attributes,
+  organization,
+  list,
+}: ContactTableProps) => {
   const columns = getContactColumns(attributes);
 
   return (
@@ -22,7 +29,9 @@ export const ContactTable = ({ contacts, attributes }: ContactTableProps) => {
       })}
       withPagination
       withColumnToggle
-      additionalHeaderActions={HeaderActions()}
+      additionalHeaderActions={
+        <HeaderActions organization={organization} list={list} />
+      }
     />
   );
 };

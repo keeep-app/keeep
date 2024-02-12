@@ -41,6 +41,8 @@ export default async function ListPage({
     <div className="flex-1 space-y-4">
       <div className="space-y-2">
         <ContactTable
+          list={list}
+          organization={organization}
           contacts={contactsResult.contacts}
           attributes={attributesResult.attributes}
         />

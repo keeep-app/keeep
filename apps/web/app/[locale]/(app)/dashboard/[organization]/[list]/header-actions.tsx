@@ -1,9 +1,14 @@
 import { ImportContactsModal } from './import-contacts';
 
-export const HeaderActions = () => {
+interface HeaderActionsProps {
+  organization: string;
+  list: string;
+}
+
+export const HeaderActions = ({ organization, list }: HeaderActionsProps) => {
   return (
     <div className="flex flex-row items-center gap-4">
-      <ImportContactsModal />
+      <ImportContactsModal organization={organization} list={list} />
     </div>
   );
 };

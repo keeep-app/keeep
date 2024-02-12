@@ -17,11 +17,24 @@ import { useDropzone } from 'react-dropzone';
 import Papa, { ParseResult } from 'papaparse';
 import { LinkedInImportContact } from '@/lib/types/import-contacts';
 import { useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 
-export const ImportContactsModal = () => {
+interface ImportContactsModalProps {
+  organization: string;
+  list: string;
+}
+
+export const ImportContactsModal = ({
+  organization,
+  list,
+}: ImportContactsModalProps) => {
   const [importedContacts, setImportedContacts] = useState<
     LinkedInImportContact[]
   >([]);
+  const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { toast } = useToast();
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       'text/csv': [],
@@ -51,8 +64,33 @@ export const ImportContactsModal = () => {
     },
     maxFiles: 1,
   });
+
+  const importContacts = async () => {
+    try {
+      setLoading(true);
+      await fetch('/api/contacts/import', {
+        method: 'POST',
+        body: JSON.stringify({
+          contacts: importedContacts,
+          orgSlug: organization,
+          listSlug: list,
+        }),
+      });
+      setImportedContacts([]);
+      setLoading(false);
+      setModalOpen(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast({
+        title: 'Could not import contacts',
+        description: 'An error occurred while importing the contacts',
+      });
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={open => setModalOpen(open)}>
       <DialogTrigger asChild>
         <Button size="xs" variant="outline" className="text-sm">
           <PlusIcon className="mr-2 h-4 w-4" />
@@ -105,11 +143,19 @@ export const ImportContactsModal = () => {
         )}
         <DialogFooter>
           {importedContacts.length > 0 && (
-            <Button variant="outline" onClick={() => setImportedContacts([])}>
+            <Button
+              variant="outline"
+              onClick={() => setImportedContacts([])}
+              disabled={loading}
+            >
               Clear
             </Button>
           )}
-          <Button type="submit" disabled={!importedContacts.length}>
+          <Button
+            type="submit"
+            disabled={!importedContacts.length || loading}
+            onClick={importContacts}
+          >
             Import
           </Button>
         </DialogFooter>
