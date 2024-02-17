@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
   const org = await prisma.organization.findUnique({
     where: {
       slug: slug,
+      members: { some: { id: user.id } },
     },
   });
 

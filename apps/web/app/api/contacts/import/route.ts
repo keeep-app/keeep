@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   }
 
   const organization = await prisma.organization.findUnique({
-    where: { slug: orgSlug },
+    where: { slug: orgSlug, members: { some: { id: user.id } } },
     include: { attributes: true },
   });
 

@@ -18,6 +18,7 @@ import Papa, { ParseResult } from 'papaparse';
 import { LinkedInImportContact } from '@/lib/types/import-contacts';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 interface ImportContactsModalProps {
   organization: string;
@@ -34,6 +35,7 @@ export const ImportContactsModal = ({
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -83,6 +85,8 @@ export const ImportContactsModal = ({
         title: 'Contacts imported',
         description: 'The contacts were successfully imported',
       });
+      // Fixme: We should probably use other revalidation strategies
+      router.refresh();
     } catch (error) {
       console.error(error);
       setLoading(false);

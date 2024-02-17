@@ -2,9 +2,12 @@
 
 import { DataTable } from '@/components/data-table/data-table';
 import { Attribute, Contact } from '@prisma/client';
-import { getContactColumns } from './columns';
+import { TableProps, getContactColumns } from './columns';
 import { CustomerAttributes } from '@/lib/types/data-columns';
 import { HeaderActions } from './header-actions';
+import { useToast } from '@/components/ui/use-toast';
+import { Table } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 
 type ContactTableProps = {
   contacts: Contact[];
@@ -19,13 +22,51 @@ export const ContactTable = ({
   organization,
   list,
 }: ContactTableProps) => {
-  const columns = getContactColumns(attributes);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const deleteContacts = async (table: Table<TableProps>) => {
+    // get all selected contacts
+    const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const contactIds = selectedRows.map(row => row.original.id);
+
+    // send request to delete contacts
+    const response = await fetch('/api/contacts', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ contactIds }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      toast({
+        title: 'Contacts deleted',
+        description: `${data.deletedContacts} contacts were successfully deleted`,
+      });
+      table.resetRowSelection();
+      // Fixme: We should probably use other revalidation strategies
+      router.refresh();
+      return;
+    }
+
+    toast({
+      title: 'Error',
+      description: 'There was an error deleting the contacts',
+    });
+  };
+
+  const columns = getContactColumns(attributes, deleteContacts);
 
   return (
     <DataTable
       columns={columns}
       data={contacts.map(contact => {
-        return contact.attributes as CustomerAttributes;
+        return {
+          ...(contact.attributes as CustomerAttributes),
+          id: contact.externalId,
+        } as TableProps;
       })}
       withPagination
       withColumnToggle
