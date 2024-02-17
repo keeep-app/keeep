@@ -19,6 +19,7 @@ import { LinkedInImportContact } from '@/lib/types/import-contacts';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ImportContactsModalProps {
   organization: string;
@@ -110,6 +111,16 @@ export const ImportContactsModal = ({
           <DialogTitle>Upload Contacts</DialogTitle>
           <DialogDescription>
             Import your existing contacts by providing your LinkedIn CSV Export.
+            <br />
+            <strong>Hint:</strong> You can export your LinkedIn contacts{' '}
+            <Link
+              className="underline underline-offset-2"
+              href="https://www.linkedin.com/mypreferences/d/download-my-data"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              here
+            </Link>
           </DialogDescription>
         </DialogHeader>
         {importedContacts.length > 0 && (
