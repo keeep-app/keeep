@@ -45,7 +45,6 @@ export const ImportContactsModal = ({
     onDropAccepted: acceptedFiles => {
       const file = acceptedFiles[0];
       if (!file) return;
-      console.log(acceptedFiles);
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -64,6 +63,12 @@ export const ImportContactsModal = ({
         });
       };
       reader.readAsArrayBuffer(file);
+    },
+    onDropRejected: () => {
+      toast({
+        title: 'Invalid file type',
+        description: 'Please upload a .csv file',
+      });
     },
     maxFiles: 1,
   });
