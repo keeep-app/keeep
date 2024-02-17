@@ -150,8 +150,7 @@ export const ImportContactsModal = ({
                 <p>Drag 'n' drop a .csv file here, or click to select files</p>
               )}
             </div>
-
-            <Alert>
+            <Alert variant="warning">
               <ExclamationTriangleIcon className="h-4 w-4" />
               <AlertTitle>Heads up!</AlertTitle>
               <AlertDescription>
