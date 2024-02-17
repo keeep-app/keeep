@@ -79,6 +79,10 @@ export const ImportContactsModal = ({
       setImportedContacts([]);
       setLoading(false);
       setModalOpen(false);
+      toast({
+        title: 'Contacts imported',
+        description: 'The contacts were successfully imported',
+      });
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -105,16 +109,18 @@ export const ImportContactsModal = ({
           </DialogDescription>
         </DialogHeader>
         {importedContacts.length > 0 && (
-          <div className="max-h-48 !overflow-y-auto truncate">
-            <h2>Imported Contacts</h2>
-            <ul>
-              {importedContacts.map((contact, index) => (
-                <li key={index}>
-                  {contact['First Name']} {contact['Last Name']}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <>
+            <h2 className="font-bold">Found Contacts:</h2>
+            <div className="max-h-48 !overflow-y-auto truncate rounded-lg bg-gray-50 p-2.5">
+              <ul className="flex flex-col gap-1">
+                {importedContacts.map((contact, index) => (
+                  <li key={index}>
+                    {contact['First Name']} {contact['Last Name']}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         )}
         {!importedContacts.length && (
           <>
