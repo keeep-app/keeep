@@ -22,6 +22,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useRouter } from 'next/navigation';
+import { useResizable } from './sidebar-resizable';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -40,6 +41,7 @@ export default function OrganizationSwitcher({
   const t = useTranslations('Sidebar.organization');
   const { user, supabase } = useSupabase();
   const router = useRouter();
+  const { isCollapsed } = useResizable();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Organization | undefined>(
@@ -55,16 +57,19 @@ export default function OrganizationSwitcher({
           aria-expanded={open}
           aria-label={t('select-organization')}
           className={cn(
-            'flex h-full w-full items-center justify-start rounded-none border-b border-gray-100',
+            'flex h-full w-full items-center rounded-none border-b border-gray-100',
+            isCollapsed() ? 'justify-center' : 'justify-start',
             className
           )}
         >
           {selected ? (
-            <OrganizationDetails org={selected} />
+            <OrganizationDetails org={selected} collapsed={isCollapsed()} />
           ) : (
             <div className="h-4 w-24 animate-pulse rounded bg-gray-100" />
           )}
-          {selected && <ChevronDown className="ml-2 h-5 w-5" />}
+          {selected && !isCollapsed() && (
+            <ChevronDown className="ml-2 h-5 w-5" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-0">
@@ -124,9 +129,11 @@ export default function OrganizationSwitcher({
 function OrganizationDetails({
   org,
   selected,
+  collapsed,
 }: {
   org: Organization;
   selected?: boolean;
+  collapsed?: boolean;
 }) {
   const { supabase } = useSupabase();
   const publicLogoPathData = org.logo
@@ -135,7 +142,7 @@ function OrganizationDetails({
 
   return (
     <>
-      <Avatar className="mr-3 h-7 w-7">
+      <Avatar className={collapsed ? 'h-8 w-8' : 'mr-3 h-7 w-7'}>
         <AvatarImage
           src={
             publicLogoPathData?.data.publicUrl ||
@@ -147,9 +154,11 @@ function OrganizationDetails({
           {org.name.substring(0, 2).toUpperCase()}
         </AvatarFallback>
       </Avatar>
-      <span className="mr-2 inline-flex w-full items-center justify-between text-base">
-        {org.name} {selected && <Check className="h-4 w-4" />}
-      </span>
+      {!collapsed && (
+        <span className="mr-2 inline-flex w-full items-center justify-between text-base">
+          {org.name} {selected && <Check className="h-4 w-4" />}
+        </span>
+      )}
     </>
   );
 }

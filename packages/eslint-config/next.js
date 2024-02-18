@@ -15,6 +15,7 @@ module.exports = {
     JSX: true,
   },
   env: {
+    browser: true,
     node: true,
   },
   plugins: ['only-warn'],
