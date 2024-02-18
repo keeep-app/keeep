@@ -79,8 +79,8 @@ export default async function OrganizationLayout({
         </ResizableSidebar>
         <ResizableHandle className="w-[1px] bg-gray-100 transition-colors duration-200 hover:bg-gray-300" />
         <ResizablePanel defaultSize={resizable.defaultLayout?.[1]}>
-          <header className="flex h-16 items-center gap-x-4 border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
-            <ResizableSidebarToggle className="md:hidden" />
+          <header className="flex h-16 items-center border-b border-gray-100 bg-white px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+            <ResizableSidebarToggle className="flex-shrink-0 md:hidden" />
             <Breadcrumbs
               slots={[
                 {

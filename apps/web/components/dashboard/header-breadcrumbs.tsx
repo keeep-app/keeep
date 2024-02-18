@@ -24,7 +24,7 @@ export function Breadcrumbs({ slots }: { slots: Breadcrumb[] }) {
   const items = slots.filter(({ type }) => params[type]);
 
   return (
-    <nav className="flex flex-1 items-center gap-x-2 self-stretch lg:gap-x-2">
+    <nav className="flex flex-1 items-center self-stretch lg:gap-x-2">
       {items.map(({ type, options }, i, arr) => {
         const isLastItem = i == arr.length - 1;
         let current: BreadcrumbOption | undefined = undefined;
