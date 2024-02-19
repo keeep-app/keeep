@@ -18,9 +18,9 @@ import Papa, { ParseResult } from 'papaparse';
 import { LinkedInImportContact } from '@/lib/types/import-contacts';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { importContacts } from '@/app/actions';
+import * as Sentry from '@sentry/nextjs';
 
 interface ImportContactsModalProps {
   organization: string;
@@ -37,7 +37,6 @@ export const ImportContactsModal = ({
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -47,21 +46,46 @@ export const ImportContactsModal = ({
       const file = acceptedFiles[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        // Get the binary string
-        const binaryStr = reader.result;
-        // Convert to text
-        const parsedText = new TextDecoder().decode(binaryStr as ArrayBuffer);
-        // Parse the CSV
-        Papa.parse(parsedText, {
-          header: true,
-          skipEmptyLines: true,
-          complete: function (results: ParseResult<LinkedInImportContact>) {
-            setImportedContacts(results.data);
-          },
+      reader.onabort = () => {
+        Sentry.captureMessage(
+          'file reading was aborted when importing contacts'
+        );
+        toast({
+          title: 'File reading aborted',
         });
+      };
+      reader.onerror = () => {
+        Sentry.captureMessage(
+          'file reading has failed when importing contacts'
+        );
+        toast({
+          title: 'File reading failed',
+          description:
+            'Please try again. If the issue persists, please contact the support.',
+        });
+      };
+      reader.onload = () => {
+        try {
+          // Get the binary string
+          const binaryStr = reader.result;
+          // Convert to text
+          const parsedText = new TextDecoder().decode(binaryStr as ArrayBuffer);
+          // Parse the CSV
+          Papa.parse(parsedText, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function (results: ParseResult<LinkedInImportContact>) {
+              setImportedContacts(results.data);
+            },
+          });
+        } catch (error) {
+          Sentry.captureException(error);
+          toast({
+            title: 'Could not parse the file',
+            description:
+              'An error occurred while parsing the file. Make sure the format is correct and try again.',
+          });
+        }
       };
       reader.readAsArrayBuffer(file);
     },
