@@ -9,6 +9,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { getBaseUrl } from '@/lib/utils';
 import * as Sentry from '@sentry/nextjs';
 import { headers } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -171,6 +172,61 @@ export async function submitWaitlistForm(
       return {
         error: null,
         data: newWaitlistEntry,
+      };
+    }
+  );
+}
+
+export async function deleteContacts(
+  contactIds: string[],
+  orgSlug: string,
+  listSlug: string
+) {
+  return await Sentry.withServerActionInstrumentation(
+    'deleteContactsAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const deletedContacts = await prisma.contact.deleteMany({
+        where: {
+          externalId: {
+            in: contactIds,
+          },
+          organization: {
+            members: { some: { id: user.id } },
+          },
+        },
+      });
+
+      if (!deletedContacts) {
+        return {
+          error: {
+            message: 'Unable to delete contacts',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${orgSlug}/${listSlug}`);
+
+      return {
+        error: null,
+        data: deletedContacts,
       };
     }
   );
