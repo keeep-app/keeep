@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { importContacts } from '@/app/actions';
 
 interface ImportContactsModalProps {
   organization: string;
@@ -73,17 +74,17 @@ export const ImportContactsModal = ({
     maxFiles: 1,
   });
 
-  const importContacts = async () => {
+  const importUploadedContacts = async () => {
     try {
       setLoading(true);
-      await fetch('/api/contacts/import', {
-        method: 'POST',
-        body: JSON.stringify({
-          contacts: importedContacts,
-          orgSlug: organization,
-          listSlug: list,
-        }),
-      });
+      const { error } = await importContacts(
+        importedContacts,
+        organization,
+        list
+      );
+      if (error) {
+        throw new Error(error.message);
+      }
       setImportedContacts([]);
       setLoading(false);
       setModalOpen(false);
@@ -91,8 +92,6 @@ export const ImportContactsModal = ({
         title: 'Contacts imported',
         description: 'The contacts were successfully imported',
       });
-      // Fixme: We should probably use other revalidation strategies
-      router.refresh();
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -179,7 +178,7 @@ export const ImportContactsModal = ({
           <Button
             type="submit"
             disabled={!importedContacts.length || loading}
-            onClick={importContacts}
+            onClick={importUploadedContacts}
           >
             Import
           </Button>

@@ -10,6 +10,7 @@ import { getBaseUrl } from '@/lib/utils';
 import * as Sentry from '@sentry/nextjs';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+import { LinkedInImportContact } from '@/lib/types/import-contacts';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -227,6 +228,110 @@ export async function deleteContacts(
       return {
         error: null,
         data: deletedContacts,
+      };
+    }
+  );
+}
+
+export async function importContacts(
+  contacts: LinkedInImportContact[],
+  orgSlug: string,
+  listSlug: string
+) {
+  return await Sentry.withServerActionInstrumentation(
+    'importContactsAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findUnique({
+        where: { slug: orgSlug, members: { some: { id: user.id } } },
+        include: { attributes: true, lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = organization.lists.find(list => list.slug === listSlug);
+
+      if (!list) {
+        return { error: { message: 'List not found' }, data: null };
+      }
+
+      const attributes = organization.attributes;
+
+      const firstNameAttribute = attributes.find(
+        attribute => attribute.internalSlug === 'first-name'
+      );
+      const lastNameAttribute = attributes.find(
+        attribute => attribute.internalSlug === 'last-name'
+      );
+      const emailAttribute = attributes.find(
+        attribute => attribute.internalSlug === 'email'
+      );
+
+      if (!firstNameAttribute || !lastNameAttribute || !emailAttribute) {
+        return {
+          error: {
+            message: 'Missing required attributes',
+          },
+          data: null,
+        };
+      }
+
+      const contactsAttributesToCreate = contacts.map(contact => {
+        return {
+          [emailAttribute.id]: contact['Email Address'],
+          [firstNameAttribute.id]: contact['First Name'],
+          [lastNameAttribute.id]: contact['Last Name'],
+        };
+      });
+
+      const updatedList = await prisma.list.update({
+        where: {
+          id: list.id,
+        },
+        data: {
+          contacts: {
+            create: contactsAttributesToCreate.map(attributes => {
+              return {
+                attributes,
+                organizationId: organization.id,
+              };
+            }),
+          },
+        },
+      });
+
+      if (!updatedList) {
+        return {
+          error: {
+            message: 'Unable to import contacts',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${orgSlug}/${listSlug}`);
+
+      return {
+        error: null,
+        data: updatedList,
       };
     }
   );
