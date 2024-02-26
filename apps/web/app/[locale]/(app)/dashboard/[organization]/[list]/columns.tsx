@@ -109,7 +109,7 @@ export const getContactColumns = (
             return (
               <span
                 className={cn(
-                  'rounded-full px-3 py-1.5',
+                  'inline-block max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap rounded-full px-3 py-1.5',
                   colorConfig[selectedOption.color as keyof typeof colorConfig]
                 )}
               >

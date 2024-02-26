@@ -9,7 +9,6 @@
   },
   "Sidebar": {
     "header": {
-      "dashboard": "Dashboard",
       "open-sidebar": "Open sidebar",
       "close-sidebar": "Close sidebar"
     },
