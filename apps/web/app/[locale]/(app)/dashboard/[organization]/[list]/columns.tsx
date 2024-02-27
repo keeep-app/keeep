@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Table } from '@tanstack/react-table';
 import { Download, MoreHorizontal, Trash } from 'lucide-react';
 import { DataTableColumnHeader } from '@/components/data-table/column-header';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -27,10 +27,15 @@ const colorConfig = {
   red: 'bg-red-100 text-red-900',
 };
 
+export type TableProps = {
+  id: string;
+} & CustomerAttributes;
+
 export const getContactColumns = (
-  attributeConfig: Attribute[]
-): ColumnDef<CustomerAttributes>[] => {
-  let columns: ColumnDef<CustomerAttributes>[] = [];
+  attributeConfig: Attribute[],
+  deleteContacts: (_: Table<TableProps>) => void
+): ColumnDef<TableProps>[] => {
+  let columns: ColumnDef<TableProps>[] = [];
 
   columns.push({
     id: 'select',
@@ -171,7 +176,7 @@ export const getContactColumns = (
                 Export to CSV
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem disabled>
+              <DropdownMenuItem onClick={() => deleteContacts(table)}>
                 <Trash className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>

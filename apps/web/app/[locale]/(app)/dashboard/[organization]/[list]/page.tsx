@@ -45,6 +45,8 @@ export default async function ListPage({
           <ContactTable
             contacts={contactsResult.contacts}
             attributes={attributesResult.attributes}
+            list={list}
+            organization={organization}
           />
         </div>
         <ScrollBar orientation="horizontal" />

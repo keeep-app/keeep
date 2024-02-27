@@ -106,14 +106,11 @@ export const OnboardingDialog: React.FC = () => {
 
   const router = useRouter();
 
-  const { supabase } = useSupabase();
+  const { supabase, user } = useSupabase();
 
   const onFileUpload = async () => {
-    const userData = await supabase?.auth.getUser();
-    const user = userData?.data.user;
     const avatarFile = getValues('orgAvatar')?.[0];
-
-    const avatarFileExtension = avatarFile?.name.split('.').pop();
+    const avatarFileExtension = avatarFile?.name?.split('.').pop();
 
     if (!avatarFile || !supabase || !user || !avatarFileExtension) return;
 
