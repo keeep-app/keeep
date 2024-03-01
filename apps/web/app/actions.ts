@@ -11,6 +11,7 @@ import * as Sentry from '@sentry/nextjs';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { LinkedInImportContact } from '@/lib/types/import-contacts';
+import { getRandomEmoji } from '@/lib/utils/getRandomEmoji';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -332,6 +333,64 @@ export async function importContacts(
       return {
         error: null,
         data: updatedList,
+      };
+    }
+  );
+}
+
+export async function createList() {
+  return await Sentry.withServerActionInstrumentation(
+    'createListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = await prisma.list.create({
+        data: {
+          name: 'New List',
+          organizationId: organization.id,
+          slug: nanoid(),
+          icon: getRandomEmoji(),
+        },
+      });
+
+      if (!list) {
+        return {
+          error: {
+            message: 'Unable to create list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}/${list.slug}`);
+
+      return {
+        error: null,
+        data: list,
       };
     }
   );

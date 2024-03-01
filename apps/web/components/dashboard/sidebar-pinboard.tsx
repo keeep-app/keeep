@@ -8,6 +8,8 @@ import { Button } from '../ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import { useResizable } from './sidebar-resizable';
 import { forwardRef } from 'react';
+import { PlusIcon } from 'lucide-react';
+import { createList } from '@/app/actions';
 
 type PinboardListItemButton = {
   icon: React.ReactNode;
@@ -63,6 +65,30 @@ export function PinboardLists({ sections }: PinboardListsProps) {
             </div>
           );
         })}
+        {isCollapsed() ? (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button asChild variant="ghost" className="w-full">
+                Create new list
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="flex items-center gap-4">
+              <span className="ml-auto text-muted-foreground">
+                Create new list
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <Button
+            size="xs"
+            variant="ghost"
+            className="flex w-full items-center justify-start gap-1"
+            onClick={() => createList()}
+          >
+            <PlusIcon className="h-4 w-4" />
+            New list
+          </Button>
+        )}
       </div>
     </div>
   );
