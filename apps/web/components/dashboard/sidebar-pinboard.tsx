@@ -7,9 +7,16 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import { useResizable } from './sidebar-resizable';
-import { forwardRef } from 'react';
-import { PlusIcon } from 'lucide-react';
-import { createList } from '@/app/actions';
+import { forwardRef, useState } from 'react';
+import { MoreHorizontal, PlusIcon } from 'lucide-react';
+import { createList, updateList } from '@/app/actions';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 type PinboardListItemButton = {
   icon: React.ReactNode;
@@ -100,6 +107,9 @@ const PinboardListButton = forwardRef<
 >(({ item, ...rest }, ref) => {
   const { isCollapsed } = useResizable();
   const segment = useSelectedLayoutSegment();
+  const [listName, setListName] = useState(item.name);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const { toast } = useToast();
 
   return (
     <div ref={ref} className="flex justify-center space-y-1" {...rest}>
@@ -114,12 +124,41 @@ const PinboardListButton = forwardRef<
             : 'inline-block justify-start overflow-hidden overflow-ellipsis whitespace-nowrap px-4 py-2'
         )}
       >
-        <Link href={item.href}>
-          <span className={cn('text-base', isCollapsed() ? 'pr-0' : 'pr-1')}>
-            {item.icon}
-          </span>
-          {!isCollapsed() && <span>{item.name}</span>}
-        </Link>
+        <div className="flex w-full items-center justify-between">
+          <Link href={item.href}>
+            <span className={cn('text-base', isCollapsed() ? 'pr-0' : 'pr-2')}>
+              {item.icon}
+            </span>
+            {!isCollapsed() && <span>{item.name}</span>}
+          </Link>
+          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+            <PopoverTrigger>
+              <MoreHorizontal className="h-4 w-4" />
+            </PopoverTrigger>
+            <PopoverContent side="right">
+              <Input
+                autoFocus
+                value={listName}
+                onChange={event => setListName(event.target.value)}
+                onKeyDown={async event => {
+                  if (event.code === 'Enter') {
+                    event.preventDefault();
+                    const { error } = await updateList(item.slug, listName);
+                    if (error) {
+                      toast({
+                        title: "Couldn't update list",
+                        description:
+                          'An error occurred while updating the name. Please try again later.',
+                      });
+                    } else {
+                      setPopoverOpen(false);
+                    }
+                  }
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </Button>
     </div>
   );

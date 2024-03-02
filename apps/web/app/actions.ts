@@ -395,3 +395,67 @@ export async function createList() {
     }
   );
 }
+
+export async function updateList(slug: string, name: string) {
+  return await Sentry.withServerActionInstrumentation(
+    'updateListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = organization.lists.find(list => list.slug === slug);
+
+      if (!list) {
+        return { error: { message: 'List not found' }, data: null };
+      }
+
+      const updatedList = await prisma.list.update({
+        where: {
+          id: list.id,
+        },
+        data: {
+          name,
+        },
+      });
+
+      if (!updatedList) {
+        return {
+          error: {
+            message: 'Unable to update list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}/${list.slug}`);
+
+      return {
+        error: null,
+        data: updatedList,
+      };
+    }
+  );
+}
