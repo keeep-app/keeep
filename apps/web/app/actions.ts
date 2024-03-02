@@ -396,7 +396,13 @@ export async function createList(name?: string) {
   );
 }
 
-export async function updateList(slug: string, name: string) {
+type ListUpdateOptions = {
+  name?: string;
+  icon?: string;
+  favorite?: boolean;
+};
+
+export async function updateList(slug: string, updateData: ListUpdateOptions) {
   return await Sentry.withServerActionInstrumentation(
     'updateListAction',
     {
@@ -437,7 +443,7 @@ export async function updateList(slug: string, name: string) {
           id: list.id,
         },
         data: {
-          name,
+          ...updateData,
         },
       });
 

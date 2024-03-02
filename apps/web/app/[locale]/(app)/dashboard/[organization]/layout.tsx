@@ -48,6 +48,22 @@ export default async function OrganizationLayout({
 
   if (!current) notFound();
 
+  const allListSections = current.lists
+    .filter(list => !list.favorite)
+    .map(list => ({
+      ...list,
+      name: list.name,
+      href: `/dashboard/${current.slug}/${list.slug}`,
+    }));
+
+  const favoriteListSections = current.lists
+    .filter(list => list.favorite)
+    .map(list => ({
+      ...list,
+      name: list.name,
+      href: `/dashboard/${current.slug}/${list.slug}`,
+    }));
+
   return (
     <NextIntlClientProvider messages={pick(messages, 'Sidebar')}>
       <ResizableSidebarGroup
@@ -63,15 +79,20 @@ export default async function OrganizationLayout({
           </div>
           <nav className="flex flex-1 flex-col">
             <PinboardLists
+              title={messages.Sidebar.sections.people}
+              count={current._count.contacts}
               sections={[
+                ...(favoriteListSections.length > 0
+                  ? [
+                      {
+                        title: 'Favorites',
+                        items: favoriteListSections,
+                      },
+                    ]
+                  : []),
                 {
-                  title: messages.Sidebar.sections.people,
-                  count: current._count.contacts,
-                  items: current.lists.map(list => ({
-                    ...list,
-                    name: list.name,
-                    href: `/dashboard/${current.slug}/${list.slug}`,
-                  })),
+                  title: 'My lists',
+                  items: allListSections,
                 },
               ]}
             />

@@ -33,7 +33,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
 type PinboardListItemButton = {
@@ -44,59 +43,67 @@ type PinboardListItemButton = {
 };
 
 type PinboardListsProps = {
+  title: string;
+  count: number;
   sections: {
     title: string;
-    count: number;
     items: PinboardListItemButton[];
   }[];
 };
 
-export function PinboardLists({ sections }: PinboardListsProps) {
+export function PinboardLists({ title, count, sections }: PinboardListsProps) {
   const { isCollapsed } = useResizable();
 
   return (
     <div className="pb-12">
       <div className={cn('space-y-1.5 p-4', isCollapsed() ? 'px-1' : '')}>
-        {sections.map(section => {
-          return (
-            <div key={section.title}>
-              {!isCollapsed() && (
-                <h2 className="mb-4 flex items-center justify-between font-accent text-lg font-semibold">
-                  {section.title}
-                  <Badge variant="accent" tabular="numeric">
-                    {section.count}
-                  </Badge>
-                </h2>
-              )}
-              {section.items.map(item => {
-                return isCollapsed() ? (
-                  <Tooltip key={item.slug}>
-                    <TooltipTrigger asChild>
-                      <PinboardListButton item={item} />
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="right"
-                      className="flex items-center gap-4"
-                    >
-                      <span className="ml-auto text-muted-foreground">
-                        {item.name}
-                      </span>
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  <PinboardListButton key={item.slug} item={item} />
-                );
-              })}
-            </div>
-          );
-        })}
+        {!isCollapsed() && (
+          <h2 className="mb-4 flex items-center justify-between font-accent text-lg font-semibold">
+            {title}
+            <Badge variant="accent" tabular="numeric">
+              {count}
+            </Badge>
+          </h2>
+        )}
+        <div className="flex flex-col gap-2">
+          {sections.map(section => {
+            return (
+              <div key={section.title}>
+                {!isCollapsed() && (
+                  <h3 className="mb-1 flex items-center justify-between font-accent text-sm font-semibold">
+                    {section.title}
+                  </h3>
+                )}
+                {section.items.map(item => {
+                  return isCollapsed() ? (
+                    <Tooltip key={item.slug}>
+                      <TooltipTrigger asChild>
+                        <PinboardListButton item={item} />
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="right"
+                        className="flex items-center gap-4"
+                      >
+                        <span className="ml-auto text-muted-foreground">
+                          {item.name}
+                        </span>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <PinboardListButton key={item.slug} item={item} />
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
         {isCollapsed() ? (
           <div className="px-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="inline-flex w-auto items-center justify-center px-[10px]"
+                  className="inline-flex w-auto items-center justify-center px-[10px] "
                   onClick={() => createList()}
                 >
                   <PlusIcon className="h-4 w-4" />
@@ -112,7 +119,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
         ) : (
           <Button
             variant="ghost"
-            className="flex w-full items-center justify-start gap-1 overflow-hidden overflow-ellipsis whitespace-nowrap"
+            className="flex w-full items-center justify-start gap-1 overflow-hidden overflow-ellipsis whitespace-nowrap pl-1"
             onClick={() => createList()}
           >
             <span>
@@ -137,8 +144,11 @@ const PinboardListButton = forwardRef<
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const updateListEntry = async () => {
-    const { error } = await updateList(item.slug, listName);
+  const updateListEntry = async (updateData: {
+    name?: string;
+    favorite?: boolean;
+  }) => {
+    const { error } = await updateList(item.slug, updateData);
     if (error) {
       toast({
         title: "Couldn't update list",
@@ -229,7 +239,7 @@ const PinboardListButton = forwardRef<
                       onKeyDown={async event => {
                         if (event.code === 'Enter') {
                           event.preventDefault();
-                          updateListEntry();
+                          updateListEntry({ name: listName });
                         }
                       }}
                     />
@@ -237,7 +247,11 @@ const PinboardListButton = forwardRef<
                 </CommandGroup>
                 <CommandSeparator />
                 <CommandGroup>
-                  <DropdownMenuItem>Mark as favorite</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => updateListEntry({ favorite: true })}
+                  >
+                    Mark as favorite
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={duplicateListEntry}>
                     Duplicate
                   </DropdownMenuItem>
