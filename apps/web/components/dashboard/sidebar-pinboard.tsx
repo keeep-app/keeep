@@ -9,7 +9,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import { useResizable } from './sidebar-resizable';
 import { forwardRef, useState } from 'react';
 import { MoreHorizontal, PlusIcon } from 'lucide-react';
-import { createList, updateList } from '@/app/actions';
+import { createList, deleteList, updateList } from '@/app/actions';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import {
@@ -24,6 +24,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 type PinboardListItemButton = {
   icon: React.ReactNode;
@@ -116,6 +127,7 @@ const PinboardListButton = forwardRef<
   const segment = useSelectedLayoutSegment();
   const [listName, setListName] = useState(item.name);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const updateListEntry = async () => {
@@ -138,6 +150,19 @@ const PinboardListButton = forwardRef<
         title: "Couldn't duplicate list",
         description:
           'An error occurred while duplicating the list. Please try again later.',
+      });
+    } else {
+      setPopoverOpen(false);
+    }
+  };
+
+  const deleteListEntry = async () => {
+    const { error } = await deleteList(item.slug);
+    if (error) {
+      toast({
+        title: "Couldn't delete list",
+        description:
+          'An error occurred while deleting the list. Please try again later.',
       });
     } else {
       setPopoverOpen(false);
@@ -194,13 +219,35 @@ const PinboardListButton = forwardRef<
                 </CommandGroup>
                 <CommandSeparator />
                 <CommandGroup>
-                  <DropdownMenuItem className="text-destructive">
+                  <DropdownMenuItem
+                    className="text-destructive"
+                    onClick={() => setAlertDialogOpen(true)}
+                  >
                     Delete
                   </DropdownMenuItem>
                 </CommandGroup>
               </Command>
             </DropdownMenuContent>
           </DropdownMenu>
+          <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  You want to delete list: "{item.name}"?
+                </AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogDescription>
+                Are you sure you want to delete this list? This action will not
+                remove any contacts from the list.
+              </AlertDialogDescription>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deleteListEntry}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </Button>
     </div>

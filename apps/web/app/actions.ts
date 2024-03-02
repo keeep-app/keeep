@@ -459,3 +459,64 @@ export async function updateList(slug: string, name: string) {
     }
   );
 }
+
+export const deleteList = async (slug: string) => {
+  return await Sentry.withServerActionInstrumentation(
+    'deleteListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = organization.lists.find(list => list.slug === slug);
+
+      if (!list) {
+        return { error: { message: 'List not found' }, data: null };
+      }
+
+      const deletedList = await prisma.list.delete({
+        where: {
+          id: list.id,
+        },
+      });
+
+      if (!deletedList) {
+        return {
+          error: {
+            message: 'Unable to delete list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}`);
+
+      return {
+        error: null,
+        data: deletedList,
+      };
+    }
+  );
+};
