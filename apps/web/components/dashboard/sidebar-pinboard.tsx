@@ -10,13 +10,20 @@ import { useResizable } from './sidebar-resizable';
 import { forwardRef, useState } from 'react';
 import { MoreHorizontal, PlusIcon } from 'lucide-react';
 import { createList, updateList } from '@/app/actions';
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import {
+  Command,
+  CommandSeparator,
+  CommandGroup,
+  CommandItem,
+} from '@/components/ui/command';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 type PinboardListItemButton = {
   icon: React.ReactNode;
@@ -111,6 +118,32 @@ const PinboardListButton = forwardRef<
   const [popoverOpen, setPopoverOpen] = useState(false);
   const { toast } = useToast();
 
+  const updateListEntry = async () => {
+    const { error } = await updateList(item.slug, listName);
+    if (error) {
+      toast({
+        title: "Couldn't update list",
+        description:
+          'An error occurred while updating the name. Please try again later.',
+      });
+    } else {
+      setPopoverOpen(false);
+    }
+  };
+
+  const duplicateListEntry = async () => {
+    const { error } = await createList(listName);
+    if (error) {
+      toast({
+        title: "Couldn't duplicate list",
+        description:
+          'An error occurred while duplicating the list. Please try again later.',
+      });
+    } else {
+      setPopoverOpen(false);
+    }
+  };
+
   return (
     <div ref={ref} className="flex justify-center space-y-1" {...rest}>
       <Button
@@ -131,33 +164,43 @@ const PinboardListButton = forwardRef<
             </span>
             {!isCollapsed() && <span>{item.name}</span>}
           </Link>
-          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-            <PopoverTrigger>
+          <DropdownMenu open={popoverOpen} onOpenChange={setPopoverOpen}>
+            <DropdownMenuTrigger>
               <MoreHorizontal className="h-4 w-4" />
-            </PopoverTrigger>
-            <PopoverContent side="right">
-              <Input
-                autoFocus
-                value={listName}
-                onChange={event => setListName(event.target.value)}
-                onKeyDown={async event => {
-                  if (event.code === 'Enter') {
-                    event.preventDefault();
-                    const { error } = await updateList(item.slug, listName);
-                    if (error) {
-                      toast({
-                        title: "Couldn't update list",
-                        description:
-                          'An error occurred while updating the name. Please try again later.',
-                      });
-                    } else {
-                      setPopoverOpen(false);
-                    }
-                  }
-                }}
-              />
-            </PopoverContent>
-          </Popover>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="right">
+              <Command>
+                <CommandGroup>
+                  <CommandItem>
+                    <Input
+                      className="h-8"
+                      value={listName}
+                      onChange={event => setListName(event.target.value)}
+                      onKeyDown={async event => {
+                        if (event.code === 'Enter') {
+                          event.preventDefault();
+                          updateListEntry();
+                        }
+                      }}
+                    />
+                  </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup>
+                  <DropdownMenuItem>Mark as favorite</DropdownMenuItem>
+                  <DropdownMenuItem onClick={duplicateListEntry}>
+                    Duplicate
+                  </DropdownMenuItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup>
+                  <DropdownMenuItem className="text-destructive">
+                    Delete
+                  </DropdownMenuItem>
+                </CommandGroup>
+              </Command>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </Button>
     </div>

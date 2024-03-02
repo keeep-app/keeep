@@ -338,7 +338,7 @@ export async function importContacts(
   );
 }
 
-export async function createList() {
+export async function createList(name?: string) {
   return await Sentry.withServerActionInstrumentation(
     'createListAction',
     {
@@ -370,7 +370,7 @@ export async function createList() {
 
       const list = await prisma.list.create({
         data: {
-          name: 'New List',
+          name: name || 'New List',
           organizationId: organization.id,
           slug: nanoid(),
           icon: getRandomEmoji(),
