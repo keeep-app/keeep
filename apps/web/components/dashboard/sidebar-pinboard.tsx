@@ -56,7 +56,7 @@ export function PinboardLists({ sections }: PinboardListsProps) {
 
   return (
     <div className="pb-12">
-      <div className={cn('space-y-4 p-4', isCollapsed() ? 'px-1' : '')}>
+      <div className={cn('space-y-1.5 p-4', isCollapsed() ? 'px-1' : '')}>
         {sections.map(section => {
           return (
             <div key={section.title}>
@@ -91,27 +91,34 @@ export function PinboardLists({ sections }: PinboardListsProps) {
           );
         })}
         {isCollapsed() ? (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button asChild variant="ghost" className="w-full">
-                Create new list
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="flex items-center gap-4">
-              <span className="ml-auto text-muted-foreground">
-                Create new list
-              </span>
-            </TooltipContent>
-          </Tooltip>
+          <div className="px-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="inline-flex w-auto items-center justify-center px-[10px]"
+                  onClick={() => createList()}
+                >
+                  <PlusIcon className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="flex items-center gap-4">
+                <span className="ml-auto text-muted-foreground">
+                  Create new list
+                </span>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         ) : (
           <Button
-            size="xs"
             variant="ghost"
-            className="flex w-full items-center justify-start gap-1"
+            className="flex w-full items-center justify-start gap-1 overflow-hidden overflow-ellipsis whitespace-nowrap"
             onClick={() => createList()}
           >
-            <PlusIcon className="h-4 w-4" />
-            New list
+            <span>
+              <PlusIcon className="h-5 w-5" />
+            </span>
+            <span>New list</span>
           </Button>
         )}
       </div>
@@ -170,7 +177,11 @@ const PinboardListButton = forwardRef<
   };
 
   return (
-    <div ref={ref} className="flex justify-center space-y-1" {...rest}>
+    <div
+      ref={ref}
+      className="group/item flex justify-center space-y-1"
+      {...rest}
+    >
       <Button
         asChild
         variant="ghost"
@@ -178,19 +189,33 @@ const PinboardListButton = forwardRef<
           'w-full',
           item.slug === segment ? 'bg-accent' : '',
           isCollapsed()
-            ? 'inline-flex w-auto items-center justify-center px-[10px]'
+            ? 'flex w-auto items-center justify-center px-[10px]'
             : 'inline-block justify-start overflow-hidden overflow-ellipsis whitespace-nowrap px-4 py-2'
         )}
       >
-        <div className="flex w-full items-center justify-between">
-          <Link href={item.href}>
-            <span className={cn('text-base', isCollapsed() ? 'pr-0' : 'pr-2')}>
+        <div className="flex w-auto flex-row items-center justify-between">
+          <Link href={item.href} className="flex flex-row items-center">
+            <span
+              className={cn(
+                'text-center text-base',
+                isCollapsed() ? 'pr-0' : 'pr-2'
+              )}
+            >
               {item.icon}
             </span>
-            {!isCollapsed() && <span>{item.name}</span>}
+            {!isCollapsed() && (
+              <span className="block max-w-[110px] overflow-hidden text-ellipsis group-hover/item:w-[80px]">
+                {item.name}
+              </span>
+            )}
           </Link>
           <DropdownMenu open={popoverOpen} onOpenChange={setPopoverOpen}>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              className={cn('invisible', {
+                'group-hover/item:visible': !isCollapsed(),
+                'hidden w-0': isCollapsed(),
+              })}
+            >
               <MoreHorizontal className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right">
@@ -229,27 +254,27 @@ const PinboardListButton = forwardRef<
               </Command>
             </DropdownMenuContent>
           </DropdownMenu>
-          <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  You want to delete list: "{item.name}"?
-                </AlertDialogTitle>
-              </AlertDialogHeader>
-              <AlertDialogDescription>
-                Are you sure you want to delete this list? This action will not
-                remove any contacts from the list.
-              </AlertDialogDescription>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={deleteListEntry}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </Button>
+      <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              You want to delete list: "{item.name}"?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Are you sure you want to delete this list? This action will not
+            remove any contacts from the list.
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteListEntry}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 });
