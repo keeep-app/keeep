@@ -34,6 +34,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import EmojiPicker from 'emoji-picker-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 type PinboardListItemButton = {
   icon: React.ReactNode;
@@ -142,11 +148,13 @@ const PinboardListButton = forwardRef<
   const [listName, setListName] = useState(item.name);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [emojiPopoverOpen, setEmojiPopoverOpen] = useState(false);
   const { toast } = useToast();
 
   const updateListEntry = async (updateData: {
     name?: string;
     favorite?: boolean;
+    icon?: string;
   }) => {
     const { error } = await updateList(item.slug, updateData);
     if (error) {
@@ -157,6 +165,7 @@ const PinboardListButton = forwardRef<
       });
     } else {
       setPopoverOpen(false);
+      setEmojiPopoverOpen(false);
     }
   };
 
@@ -204,21 +213,35 @@ const PinboardListButton = forwardRef<
         )}
       >
         <div className="flex w-auto flex-row items-center justify-between">
-          <Link href={item.href} className="flex flex-row items-center">
-            <span
-              className={cn(
-                'text-center text-base',
-                isCollapsed() ? 'pr-0' : 'pr-2'
+          <div className="flex flex-row items-center">
+            <Popover open={emojiPopoverOpen} onOpenChange={setEmojiPopoverOpen}>
+              <PopoverTrigger>
+                <span
+                  className={cn(
+                    'text-center text-base',
+                    isCollapsed() ? 'pr-0' : 'pr-2'
+                  )}
+                >
+                  {item.icon}
+                </span>
+              </PopoverTrigger>
+              <PopoverContent side="right" className="w-fit">
+                <EmojiPicker
+                  style={{ border: 'none' }}
+                  onEmojiClick={async obj => {
+                    await updateListEntry({ icon: obj.emoji });
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+            <Link href={item.href}>
+              {!isCollapsed() && (
+                <span className="block max-w-[110px] overflow-hidden text-ellipsis group-hover/item:w-[80px]">
+                  {item.name}
+                </span>
               )}
-            >
-              {item.icon}
-            </span>
-            {!isCollapsed() && (
-              <span className="block max-w-[110px] overflow-hidden text-ellipsis group-hover/item:w-[80px]">
-                {item.name}
-              </span>
-            )}
-          </Link>
+            </Link>
+          </div>
           <DropdownMenu open={popoverOpen} onOpenChange={setPopoverOpen}>
             <DropdownMenuTrigger
               className={cn('invisible', {
