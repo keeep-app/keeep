@@ -17,3 +17,4 @@ jobs:
         working-directory: ./apps/web
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL_PROD }}
