@@ -216,13 +216,11 @@ const PinboardListButton = forwardRef<
       >
         <div className="flex w-auto flex-row items-center justify-between">
           <Popover open={emojiPopoverOpen} onOpenChange={setEmojiPopoverOpen}>
-            <PopoverTrigger disabled={isCollapsed()}>
-              <span
-                className={cn(
-                  'rounded-md p-1 text-center text-base',
-                  isCollapsed() ? 'mr-0' : 'mr-1.5 hover:bg-[#dfdfe2]'
-                )}
-              >
+            <PopoverTrigger
+              disabled={isCollapsed()}
+              className={cn({ hidden: isCollapsed() })}
+            >
+              <span className="mr-1.5 rounded-md p-1 text-center text-base hover:bg-[#dfdfe2]">
                 {item.icon}
               </span>
             </PopoverTrigger>
@@ -236,9 +234,13 @@ const PinboardListButton = forwardRef<
             </PopoverContent>
           </Popover>
           <Link href={item.href} className="flex-1">
-            {!isCollapsed() && (
+            {!isCollapsed() ? (
               <span className="block max-w-[110px] flex-1 overflow-hidden text-ellipsis group-hover/item:w-[80px]">
                 {item.name}
+              </span>
+            ) : (
+              <span className="rounded-md p-1 text-center text-base">
+                {item.icon}
               </span>
             )}
           </Link>
