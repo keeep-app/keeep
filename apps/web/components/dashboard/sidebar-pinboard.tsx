@@ -111,7 +111,7 @@ export function PinboardLists({ title, count, sections }: PinboardListsProps) {
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="inline-flex w-auto items-center justify-center px-[10px] "
+                  className="inline-flex w-full items-center justify-center px-[10px] "
                   onClick={() => createList()}
                 >
                   <PlusIcon className="h-4 w-4" />
