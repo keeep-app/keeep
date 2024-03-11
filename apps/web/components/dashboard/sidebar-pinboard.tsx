@@ -259,7 +259,7 @@ const PinboardListButton = forwardRef<
               <Command>
                 <CommandGroup>
                   <CommandItem>
-                    <div className="flex flex-row items-center gap-2">
+                    <div className="flex flex-row items-center gap-1">
                       <Input
                         className="h-8"
                         value={listName}
