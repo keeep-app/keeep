@@ -80,25 +80,27 @@ export function PinboardLists({ title, count, sections }: PinboardListsProps) {
                     {section.title}
                   </h3>
                 )}
-                {section.items.map(item => {
-                  return isCollapsed() ? (
-                    <Tooltip key={item.slug}>
-                      <TooltipTrigger asChild>
-                        <PinboardListButton item={item} />
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="right"
-                        className="flex items-center gap-4"
-                      >
-                        <span className="ml-auto text-muted-foreground">
-                          {item.name}
-                        </span>
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <PinboardListButton key={item.slug} item={item} />
-                  );
-                })}
+                <div className="flex flex-col gap-0.5">
+                  {section.items.map(item => {
+                    return isCollapsed() ? (
+                      <Tooltip key={item.slug}>
+                        <TooltipTrigger asChild>
+                          <PinboardListButton item={item} />
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="right"
+                          className="flex items-center gap-4"
+                        >
+                          <span className="ml-auto text-muted-foreground">
+                            {item.name}
+                          </span>
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <PinboardListButton key={item.slug} item={item} />
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
@@ -213,39 +215,39 @@ const PinboardListButton = forwardRef<
         )}
       >
         <div className="flex w-auto flex-row items-center justify-between">
-          <div className="flex flex-row items-center">
-            <Popover open={emojiPopoverOpen} onOpenChange={setEmojiPopoverOpen}>
-              <PopoverTrigger>
-                <span
-                  className={cn(
-                    'text-center text-base',
-                    isCollapsed() ? 'pr-0' : 'pr-2'
-                  )}
-                >
-                  {item.icon}
-                </span>
-              </PopoverTrigger>
-              <PopoverContent side="right" className="w-fit">
-                <EmojiPicker
-                  style={{ border: 'none' }}
-                  onEmojiClick={async obj => {
-                    await updateListEntry({ icon: obj.emoji });
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-            <Link href={item.href}>
-              {!isCollapsed() && (
-                <span className="block max-w-[110px] overflow-hidden text-ellipsis group-hover/item:w-[80px]">
-                  {item.name}
-                </span>
-              )}
-            </Link>
-          </div>
+          <Popover open={emojiPopoverOpen} onOpenChange={setEmojiPopoverOpen}>
+            <PopoverTrigger disabled={isCollapsed()}>
+              <span
+                className={cn(
+                  'rounded-md p-1 text-center text-base',
+                  isCollapsed() ? 'mr-0' : 'mr-1.5 hover:bg-[#dfdfe2]'
+                )}
+              >
+                {item.icon}
+              </span>
+            </PopoverTrigger>
+            <PopoverContent side="right" className="w-fit">
+              <EmojiPicker
+                style={{ border: 'none' }}
+                onEmojiClick={async obj => {
+                  await updateListEntry({ icon: obj.emoji });
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+          <Link href={item.href} className="flex-1">
+            {!isCollapsed() && (
+              <span className="block max-w-[110px] flex-1 overflow-hidden text-ellipsis group-hover/item:w-[80px]">
+                {item.name}
+              </span>
+            )}
+          </Link>
+
           <DropdownMenu open={popoverOpen} onOpenChange={setPopoverOpen}>
             <DropdownMenuTrigger
               className={cn('invisible', {
-                'group-hover/item:visible': !isCollapsed(),
+                'rounded-md p-1 hover:bg-[#dfdfe2] group-hover/item:visible':
+                  !isCollapsed(),
                 'hidden w-0': isCollapsed(),
               })}
             >
