@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import { useResizable } from './sidebar-resizable';
 import { forwardRef, useState } from 'react';
-import { MoreHorizontal, PlusIcon } from 'lucide-react';
+import { MoreHorizontal, PlusIcon, SaveIcon } from 'lucide-react';
 import { createList, deleteList, updateList } from '@/app/actions';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
@@ -257,34 +257,57 @@ const PinboardListButton = forwardRef<
               <Command>
                 <CommandGroup>
                   <CommandItem>
-                    <Input
-                      className="h-8"
-                      value={listName}
-                      onChange={event => setListName(event.target.value)}
-                      onKeyDown={async event => {
-                        if (event.code === 'Enter') {
-                          event.preventDefault();
-                          updateListEntry({ name: listName });
-                        }
-                      }}
-                    />
+                    <div className="flex flex-row items-center gap-2">
+                      <Input
+                        className="h-8"
+                        value={listName}
+                        onChange={event => setListName(event.target.value)}
+                        onKeyDown={async event => {
+                          if (event.code === 'Enter') {
+                            event.preventDefault();
+                            updateListEntry({ name: listName });
+                          }
+                        }}
+                      />
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="xs"
+                            disabled={listName === item.name}
+                            onClick={() => {
+                              updateListEntry({ name: listName });
+                            }}
+                          >
+                            <SaveIcon className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          Save name changes
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                   </CommandItem>
                 </CommandGroup>
                 <CommandSeparator />
                 <CommandGroup>
                   <DropdownMenuItem
+                    className="hover:cursor-pointer"
                     onClick={() => updateListEntry({ favorite: true })}
                   >
                     Mark as favorite
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={duplicateListEntry}>
+                  <DropdownMenuItem
+                    className="hover:cursor-pointer"
+                    onClick={duplicateListEntry}
+                  >
                     Duplicate
                   </DropdownMenuItem>
                 </CommandGroup>
                 <CommandSeparator />
                 <CommandGroup>
                   <DropdownMenuItem
-                    className="text-destructive"
+                    className="text-destructive hover:cursor-pointer"
                     onClick={() => setAlertDialogOpen(true)}
                   >
                     Delete
