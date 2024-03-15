@@ -7,7 +7,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import { useResizable } from './sidebar-resizable';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { MoreHorizontal, PlusIcon, SaveIcon } from 'lucide-react';
 import { createList, deleteList, updateList } from '@/app/actions';
 import { Input } from '@/components/ui/input';
@@ -153,6 +153,10 @@ const PinboardListButton = forwardRef<
   const [emojiPopoverOpen, setEmojiPopoverOpen] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    if (popoverOpen) setListName(item.name);
+  }, [popoverOpen]);
+
   const updateListEntry = async (updateData: {
     name?: string;
     favorite?: boolean;
@@ -259,7 +263,7 @@ const PinboardListButton = forwardRef<
               <Command>
                 <CommandGroup>
                   <CommandItem>
-                    <div className="flex flex-row items-center gap-1">
+                    <div className="flex flex-row items-center gap-2">
                       <Input
                         className="h-8"
                         value={listName}
