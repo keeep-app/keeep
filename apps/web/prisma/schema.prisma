@@ -86,6 +86,7 @@ model List {
   slug           String       @unique
   description    String?
   icon           String?
+  favorite       Boolean      @default(false)
   contacts       Contact[]
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId Int

@@ -11,6 +11,7 @@ import * as Sentry from '@sentry/nextjs';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { LinkedInImportContact } from '@/lib/types/import-contacts';
+import { getRandomEmoji } from '@/lib/utils/getRandomEmoji';
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -336,3 +337,192 @@ export async function importContacts(
     }
   );
 }
+
+export async function createList(name?: string) {
+  return await Sentry.withServerActionInstrumentation(
+    'createListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = await prisma.list.create({
+        data: {
+          name: name || 'New List',
+          organizationId: organization.id,
+          slug: nanoid(),
+          icon: getRandomEmoji(),
+        },
+      });
+
+      if (!list) {
+        return {
+          error: {
+            message: 'Unable to create list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}/${list.slug}`);
+
+      return {
+        error: null,
+        data: list,
+      };
+    }
+  );
+}
+
+type ListUpdateOptions = {
+  name?: string;
+  icon?: string;
+  favorite?: boolean;
+};
+
+export async function updateList(slug: string, updateData: ListUpdateOptions) {
+  return await Sentry.withServerActionInstrumentation(
+    'updateListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = organization.lists.find(list => list.slug === slug);
+
+      if (!list) {
+        return { error: { message: 'List not found' }, data: null };
+      }
+
+      const updatedList = await prisma.list.update({
+        where: {
+          id: list.id,
+        },
+        data: {
+          ...updateData,
+        },
+      });
+
+      if (!updatedList) {
+        return {
+          error: {
+            message: 'Unable to update list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}/${list.slug}`);
+
+      return {
+        error: null,
+        data: updatedList,
+      };
+    }
+  );
+}
+
+export const deleteList = async (slug: string) => {
+  return await Sentry.withServerActionInstrumentation(
+    'deleteListAction',
+    {
+      headers: headers(),
+      recordResponse: true,
+    },
+    async () => {
+      const supabase = getSupabaseServerActionClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        return {
+          error: {
+            message: 'Not authenticated',
+          },
+          data: null,
+        };
+      }
+
+      const organization = await prisma.organization.findFirst({
+        where: { members: { some: { id: user.id } } },
+        include: { lists: true },
+      });
+
+      if (!organization) {
+        return { error: { message: 'Organization not found' }, data: null };
+      }
+
+      const list = organization.lists.find(list => list.slug === slug);
+
+      if (!list) {
+        return { error: { message: 'List not found' }, data: null };
+      }
+
+      const deletedList = await prisma.list.delete({
+        where: {
+          id: list.id,
+        },
+      });
+
+      if (!deletedList) {
+        return {
+          error: {
+            message: 'Unable to delete list',
+          },
+          data: null,
+        };
+      }
+
+      revalidatePath(`/dashboard/${organization.slug}`);
+
+      return {
+        error: null,
+        data: deletedList,
+      };
+    }
+  );
+};

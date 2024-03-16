@@ -10,9 +10,9 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
     "@repo/prettier-config": "*",
-    "turbo": "latest"
+    "@repo/typescript-config": "*",
+    "turbo": "^1.12.4"
   },
   "packageManager": "pnpm@8.9.0",
   "prettier": "@repo/prettier-config/base.js",
