@@ -9,8 +9,14 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en',
 });
 
-const publicPages = ['/', '/login', '/register', '/waitlist'];
-
+const publicPages = [
+  '/',
+  '/login',
+  '/register',
+  '/waitlist',
+  '/forgot-password',
+];
+const authPages = ['/login', '/register', '/forgot-password'];
 // eslint-disable-next-line no-unused-vars
 export async function middleware(request: NextRequest, response: NextResponse) {
   const supabase = createServerClient(
@@ -53,10 +59,9 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   );
 
   const isPublicPage = publicPathnameRegex.test(request.nextUrl.pathname);
-  const isLoginPage = request.nextUrl.pathname === '/login';
-  const isRegisterPage = request.nextUrl.pathname === '/register';
+  const isAuthPage = authPages.includes(request.nextUrl.pathname);
 
-  if (user && (isLoginPage || isRegisterPage)) {
+  if (user && isAuthPage) {
     return NextResponse.redirect(new URL('/dashboard', request.nextUrl).href);
   } else if (!user && !isPublicPage) {
     return NextResponse.redirect(new URL('/login', request.nextUrl).href);
