@@ -13,11 +13,17 @@ import { ResetPasswordForm } from './ResetPasswordForm';
 
 export default function ForgotPasswordPage({
   params: { locale },
+  searchParams,
 }: LocalePageProps) {
   unstable_setRequestLocale(locale);
 
   const t = useTranslations('ForgotPasswordPage');
   const messages = useMessages() as IntlMessages;
+  const email = searchParams.email;
+
+  if (typeof email !== 'string' && typeof email !== 'undefined') {
+    throw new Error('Invalid nonce');
+  }
 
   return (
     <>
@@ -41,7 +47,7 @@ export default function ForgotPasswordPage({
           <NextIntlClientProvider
             messages={pick(messages, 'ForgotPasswordForm')}
           >
-            <ResetPasswordForm />
+            <ResetPasswordForm confirmMail={email} />
           </NextIntlClientProvider>
         </div>
       </div>

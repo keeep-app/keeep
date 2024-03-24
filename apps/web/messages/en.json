@@ -33,7 +33,6 @@
   "LoginPage": {
     "title": "Login to your account",
     "description": "Enter your email and password below to login",
-
     "registerButton": "Register"
   },
   "LoginForm": {
@@ -210,7 +209,11 @@
   "ForgotPasswordPage": {
     "title": "Forgot your password?",
     "description": "Enter your email address below and we will send you a link to reset your password.",
-    "loginButton": "Back to Login",
-    "ForgotPasswordForm": {}
+    "loginButton": "Back to Login"
+  },
+  "ResetPasswordForm": {
+    "email": {
+      "label": "Email"
+    }
   }
 }
