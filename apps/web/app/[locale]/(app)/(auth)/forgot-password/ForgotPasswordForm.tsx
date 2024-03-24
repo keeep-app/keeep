@@ -46,7 +46,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   type FormValues = z.infer<typeof formSchema>;
 
   const { toast } = useToast();
-  const t = useTranslations('ResetPasswordForm');
+  const t = useTranslations('ForgotPasswordForm');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),

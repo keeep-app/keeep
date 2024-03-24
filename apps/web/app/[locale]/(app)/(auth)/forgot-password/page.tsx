@@ -9,7 +9,7 @@ import {
 import { IntlMessages, LocalePageProps } from '@/lib/types/global';
 import pick from 'lodash/pick';
 import { unstable_setRequestLocale } from 'next-intl/server';
-import { ResetPasswordForm } from './ResetPasswordForm';
+import { ResetPasswordForm } from './ForgotPasswordForm';
 
 export default function ForgotPasswordPage({
   params: { locale },
